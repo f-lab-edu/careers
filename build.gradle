@@ -25,6 +25,8 @@ dependencies {
     implementation group: 'mysql', name: 'mysql-connector-java'
     implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '2.1.4'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2'
+    // 요청파라미터 검증하기 위해 추가
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.3'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
