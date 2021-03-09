@@ -5,6 +5,7 @@ import com.dev.careers.service.CuratorService;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,20 +13,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@AllArgsConstructor
 @RestController
 public class CuratorController {
 
     private final CuratorService curatorService;
 
-    public CuratorController(CuratorService curatorService) {
-        this.curatorService = curatorService;
-    }
 
     @PostMapping("/curators/join")
-    public String putMember(@Valid @ModelAttribute Curator curator, BindingResult bindingResult) throws Exception {
-        if (bindingResult.hasErrors()){
+    public String putMember(@Valid @ModelAttribute Curator curator, BindingResult bindingResult)
+        throws Exception {
+        if (bindingResult.hasErrors()) {
             Optional<ObjectError> objectError = bindingResult.getAllErrors().stream().findFirst();
-            if (objectError.isPresent()){
+            if (objectError.isPresent()) {
                 return objectError.get().getDefaultMessage();
             }
         }
@@ -33,7 +33,7 @@ public class CuratorController {
     }
 
     @GetMapping("/curators/all")
-    public List<Curator> getMembers(){
+    public List<Curator> getMembers() {
         return curatorService.getMembers();
     }
 }
