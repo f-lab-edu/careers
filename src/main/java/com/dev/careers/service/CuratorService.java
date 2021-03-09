@@ -2,6 +2,7 @@ package com.dev.careers.service;
 
 import com.dev.careers.mapper.CuratorMapper;
 import com.dev.careers.model.Curator;
+import com.dev.careers.service.error.DuplicatedEmailException;
 import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
@@ -27,7 +28,7 @@ public class CuratorService {
                 .findAny();
 
         if (memberOptional.isPresent()) {
-            return "Duplicated Email";
+            throw new DuplicatedEmailException("Duplicated email");
         } else {
             String salt = makeSalt();
 
