@@ -10,6 +10,8 @@ import javax.validation.constraints.Pattern;
 
 @Data
 public class Curator {
+    @Nullable
+    private int id;
     @NonNull
     @Email(message = "Email Format Violation")
     private String email;
