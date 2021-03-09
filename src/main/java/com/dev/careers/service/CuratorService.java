@@ -21,7 +21,7 @@ public class CuratorService {
 
     public String join(Curator curator) throws NoSuchAlgorithmException {
         //중복검증
-        Optional<Curator> memberOptional = getMembers()
+        Optional<Curator> memberOptional = getCurators()
                 .stream()
                 .filter(m -> m.getEmail().equals(curator.getEmail()))
                 .findAny();
@@ -71,7 +71,7 @@ public class CuratorService {
         return builder.toString();
     }
 
-    public List<Curator> getMembers() {
+    public List<Curator> getCurators() {
         return curatorMapper.getCurators();
     }
 }

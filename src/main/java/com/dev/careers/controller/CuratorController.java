@@ -2,13 +2,11 @@ package com.dev.careers.controller;
 
 import com.dev.careers.model.Curator;
 import com.dev.careers.service.CuratorService;
-import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,10 +28,5 @@ public class CuratorController {
             }
         }
         return curatorService.join(curator);
-    }
-
-    @GetMapping("/curators/all")
-    public List<Curator> getMembers() {
-        return curatorService.getMembers();
     }
 }
