@@ -1,14 +1,21 @@
 package com.dev.careers.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
-
-@Data
+@Getter @Setter
+@ToString(exclude = {"password", "salt"})
+@EqualsAndHashCode
+@RequiredArgsConstructor
 public class Curator {
     @Nullable
     private int id;
