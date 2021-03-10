@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.dev.careers.service.error.CuratorExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,31 +24,32 @@ class CuratorControllerTest {
     MockMvc mockMvc;
 
     @BeforeEach
-    public void beforeEach(){
-        mockMvc = MockMvcBuilders.standaloneSetup(curatorController).build();
+    public void beforeEach() {
+        mockMvc = MockMvcBuilders.standaloneSetup(curatorController)
+            .setControllerAdvice(new CuratorExceptionHandler()).build();
     }
 
     @Test
     @DisplayName("정상적인 회원가입")
     public void joinCurator() throws Exception {
         mockMvc.perform(post("/curators/join")
-        .param("email","test@google.com")
-        .param("name", "홍길동")
-        .param("password", "test123!@"))
-                .andDo(print())
-                .andExpect(status().isOk());
+            .param("email", "test@google.com")
+            .param("name", "홍길동")
+            .param("password", "test123!@"))
+            .andDo(print())
+            .andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("잘못된 이메일 형식 요청")
     public void violationEmail() throws Exception {
         mockMvc.perform(post("/curators/join")
-        .param("email", "test123.com")
-        .param("name", "홍길동")
-        .param("password", "test123!@"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string("Email Format Violation"));
+            .param("email", "test123.com")
+            .param("name", "홍길동")
+            .param("password", "test123!@"))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(content().string("Email Format Violation"));
     }
 
     @Test
@@ -58,7 +60,7 @@ class CuratorControllerTest {
                 .param("name", "홍길동")
                 .param("password", "123"))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().string("Password Format Violation"));
     }
 }

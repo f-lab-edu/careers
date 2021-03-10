@@ -2,6 +2,7 @@ package com.dev.careers.controller;
 
 import com.dev.careers.model.Curator;
 import com.dev.careers.service.CuratorService;
+import com.dev.careers.service.error.ViolationException;
 import java.util.Optional;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -17,14 +18,13 @@ public class CuratorController {
 
     private final CuratorService curatorService;
 
-
     @PostMapping("/curators/join")
     public String putMember(@Valid @ModelAttribute Curator curator, BindingResult bindingResult)
         throws Exception {
         if (bindingResult.hasErrors()) {
             Optional<ObjectError> objectError = bindingResult.getAllErrors().stream().findFirst();
             if (objectError.isPresent()) {
-                return objectError.get().getDefaultMessage();
+                throw new ViolationException(objectError.get().getDefaultMessage());
             }
         }
         return curatorService.join(curator);
