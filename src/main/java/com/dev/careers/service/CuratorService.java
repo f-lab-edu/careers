@@ -19,12 +19,12 @@ public class CuratorService {
 
     public String join(Curator curator) throws NoSuchAlgorithmException {
         //중복검증
-        Optional<Curator> memberOptional = getCurators()
+        Optional<String> email = findByEmail()
                 .stream()
-                .filter(m -> m.getEmail().equals(curator.getEmail()))
+                .filter(m -> m.equals(curator.getEmail()))
                 .findAny();
 
-        if (memberOptional.isPresent()) {
+        if (email.isPresent()) {
             throw new DuplicatedEmailException("Duplicated email");
         } else {
             String salt = passwordEncryption.makeSalt();
@@ -39,7 +39,7 @@ public class CuratorService {
         }
     }
 
-    public List<Curator> getCurators() {
-        return curatorMapper.getCurators();
+    public List<String> findByEmail() {
+        return curatorMapper.findByEmail();
     }
 }

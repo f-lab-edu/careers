@@ -17,5 +17,5 @@ public interface CuratorMapper {
             @Param("password") String password,
             @Param("salt") String salt);
 
-    List<Curator> getCurators();
+    List<String> findByEmail();
 }
