@@ -12,7 +12,7 @@ import javax.validation.constraints.Pattern;
 public class Curator {
     @Nullable
     private int id;
-
+    
     @NonNull
     @Email(message = "Email Format Violation")
     private String email;
@@ -25,7 +25,7 @@ public class Curator {
             message = "Password Format Violation")
     @NonNull
     private String password;
-
+    
     @Nullable
     private String salt;
 }
