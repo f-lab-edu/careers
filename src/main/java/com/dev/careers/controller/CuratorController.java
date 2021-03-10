@@ -5,14 +5,15 @@ import com.dev.careers.service.CuratorService;
 import com.dev.careers.service.error.ViolationException;
 import java.util.Optional;
 import javax.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@AllArgsConstructor
+
+@RequiredArgsConstructor
 @RestController
 public class CuratorController {
 
