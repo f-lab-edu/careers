@@ -23,11 +23,11 @@ public class SHA256Encryption implements PasswordEncryption{
     public String hashing(byte[] password, String salt) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
 
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         for (int i = 0; i < 10; i++) {
-            buffer.append(byteArrayToString(password));
-            buffer.append(salt);
-            md.update(buffer.toString().getBytes());
+            builder.append(byteArrayToString(password));
+            builder.append(salt);
+            md.update(builder.toString().getBytes());
             password = md.digest();
         }
         return new String(password);
