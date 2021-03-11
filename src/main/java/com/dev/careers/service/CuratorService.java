@@ -2,7 +2,7 @@ package com.dev.careers.service;
 
 import com.dev.careers.mapper.CuratorMapper;
 import com.dev.careers.model.Curator;
-import com.dev.careers.service.encryption.PasswordEncryption;
+import com.dev.careers.service.encryption.PasswordEncryptor;
 import com.dev.careers.service.error.DuplicatedEmailException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 public class CuratorService {
     private final CuratorMapper curatorMapper;
-    private final PasswordEncryption passwordEncryption;
+    private final PasswordEncryptor passwordEncryptor;
 
     public String join(Curator curator) throws NoSuchAlgorithmException {
         //중복검증
@@ -27,12 +27,12 @@ public class CuratorService {
         if (email.isPresent()) {
             throw new DuplicatedEmailException("Duplicated email");
         } else {
-            String salt = passwordEncryption.makeSalt();
+            String salt = passwordEncryptor.makeSalt();
 
             curatorMapper.insertCurator(
                     curator.getEmail(),
                     curator.getName(),
-                    passwordEncryption.hashing(curator.getPassword().getBytes(), salt),
+                    passwordEncryptor.hashing(curator.getPassword().getBytes(), salt),
                     salt);
 
             return "Success";
