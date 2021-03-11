@@ -12,9 +12,7 @@ import org.springframework.lang.Nullable;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
-@Getter @Setter
-@ToString(exclude = {"password", "salt"})
-@EqualsAndHashCode
+@Getter
 @RequiredArgsConstructor
 public class Curator {
     @Nullable
