@@ -5,7 +5,7 @@
         INSERT INTO Curator (email, name, password, salt) VALUES(#{email}, #{name}, #{password}, #{salt});
     </select>
 
-    <select id="findByEmail" resultType="String">
+    <select id="getCuratorsEmail" resultType="String">
         SELECT email from Curator;
     </select>
 </mapper>

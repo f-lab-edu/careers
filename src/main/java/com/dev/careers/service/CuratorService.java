@@ -19,7 +19,7 @@ public class CuratorService {
 
     public String join(Curator curator) throws NoSuchAlgorithmException {
         //중복검증
-        Optional<String> email = findByEmail()
+        Optional<String> email = getCuratorsEmail()
                 .stream()
                 .filter(m -> m.equals(curator.getEmail()))
                 .findAny();
@@ -39,7 +39,7 @@ public class CuratorService {
         }
     }
 
-    public List<String> findByEmail() {
-        return curatorMapper.findByEmail();
+    public List<String> getCuratorsEmail() {
+        return curatorMapper.getCuratorsEmail();
     }
 }
