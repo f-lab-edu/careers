@@ -6,7 +6,7 @@ import java.security.SecureRandom;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SHA256Encryption implements PasswordEncryption{
+public class SHA256Encryption implements PasswordEncryption {
     private final static int SALT_SIZE = 16;
 
     @Override
