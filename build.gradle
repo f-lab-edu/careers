@@ -25,6 +25,8 @@ dependencies {
     implementation group: 'mysql', name: 'mysql-connector-java'
     implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '2.1.4'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2'
+    // 로그인 세션처리를 하기위해 추가
+    implementation group: 'org.springframework.session', name: 'spring-session-core'
     // 요청파라미터 검증하기 위해 추가
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.3'
     //javax.annotation.meta.When 경고로 인해 구글에서 해당 버그 수정한 의존성 추가

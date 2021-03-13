@@ -8,4 +8,8 @@
     <select id="getCuratorsEmail" resultType="String">
         SELECT email from Curator;
     </select>
+    
+    <select id="getMemberInfo" resultType="hashmap">
+        select email, password, salt from Curator where email = #{email};
+    </select>
 </mapper>
