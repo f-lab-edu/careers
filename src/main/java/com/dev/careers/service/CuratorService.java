@@ -17,7 +17,7 @@ public class CuratorService {
     private final CuratorMapper curatorMapper;
     private final PasswordEncryptor passwordEncryptor;
 
-    public String join(Curator curator) throws NoSuchAlgorithmException {
+    public void join(Curator curator) throws NoSuchAlgorithmException {
         //중복검증
         Optional<String> email = getCuratorsEmail()
                 .stream()
@@ -25,7 +25,7 @@ public class CuratorService {
                 .findAny();
 
         if (email.isPresent()) {
-            throw new DuplicatedEmailException("Duplicated email");
+            throw new DuplicatedEmailException();
         } else {
             String salt = passwordEncryptor.makeSalt();
 
@@ -34,8 +34,6 @@ public class CuratorService {
                     curator.getName(),
                     passwordEncryptor.hashing(curator.getPassword().getBytes(), salt),
                     salt);
-
-            return "Success";
         }
     }
 

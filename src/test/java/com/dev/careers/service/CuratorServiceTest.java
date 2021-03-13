@@ -20,13 +20,13 @@ class CuratorServiceTest {
     @DisplayName("중복된 이메일 회원가입 요청")
     public void DupicatedEmail() throws Exception {
         Curator curator = new Curator(
-                "test@google.com",
-                "홍길동",
-                "test123!@"
+            "test@google.com",
+            "홍길동",
+            "test123!@"
         );
-        Assertions.assertThat(curatorService.join(curator)).isEqualTo("Success");
+        curatorService.join(curator);
         org.junit.jupiter.api.Assertions.assertThrows(
-                DuplicateKeyException.class,
-                ()->curatorService.join(curator));
+            DuplicateKeyException.class,
+            () -> curatorService.join(curator));
     }
 }

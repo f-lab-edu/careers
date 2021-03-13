@@ -20,14 +20,15 @@ public class CuratorController {
     private final CuratorService curatorService;
 
     @PostMapping("/curators/join")
-    public String putMember(@Valid @ModelAttribute Curator curator, BindingResult bindingResult)
+    public void putMember(@Valid @ModelAttribute Curator curator, BindingResult bindingResult)
         throws Exception {
         if (bindingResult.hasErrors()) {
             Optional<ObjectError> objectError = bindingResult.getAllErrors().stream().findFirst();
             if (objectError.isPresent()) {
-                throw new ViolationException(objectError.get().getDefaultMessage());
+                throw new ViolationException();
             }
         }
-        return curatorService.join(curator);
+
+        curatorService.join(curator);
     }
 }
