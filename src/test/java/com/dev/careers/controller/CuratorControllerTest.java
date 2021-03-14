@@ -48,8 +48,7 @@ class CuratorControllerTest {
             .param("name", "홍길동")
             .param("password", "test123!@"))
             .andDo(print())
-            .andExpect(status().isBadRequest())
-            .andExpect(content().string("Email Format Violation"));
+            .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -60,7 +59,6 @@ class CuratorControllerTest {
                 .param("name", "홍길동")
                 .param("password", "123"))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Password Format Violation"));
+                .andExpect(status().isBadRequest());
     }
 }
