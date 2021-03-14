@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dev.careers.mapper.CuratorMapper">
-    <select id="insertCurator" resultType="int">
-        INSERT INTO Curator (email, name, password, salt) VALUES(#{email}, #{name}, #{password}, #{salt});
-    </select>
+  <select id="insertCurator" resultType="int">
+    INSERT INTO Curator (email, name, password, salt)
+    VALUES (#{email}, #{name}, #{password}, #{salt});
+  </select>
 
-    <select id="getCuratorsEmail" resultType="String">
-        SELECT email from Curator;
-    </select>
+  <select id="getCuratorsEmail" resultType="String">
+    SELECT email
+    FROM curator
+    WHERE email = #{email};
+  </select>
 </mapper>

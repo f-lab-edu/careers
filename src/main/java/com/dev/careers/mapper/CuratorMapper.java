@@ -1,11 +1,7 @@
 package com.dev.careers.mapper;
 
-import com.dev.careers.model.Curator;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Mapper
 public interface CuratorMapper {
@@ -16,5 +12,5 @@ public interface CuratorMapper {
             @Param("password") String password,
             @Param("salt") String salt);
 
-    List<String> getCuratorsEmail();
+    String getCuratorsEmail(@Param("email") String email);
 }

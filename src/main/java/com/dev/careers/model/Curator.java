@@ -1,16 +1,11 @@
 package com.dev.careers.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.lang.Nullable;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
 
 @Getter
 @RequiredArgsConstructor
