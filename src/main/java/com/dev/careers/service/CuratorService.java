@@ -5,13 +5,11 @@ import com.dev.careers.model.Curator;
 import com.dev.careers.service.encryption.PasswordEncryptor;
 import com.dev.careers.service.error.DuplicatedEmailException;
 import com.dev.careers.service.error.ViolationException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -20,26 +18,19 @@ public class CuratorService {
     private final CuratorMapper curatorMapper;
     private final PasswordEncryptor passwordEncryptor;
 
-    public String join(Curator curator) throws NoSuchAlgorithmException {
+    public void join(Curator curator) throws NoSuchAlgorithmException {
         //중복검증
-        Optional<String> email = getCuratorsEmail()
-            .stream()
-            .filter(m -> m.equals(curator.getEmail()))
-            .findAny();
+        Optional<String> curatorsEmail = Optional
+            .ofNullable(curatorMapper.getCuratorsEmail(curator.getEmail()));
+        if (curatorsEmail.isPresent())
+            throw new DuplicatedEmailException();
 
-        if (email.isPresent()) {
-            throw new DuplicatedEmailException("Duplicated email");
-        } else {
-            String salt = passwordEncryptor.makeSalt();
-
-            curatorMapper.insertCurator(
-                curator.getEmail(),
-                curator.getName(),
-                passwordEncryptor.hashing(curator.getPassword().getBytes(), salt),
-                salt);
-
-            return "Success";
-        }
+        String salt = passwordEncryptor.makeSalt();
+        curatorMapper.insertCurator(
+            curator.getEmail(),
+            curator.getName(),
+            passwordEncryptor.hashing(curator.getPassword().getBytes(), salt),
+            salt);
     }
 
     public void login(String email, String password) throws NoSuchAlgorithmException {
@@ -51,14 +42,10 @@ public class CuratorService {
                 .hashing(password.getBytes(), memberInfo.get().get("salt"));
 
             if (!hashing.equals(memberInfo.get().get("password"))) {
-                throw new ViolationException("login fail");
+                throw new ViolationException();
             }
         } else {
-            throw new ViolationException("You are not registered as a member");
+            throw new ViolationException();
         }
-    }
-
-    public List<String> getCuratorsEmail() {
-        return curatorMapper.getCuratorsEmail();
     }
 }

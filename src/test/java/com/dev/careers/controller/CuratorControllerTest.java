@@ -3,7 +3,6 @@ package com.dev.careers.controller;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,8 +55,7 @@ class CuratorControllerTest {
             .param("name", "홍길동")
             .param("password", "test123!@"))
             .andDo(print())
-            .andExpect(status().isBadRequest())
-            .andExpect(content().string("Email Format Violation"));
+            .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -68,8 +66,7 @@ class CuratorControllerTest {
             .param("name", "홍길동")
             .param("password", "123"))
             .andDo(print())
-            .andExpect(status().isBadRequest())
-            .andExpect(content().string("Password Format Violation"));
+            .andExpect(status().isBadRequest());
     }
 
     @Test

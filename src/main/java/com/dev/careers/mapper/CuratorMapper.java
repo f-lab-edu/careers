@@ -1,7 +1,6 @@
 package com.dev.careers.mapper;
 
 import java.util.HashMap;
-import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,7 +13,7 @@ public interface CuratorMapper {
         @Param("password") String password,
         @Param("salt") String salt);
 
-    List<String> getCuratorsEmail();
-
     HashMap<String, String> getMemberInfo(@Param("email") String email);
+
+    String getCuratorsEmail(@Param("email") String email);
 }

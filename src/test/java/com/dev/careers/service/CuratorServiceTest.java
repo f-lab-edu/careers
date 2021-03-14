@@ -4,7 +4,6 @@ import com.dev.careers.model.Curator;
 import com.dev.careers.model.LoginParamter;
 import com.dev.careers.service.error.ViolationException;
 import java.security.NoSuchAlgorithmException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ class CuratorServiceTest {
             "홍길동",
             "test123!@"
         );
-        Assertions.assertThat(curatorService.join(curator)).isEqualTo("Success");
+        curatorService.join(curator);
         org.junit.jupiter.api.Assertions.assertThrows(
             DuplicateKeyException.class,
             () -> curatorService.join(curator));
@@ -41,7 +40,7 @@ class CuratorServiceTest {
             "홍길동",
             "test123!@"
         );
-        Assertions.assertThat(curatorService.join(curator)).isEqualTo("Success");
+        curatorService.join(curator);
 
         LoginParamter paramter = new LoginParamter(
             "test@google.com",
@@ -60,7 +59,7 @@ class CuratorServiceTest {
             "홍길동",
             "test123!@"
         );
-        Assertions.assertThat(curatorService.join(curator)).isEqualTo("Success");
+        curatorService.join(curator);
 
         LoginParamter paramter = new LoginParamter(
             "test@google.com",
@@ -79,7 +78,7 @@ class CuratorServiceTest {
             "홍길동",
             "test123!@"
         );
-        Assertions.assertThat(curatorService.join(curator)).isEqualTo("Success");
+        curatorService.join(curator);
 
         LoginParamter paramter = new LoginParamter(
             "fff@google.com",

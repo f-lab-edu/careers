@@ -29,11 +29,11 @@ public class CuratorController {
     private final CuratorService curatorService;
 
     @PostMapping("join")
-    public String joinMember(@Valid @ModelAttribute Curator curator, BindingResult bindingResult)
+    public void joinMember(@Valid @ModelAttribute Curator curator, BindingResult bindingResult)
         throws Exception {
         verifyCuratorParameter(bindingResult);
 
-        return curatorService.join(curator);
+        curatorService.join(curator);
     }
 
     @PostMapping("login")
@@ -55,7 +55,7 @@ public class CuratorController {
         if (bindingResult.hasErrors()) {
             Optional<ObjectError> objectError = bindingResult.getAllErrors().stream().findFirst();
             if (objectError.isPresent()) {
-                throw new ViolationException(objectError.get().getDefaultMessage());
+                throw new ViolationException();
             }
         }
     }

@@ -10,7 +10,7 @@ public class CuratorExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = {DuplicatedEmailException.class, ViolationException.class})
-    public String badRequest(final RuntimeException ex) {
-        return ex.getMessage();
+    public void badRequest(final RuntimeException ex) {
+
     }
 }
