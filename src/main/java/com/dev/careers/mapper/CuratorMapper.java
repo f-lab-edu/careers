@@ -12,5 +12,5 @@ public interface CuratorMapper {
             @Param("password") String password,
             @Param("salt") String salt);
 
-    String getCuratorsEmail(@Param("email") String email);
+    boolean checkEmailExists(@Param("email") String email);
 }

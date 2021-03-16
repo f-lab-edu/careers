@@ -5,7 +5,6 @@ import com.dev.careers.model.Curator;
 import com.dev.careers.service.encryption.PasswordEncryptor;
 import com.dev.careers.service.error.DuplicatedEmailException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +16,7 @@ public class CuratorService {
 
     public void join(Curator curator) throws NoSuchAlgorithmException {
         //중복검증
-        Optional<String> curatorsEmail = Optional
-            .ofNullable(curatorMapper.getCuratorsEmail(curator.getEmail()));
-        if (curatorsEmail.isPresent())
+        if (curatorMapper.checkEmailExists(curator.getEmail()))
             throw new DuplicatedEmailException();
 
         String salt = passwordEncryptor.makeSalt();
