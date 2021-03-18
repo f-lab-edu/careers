@@ -13,10 +13,8 @@
     where email = #{email};
   </select>
 
-  <select id="getCuratorsEmail" resultType="String">
-    SELECT email
-    FROM curator
-    WHERE email = #{email};
+  <select id="checkEmailExists" resultType="boolean">
+    select exists(select 1 from curator where email = #{email});
   </select>
 
 </mapper>

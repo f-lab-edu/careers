@@ -20,9 +20,7 @@ public class CuratorService {
 
     public void join(Curator curator) throws NoSuchAlgorithmException {
         //중복검증
-        Optional<String> curatorsEmail = Optional
-            .ofNullable(curatorMapper.getCuratorsEmail(curator.getEmail()));
-        if (curatorsEmail.isPresent())
+        if (curatorMapper.checkEmailExists(curator.getEmail()))
             throw new DuplicatedEmailException();
 
         String salt = passwordEncryptor.makeSalt();

@@ -15,5 +15,5 @@ public interface CuratorMapper {
 
     HashMap<String, String> getMemberInfo(@Param("email") String email);
 
-    String getCuratorsEmail(@Param("email") String email);
+    boolean checkEmailExists(@Param("email") String email);
 }
