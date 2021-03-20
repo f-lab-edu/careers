@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,7 +75,6 @@ class CuratorControllerTest {
     public void checkLoginSession() throws Exception {
         mockMvc.perform(post("/curators/login")
             .param("email", "aaa@google.com")
-            .param("name", "aaa")
             .param("password", "test123!@"))
             .andExpect(status().isOk())
             .andExpect(request().sessionAttribute("sessionInfo", notNullValue()));

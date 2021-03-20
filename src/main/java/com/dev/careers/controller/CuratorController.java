@@ -6,12 +6,14 @@ import com.dev.careers.service.CuratorService;
 import com.dev.careers.service.error.ViolationException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.support.SessionStatus;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("curators")
-@SessionAttributes("sessionInfo")
 public class CuratorController {
 
     private final CuratorService curatorService;
@@ -37,18 +38,19 @@ public class CuratorController {
     }
 
     @PostMapping("login")
-    public void loginMember(@Valid @ModelAttribute LoginParamter loginParamter, Model model,
+    public void loginMember(@Valid @ModelAttribute LoginParamter loginParamter,
+        HttpSession httpSession,
         BindingResult bindingResult)
         throws NoSuchAlgorithmException {
-        verifyCuratorParameter(bindingResult);
 
+        verifyCuratorParameter(bindingResult);
         curatorService.login(loginParamter.getEmail(), loginParamter.getPassword());
-        model.addAttribute("sessionInfo", loginParamter);
+        httpSession.setAttribute("sessionInfo", loginParamter);
     }
 
     @DeleteMapping("logout")
-    public void logout(SessionStatus status) {
-        status.setComplete();
+    public void logout(HttpSession httpSession) {
+        httpSession.removeAttribute("sessionInfo");
     }
 
     public void verifyCuratorParameter(BindingResult bindingResult) {
