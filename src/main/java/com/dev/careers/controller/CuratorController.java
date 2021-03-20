@@ -1,0 +1,45 @@
+package com.dev.careers.controller;
+
+import com.dev.careers.domain.Curator;
+import com.dev.careers.service.CuratorService;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class CuratorController {
+
+    @Autowired
+    private CuratorService curatorService;
+
+    @GetMapping("/curators")
+    public List<Curator> list(){
+        return curatorService.getCurators();
+    }
+
+    @PostMapping("/curators")
+    public ResponseEntity<?> create(@Valid @RequestBody Curator curator,
+        BindingResult bindingResult) throws URISyntaxException {
+        if(bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body("");
+        }
+
+        curatorService.addCurator(curator);
+
+        return ResponseEntity.created(new URI("/curators/" + curator.getId())).body(curator.getPassword());
+    }
+
+    @PostMapping("/curators/{email}")
+    public int confirmEmail(@PathVariable("email") String email) {
+        return curatorService.isDuplicateEmail(email);
+    }
+}
