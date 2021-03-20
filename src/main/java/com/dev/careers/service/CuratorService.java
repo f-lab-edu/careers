@@ -20,8 +20,9 @@ public class CuratorService {
 
     public void join(Curator curator) throws NoSuchAlgorithmException {
         //중복검증
-        if (curatorMapper.checkEmailExists(curator.getEmail()))
+        if (curatorMapper.checkEmailExists(curator.getEmail())) {
             throw new DuplicatedEmailException();
+        }
 
         String salt = passwordEncryptor.makeSalt();
         curatorMapper.insertCurator(
@@ -35,15 +36,11 @@ public class CuratorService {
         Optional<HashMap<String, String>> memberInfo = Optional
             .ofNullable(curatorMapper.getMemberInfo(email));
 
-        if (memberInfo.isPresent()) {
-            String hashing = passwordEncryptor
-                .hashing(password.getBytes(), memberInfo.get().get("salt"));
+        String salt = memberInfo.map(v -> v.get("salt"))
+            .orElse("test");
 
-            if (!hashing.equals(memberInfo.get().get("password"))) {
-                throw new ViolationException();
-            }
-        } else {
-            throw new ViolationException();
-        }
+        String hashing = passwordEncryptor.hashing(password.getBytes(), salt);
+        memberInfo.filter(v -> hashing.equals(v.get("password")))
+            .orElseThrow(ViolationException::new);
     }
 }
