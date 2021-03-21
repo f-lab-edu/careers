@@ -2,12 +2,15 @@ package com.dev.careers.service;
 
 import com.dev.careers.mapper.CuratorMapper;
 import com.dev.careers.model.Curator;
+import com.dev.careers.model.LoginParamter;
 import com.dev.careers.service.encryption.PasswordEncryptor;
 import com.dev.careers.service.error.DuplicatedEmailException;
 import com.dev.careers.service.error.ViolationException;
+import com.dev.careers.service.session.SessionController;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Optional;
+import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,7 @@ public class CuratorService {
 
     private final CuratorMapper curatorMapper;
     private final PasswordEncryptor passwordEncryptor;
+    private final SessionController sessionController;
 
     public void join(Curator curator) throws NoSuchAlgorithmException {
         //중복검증
@@ -32,15 +36,21 @@ public class CuratorService {
             salt);
     }
 
-    public void login(String email, String password) throws NoSuchAlgorithmException {
+    public void login(LoginParamter loginParamter, HttpSession httpSession) throws NoSuchAlgorithmException {
         Optional<HashMap<String, String>> memberInfo = Optional
-            .ofNullable(curatorMapper.getMemberInfo(email));
+            .ofNullable(curatorMapper.getMemberInfo(loginParamter.getEmail()));
 
         String salt = memberInfo.map(v -> v.get("salt"))
             .orElse("test");
 
-        String hashing = passwordEncryptor.hashing(password.getBytes(), salt);
+        String hashing = passwordEncryptor.hashing(loginParamter.getPassword().getBytes(), salt);
         memberInfo.filter(v -> hashing.equals(v.get("password")))
             .orElseThrow(ViolationException::new);
+
+        sessionController.SetSession(Optional.ofNullable(httpSession), loginParamter);
+    }
+
+    public void logout(HttpSession httpSession){
+        sessionController.DeleteSession(Optional.ofNullable(httpSession));
     }
 }

@@ -48,7 +48,7 @@ class CuratorServiceTest {
         );
 
         org.junit.jupiter.api.Assertions.assertDoesNotThrow(
-            () -> curatorService.login(paramter.getEmail(), paramter.getPassword()));
+            () -> curatorService.login(paramter, null));
     }
 
     @Test
@@ -67,7 +67,7 @@ class CuratorServiceTest {
         );
         org.junit.jupiter.api.Assertions.assertThrows(
             ViolationException.class,
-            () -> curatorService.login(paramter.getEmail(), paramter.getPassword()));
+            () -> curatorService.login(paramter, null));
     }
 
     @Test
@@ -86,6 +86,6 @@ class CuratorServiceTest {
         );
         org.junit.jupiter.api.Assertions.assertThrows(
             ViolationException.class,
-            () -> curatorService.login(paramter.getEmail(), paramter.getPassword()));
+            () -> curatorService.login(paramter, null));
     }
 }

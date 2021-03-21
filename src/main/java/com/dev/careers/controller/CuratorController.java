@@ -9,17 +9,13 @@ import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 
 
 @RequiredArgsConstructor
@@ -44,13 +40,12 @@ public class CuratorController {
         throws NoSuchAlgorithmException {
 
         verifyCuratorParameter(bindingResult);
-        curatorService.login(loginParamter.getEmail(), loginParamter.getPassword());
-        httpSession.setAttribute("sessionInfo", loginParamter);
+        curatorService.login(loginParamter, httpSession);
     }
 
     @DeleteMapping("logout")
     public void logout(HttpSession httpSession) {
-        httpSession.removeAttribute("sessionInfo");
+        curatorService.logout(httpSession);
     }
 
     public void verifyCuratorParameter(BindingResult bindingResult) {
