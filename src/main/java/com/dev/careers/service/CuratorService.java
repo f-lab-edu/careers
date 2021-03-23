@@ -6,7 +6,7 @@ import com.dev.careers.model.LoginParamter;
 import com.dev.careers.service.encryption.PasswordEncryptor;
 import com.dev.careers.service.error.DuplicatedEmailException;
 import com.dev.careers.service.error.ViolationException;
-import com.dev.careers.service.session.SessionController;
+import com.dev.careers.service.session.SessionAuthenticator;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Optional;
@@ -20,7 +20,7 @@ public class CuratorService {
 
     private final CuratorMapper curatorMapper;
     private final PasswordEncryptor passwordEncryptor;
-    private final SessionController sessionController;
+    private final SessionAuthenticator sessionAuthenticator;
 
     public void join(Curator curator) throws NoSuchAlgorithmException {
         //중복검증
@@ -47,10 +47,10 @@ public class CuratorService {
         memberInfo.filter(v -> hashing.equals(v.get("password")))
             .orElseThrow(ViolationException::new);
 
-        sessionController.SetSession(Optional.ofNullable(httpSession), loginParamter);
+        sessionAuthenticator.setSession(Optional.ofNullable(httpSession), loginParamter);
     }
 
     public void logout(HttpSession httpSession){
-        sessionController.DeleteSession(Optional.ofNullable(httpSession));
+        sessionAuthenticator.deleteSession(Optional.ofNullable(httpSession));
     }
 }
