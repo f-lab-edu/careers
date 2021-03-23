@@ -20,7 +20,7 @@ class CuratorServiceTest {
 
     @Test
     @DisplayName("중복된 이메일 회원가입 요청")
-    public void DupicatedEmail() throws Exception {
+    public void dupicatedEmail() throws Exception {
         Curator curator = new Curator(
             "test@google.com",
             "홍길동",
