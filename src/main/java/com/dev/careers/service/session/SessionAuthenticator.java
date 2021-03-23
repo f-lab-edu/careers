@@ -6,16 +6,16 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SessionController {
+public class SessionAuthenticator {
 
-    private final String sessionName = "sessionInfo";
+    private final static String sessionName = "sessionInfo";
 
 
-    public void SetSession(Optional<HttpSession> httpSession, LoginParamter loginParamter) {
+    public void setSession(Optional<HttpSession> httpSession, LoginParamter loginParamter) {
         httpSession.ifPresent(session -> session.setAttribute(sessionName, loginParamter));
     }
 
-    public void DeleteSession(Optional<HttpSession> httpSession) {
+    public void deleteSession(Optional<HttpSession> httpSession) {
         httpSession.ifPresent(session -> session.removeAttribute(sessionName));
     }
 }
