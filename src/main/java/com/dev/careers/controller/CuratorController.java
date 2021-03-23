@@ -4,6 +4,7 @@ import com.dev.careers.model.Curator;
 import com.dev.careers.model.LoginParamter;
 import com.dev.careers.service.CuratorService;
 import com.dev.careers.service.error.ViolationException;
+import com.dev.careers.service.session.SessionAuthenticator;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CuratorController {
 
     private final CuratorService curatorService;
+    private final SessionAuthenticator sessionAuthenticator;
 
     @PostMapping("join")
     public void joinMember(@Valid @ModelAttribute Curator curator, BindingResult bindingResult)
@@ -40,12 +42,13 @@ public class CuratorController {
         throws NoSuchAlgorithmException {
 
         verifyCuratorParameter(bindingResult);
-        curatorService.login(loginParamter, httpSession);
+        curatorService.login(loginParamter);
+        sessionAuthenticator.setSession(Optional.ofNullable(httpSession),loginParamter);
     }
 
     @DeleteMapping("logout")
     public void logout(HttpSession httpSession) {
-        curatorService.logout(httpSession);
+        sessionAuthenticator.deleteSession(Optional.ofNullable(httpSession));
     }
 
     public void verifyCuratorParameter(BindingResult bindingResult) {

@@ -10,7 +10,6 @@ import com.dev.careers.service.session.SessionAuthenticator;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Optional;
-import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +35,7 @@ public class CuratorService {
             salt);
     }
 
-    public void login(LoginParamter loginParamter, HttpSession httpSession) throws NoSuchAlgorithmException {
+    public void login(LoginParamter loginParamter) throws NoSuchAlgorithmException {
         Optional<HashMap<String, String>> memberInfo = Optional
             .ofNullable(curatorMapper.getMemberInfo(loginParamter.getEmail()));
 
@@ -46,11 +45,5 @@ public class CuratorService {
         String hashing = passwordEncryptor.hashing(loginParamter.getPassword().getBytes(), salt);
         memberInfo.filter(v -> hashing.equals(v.get("password")))
             .orElseThrow(ViolationException::new);
-
-        sessionAuthenticator.setSession(Optional.ofNullable(httpSession), loginParamter);
-    }
-
-    public void logout(HttpSession httpSession){
-        sessionAuthenticator.deleteSession(Optional.ofNullable(httpSession));
     }
 }
