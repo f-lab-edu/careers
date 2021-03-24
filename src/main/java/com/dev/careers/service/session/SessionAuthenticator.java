@@ -3,19 +3,25 @@ package com.dev.careers.service.session;
 import com.dev.careers.model.LoginParamter;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SessionAuthenticator {
 
     private final static String sessionName = "sessionInfo";
+    private final HttpSession httpSession;
 
-
-    public void setSession(Optional<HttpSession> httpSession, LoginParamter loginParamter) {
-        httpSession.ifPresent(session -> session.setAttribute(sessionName, loginParamter));
+    public SessionAuthenticator(HttpSession httpSession) {
+        this.httpSession = httpSession;
     }
 
-    public void deleteSession(Optional<HttpSession> httpSession) {
-        httpSession.ifPresent(session -> session.removeAttribute(sessionName));
+    public void accreditSession(LoginParamter loginParamter) {
+        httpSession.setAttribute(sessionName,loginParamter);
+    }
+
+    public void deleteSession() {
+        httpSession.removeAttribute(sessionName);
     }
 }
