@@ -21,11 +21,6 @@ public class CuratorController {
     @Autowired
     private CuratorService curatorService;
 
-    @GetMapping("/curators")
-    public List<Curator> list(){
-        return curatorService.getCurators();
-    }
-
     @PostMapping("/curators")
     public ResponseEntity<?> create(@Valid @RequestBody Curator curator,
         BindingResult bindingResult) throws URISyntaxException {
@@ -35,7 +30,7 @@ public class CuratorController {
 
         curatorService.addCurator(curator);
 
-        return ResponseEntity.created(new URI("/curators/" + curator.getId())).body(curator.getPassword());
+        return ResponseEntity.created(new URI("/curators/" + curator.getId())).body("");
     }
 
     @PostMapping("/curators/{email}")

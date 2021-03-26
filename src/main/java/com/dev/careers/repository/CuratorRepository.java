@@ -11,7 +11,5 @@ public interface CuratorRepository {
 
     void save(Curator curator);
 
-    List<Curator> findAll();
-
     int isEmail(String email);
 }

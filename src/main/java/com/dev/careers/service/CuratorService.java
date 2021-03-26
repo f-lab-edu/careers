@@ -27,10 +27,6 @@ public class CuratorService {
         curatorRepository.save(curator);
     }
 
-    public List<Curator> getCurators() {
-        return curatorRepository.findAll();
-    }
-
     public int isDuplicateEmail(String email) {
        return curatorRepository.isEmail(email);
     }
