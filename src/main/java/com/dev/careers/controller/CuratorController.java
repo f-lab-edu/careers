@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,15 +23,15 @@ public class CuratorController {
     private CuratorService curatorService;
 
     @PostMapping("/curators")
-    public ResponseEntity<?> create(@Valid @RequestBody Curator curator,
+    public HttpStatus create(@Valid @RequestBody Curator curator,
         BindingResult bindingResult) throws URISyntaxException {
         if(bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body("");
+            return HttpStatus.BAD_REQUEST;
         }
 
         curatorService.addCurator(curator);
 
-        return ResponseEntity.created(new URI("/curators/" + curator.getId())).body("");
+        return HttpStatus.CREATED;
     }
 
     @PostMapping("/curators/{email}")
