@@ -43,12 +43,12 @@ public class CuratorController {
 
         verifyCuratorParameter(bindingResult);
         curatorService.login(loginParamter);
-        sessionAuthenticator.accreditSession(loginParamter);
+        sessionAuthenticator.login(loginParamter);
     }
 
     @DeleteMapping("logout")
     public void logout() {
-        sessionAuthenticator.deleteSession();
+        sessionAuthenticator.logout();
     }
 
     public void verifyCuratorParameter(BindingResult bindingResult) {

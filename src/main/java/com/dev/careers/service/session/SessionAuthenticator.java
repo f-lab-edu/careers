@@ -17,11 +17,11 @@ public class SessionAuthenticator {
         this.httpSession = httpSession;
     }
 
-    public void accreditSession(LoginParamter loginParamter) {
+    public void login(LoginParamter loginParamter) {
         httpSession.setAttribute(sessionName,loginParamter);
     }
 
-    public void deleteSession() {
+    public void logout() {
         httpSession.removeAttribute(sessionName);
     }
 }
