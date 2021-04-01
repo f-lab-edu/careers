@@ -5,12 +5,14 @@ import com.dev.careers.model.Curator;
 import com.dev.careers.model.LoginParamter;
 import com.dev.careers.service.encryption.PasswordEncryptor;
 import com.dev.careers.service.error.DuplicatedEmailException;
+import com.dev.careers.service.error.SqlInsertException;
 import com.dev.careers.service.error.ViolationException;
 import com.dev.careers.service.session.SessionAuthenticator;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.jdbc.RuntimeSqlException;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -19,7 +21,6 @@ public class CuratorService {
 
     private final CuratorMapper curatorMapper;
     private final PasswordEncryptor passwordEncryptor;
-    private final SessionAuthenticator sessionAuthenticator;
 
     public void join(Curator curator) throws NoSuchAlgorithmException {
         //중복검증
@@ -27,12 +28,14 @@ public class CuratorService {
             throw new DuplicatedEmailException();
         }
 
-        String salt = passwordEncryptor.makeSalt();
-        curatorMapper.insertCurator(
-            curator.getEmail(),
-            curator.getName(),
-            passwordEncryptor.hashing(curator.getPassword().getBytes(), salt),
-            salt);
+        curator.setSalt(passwordEncryptor.makeSalt());
+        curator.setPassword(
+            passwordEncryptor.hashing(curator.getPassword().getBytes(), curator.getSalt()));
+
+        int errorCode = curatorMapper.insertCurator(curator);
+        if (errorCode != 1){
+            throw new SqlInsertException();
+        }
     }
 
     public void login(LoginParamter loginParamter) throws NoSuchAlgorithmException {

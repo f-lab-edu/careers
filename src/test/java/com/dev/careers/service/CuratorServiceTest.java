@@ -2,6 +2,7 @@ package com.dev.careers.service;
 
 import com.dev.careers.model.Curator;
 import com.dev.careers.model.LoginParamter;
+import com.dev.careers.service.error.DuplicatedEmailException;
 import com.dev.careers.service.error.ViolationException;
 import java.security.NoSuchAlgorithmException;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +29,7 @@ class CuratorServiceTest {
         );
         curatorService.join(curator);
         org.junit.jupiter.api.Assertions.assertThrows(
-            DuplicateKeyException.class,
+            DuplicatedEmailException.class,
             () -> curatorService.join(curator));
     }
 

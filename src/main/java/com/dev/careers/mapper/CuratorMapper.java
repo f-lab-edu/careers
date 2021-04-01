@@ -1,5 +1,6 @@
 package com.dev.careers.mapper;
 
+import com.dev.careers.model.Curator;
 import java.util.HashMap;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -7,11 +8,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface CuratorMapper {
 
-    Integer insertCurator(
-        @Param("email") String email,
-        @Param("name") String name,
-        @Param("password") String password,
-        @Param("salt") String salt);
+    int insertCurator(Curator curator);
 
     HashMap<String, String> getMemberInfo(@Param("email") String email);
 

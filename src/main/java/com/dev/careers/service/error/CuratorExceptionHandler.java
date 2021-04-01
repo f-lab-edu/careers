@@ -13,4 +13,9 @@ public class CuratorExceptionHandler {
     public void badRequest(final RuntimeException ex) {
 
     }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(value = SqlInsertException.class)
+    public void sqlError(final RuntimeException ex) {
+    }
 }
