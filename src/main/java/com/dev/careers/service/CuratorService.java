@@ -3,7 +3,6 @@ package com.dev.careers.service;
 import com.dev.careers.domain.Curator;
 import com.dev.careers.repository.CuratorRepository;
 import com.dev.careers.util.encryption.Sha256Encrypt;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

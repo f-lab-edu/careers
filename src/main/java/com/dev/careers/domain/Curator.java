@@ -10,8 +10,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Curator {
 
     private Long id;

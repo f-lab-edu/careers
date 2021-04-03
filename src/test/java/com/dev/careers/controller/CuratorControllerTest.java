@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.dev.careers.domain.Curator;
 import com.dev.careers.service.CuratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -37,12 +36,6 @@ public class CuratorControllerTest {
 
     @Test
     public void create() throws Exception {
-        Curator curator = new Curator();
-        curator.setId(1L);
-        curator.setName("aa");
-        curator.setPassword("aaa1@");
-        curator.setEmail("aa@never.com");
-
         mvc.perform(post("/curators").contentType(MediaType.APPLICATION_JSON)
             .content("{\"id\":1, \"name\": \"admin\", \"password\": \"Abc12345@\", \"email\": \"admin@curators.com\"}"))
             .andDo(print())
