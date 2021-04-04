@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class CuratorService {
 
     @Autowired
@@ -20,12 +19,14 @@ public class CuratorService {
         this.sha256Encrypt = sha256Encrypt;
     }
 
+    @Transactional
     public void addCurator(Curator curator) {
         curator.setPassword(sha256Encrypt.encrypt(curator.getPassword(),
             sha256Encrypt.generateSalt()));
         curatorRepository.save(curator);
     }
 
+    @Transactional
     public Boolean isDuplicateEmail(String email) {
        return curatorRepository.isEmail(email);
     }
