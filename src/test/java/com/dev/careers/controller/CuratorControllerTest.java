@@ -1,12 +1,15 @@
 package com.dev.careers.controller;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.refEq;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.dev.careers.domain.Curator;
 import com.dev.careers.service.CuratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -36,10 +39,17 @@ public class CuratorControllerTest {
 
     @Test
     public void create() throws Exception {
+        Curator curator = new Curator();
+        curator.setName("admin");
+        curator.setPassword("Abc12345@");
+        curator.setEmail("admin@curators.com");
+
         mvc.perform(post("/curators").contentType(MediaType.APPLICATION_JSON)
-            .content("{\"id\":1, \"name\": \"admin\", \"password\": \"Abc12345@\", \"email\": \"admin@curators.com\"}"))
+            .content("{\"name\": \"admin\", \"password\": \"Abc12345@\", \"email\": \"admin@curators.com\"}"))
             .andDo(print())
             .andExpect(status().isCreated());
+
+        verify(curatorService).addCurator(refEq(curator));
     }
 
     @Test

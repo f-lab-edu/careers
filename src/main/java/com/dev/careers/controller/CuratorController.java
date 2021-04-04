@@ -2,9 +2,7 @@ package com.dev.careers.controller;
 
 import com.dev.careers.domain.Curator;
 import com.dev.careers.service.CuratorService;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,15 +21,15 @@ public class CuratorController {
     private CuratorService curatorService;
 
     @PostMapping("/curators")
-    public HttpStatus create(@Valid @RequestBody Curator curator,
+    public ResponseEntity<Void> create(@Valid @RequestBody Curator curator,
         BindingResult bindingResult) throws URISyntaxException {
         if(bindingResult.hasErrors()) {
-            return HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         curatorService.addCurator(curator);
 
-        return HttpStatus.CREATED;
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/curators/confirmEmail/{email}")
