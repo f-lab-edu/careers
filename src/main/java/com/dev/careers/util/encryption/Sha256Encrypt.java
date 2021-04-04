@@ -29,7 +29,7 @@ public class Sha256Encrypt{
 
             result = sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+           throw new RuntimeException(e);
         }
 
         return result;
