@@ -26,7 +26,7 @@ public class CuratorService {
         curatorRepository.save(curator);
     }
 
-    public int isDuplicateEmail(String email) {
+    public Boolean isDuplicateEmail(String email) {
        return curatorRepository.isEmail(email);
     }
 }

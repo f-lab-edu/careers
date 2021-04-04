@@ -31,13 +31,6 @@ public class CuratorControllerTest {
     CuratorService curatorService;
 
     @Test
-    public void list() throws Exception {
-        mvc.perform(get("/curators"))
-            .andDo(print())
-            .andExpect(status().isOk());
-    }
-
-    @Test
     public void create() throws Exception {
         Curator curator = new Curator();
         curator.setName("admin");
@@ -54,11 +47,13 @@ public class CuratorControllerTest {
 
     @Test
     public void confirmEmail() throws Exception {
-        String email = "Abc12345@";
+        String email = "admin@curators.com";
 
-        mvc.perform(post("/curators/Abc123456@"))
+        mvc.perform(post("/curators/confirmEmail/admin@curators.com"))
             .andDo(print())
-            .andExpect(content().string(containsString("0")));
+            .andExpect(content().string(containsString("")));
+
+        verify(curatorService).isDuplicateEmail(eq(email));
 
     }
 }

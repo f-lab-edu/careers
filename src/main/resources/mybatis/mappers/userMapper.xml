@@ -8,7 +8,7 @@
         VALUES(#{id}, #{name}, #{password}, #{email})
     </insert>
 
-    <select id="isEmail" parameterType="String" resultType="int">
-        SELECT COUNT(*) FROM curators WHERE email = #{email}
+    <select id="isEmail" parameterType="String" resultType="Boolean">
+        SELECT IF(COUNT(email), 0, 1)  FROM curators WHERE email = #{email}
     </select>
 </mapper>
