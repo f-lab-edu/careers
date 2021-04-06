@@ -7,12 +7,10 @@ import com.dev.careers.service.encryption.PasswordEncryptor;
 import com.dev.careers.service.error.DuplicatedEmailException;
 import com.dev.careers.service.error.SqlInsertException;
 import com.dev.careers.service.error.ViolationException;
-import com.dev.careers.service.session.SessionAuthenticator;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.jdbc.RuntimeSqlException;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -33,20 +31,26 @@ public class CuratorService {
             passwordEncryptor.hashing(curator.getPassword().getBytes(), curator.getSalt()));
 
         int errorCode = curatorMapper.insertCurator(curator);
-        if (errorCode != 1){
+        if (errorCode != 1) {
             throw new SqlInsertException();
         }
     }
 
-    public void login(LoginParamter loginParamter) throws NoSuchAlgorithmException {
-        Optional<HashMap<String, String>> memberInfo = Optional
+    public Integer login(LoginParamter loginParamter) throws NoSuchAlgorithmException {
+        Optional<Curator> memberInfo = Optional
             .ofNullable(curatorMapper.getMemberInfo(loginParamter.getEmail()));
 
-        String salt = memberInfo.map(v -> v.get("salt"))
+        String salt = memberInfo.map(v -> v.getSalt())
             .orElse("test");
 
         String hashing = passwordEncryptor.hashing(loginParamter.getPassword().getBytes(), salt);
-        memberInfo.filter(v -> hashing.equals(v.get("password")))
+        memberInfo.filter(v -> hashing.equals(v.getPassword()))
             .orElseThrow(ViolationException::new);
+
+        Integer id = memberInfo
+            .map(v -> v.getId())
+            .orElseThrow(ViolationException::new);
+
+        return id;
     }
 }

@@ -10,15 +10,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class SessionAuthenticator {
 
-    private final static String sessionName = "sessionInfo";
+    private final static String sessionName = "userID";
     private final HttpSession httpSession;
 
     public SessionAuthenticator(HttpSession httpSession) {
         this.httpSession = httpSession;
     }
 
-    public void login(LoginParamter loginParamter) {
-        httpSession.setAttribute(sessionName,loginParamter);
+    public void login(Integer id) {
+        httpSession.setAttribute(sessionName,id);
     }
 
     public void logout() {

@@ -7,8 +7,8 @@
     VALUES (#{email}, #{name}, #{password}, #{salt});
   </insert>
 
-  <select id="getMemberInfo" resultType="hashmap">
-    select email, password, salt
+  <select id="getMemberInfo" resultType="Curator">
+    select id, email, password, salt
     from Curator
     where email = #{email};
   </select>

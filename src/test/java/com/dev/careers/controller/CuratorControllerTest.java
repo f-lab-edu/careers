@@ -77,6 +77,6 @@ class CuratorControllerTest {
             .param("email", "aaa@google.com")
             .param("password", "test123!@"))
             .andExpect(status().isOk())
-            .andExpect(request().sessionAttribute("sessionInfo", notNullValue()));
+            .andExpect(request().sessionAttribute("userID", notNullValue()));
     }
 }

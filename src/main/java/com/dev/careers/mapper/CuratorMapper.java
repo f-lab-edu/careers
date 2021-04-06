@@ -10,7 +10,7 @@ public interface CuratorMapper {
 
     int insertCurator(Curator curator);
 
-    HashMap<String, String> getMemberInfo(@Param("email") String email);
-
+//    HashMap<String, String> getMemberInfo(@Param("email") String email);
+    Curator getMemberInfo(@Param("email") String email);
     boolean checkEmailExists(@Param("email") String email);
 }

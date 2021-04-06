@@ -7,7 +7,6 @@ import com.dev.careers.service.error.ViolationException;
 import com.dev.careers.service.session.SessionAuthenticator;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
@@ -37,13 +36,12 @@ public class CuratorController {
 
     @PostMapping("login")
     public void loginMember(@Valid @ModelAttribute LoginParamter loginParamter,
-        HttpSession httpSession,
         BindingResult bindingResult)
         throws NoSuchAlgorithmException {
 
         verifyCuratorParameter(bindingResult);
-        curatorService.login(loginParamter);
-        sessionAuthenticator.login(loginParamter);
+        Integer id = curatorService.login(loginParamter);
+        sessionAuthenticator.login(id);
     }
 
     @DeleteMapping("logout")
