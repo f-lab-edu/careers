@@ -15,20 +15,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CuratorController {
+    final static ResponseEntity<Void> BAD_REQUEST = new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+    final static ResponseEntity<Void> CREATE = new ResponseEntity<Void>(HttpStatus.CREATED);
 
     @Autowired
     private CuratorService curatorService;
+
 
     @PostMapping("/curators")
     public ResponseEntity<Void> create(@Valid @RequestBody Curator curator,
         BindingResult bindingResult) throws URISyntaxException {
         if(bindingResult.hasErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return BAD_REQUEST;
         }
 
         curatorService.addCurator(curator);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return CREATE;
     }
 
     @PostMapping("/curators/confirm-Email/{email}")
