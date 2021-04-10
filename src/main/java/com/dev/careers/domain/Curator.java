@@ -3,12 +3,19 @@ package com.dev.careers.domain;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
+@AllArgsConstructor
 public class Curator {
+
+    public Curator(Curator curator, String password){
+        this.name = curator.getName();
+        this.email = curator.getEmail();
+        this.password = password;
+    }
 
     private Long id;
 

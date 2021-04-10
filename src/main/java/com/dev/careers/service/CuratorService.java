@@ -21,9 +21,9 @@ public class CuratorService {
 
     @Transactional
     public void addCurator(Curator curator) {
-        curator.setPassword(sha256Encrypt.encrypt(curator.getPassword(),
-            sha256Encrypt.generateSalt()));
-        curatorRepository.save(curator);
+        String encryptPassword = sha256Encrypt.encrypt(curator.getPassword(),
+            sha256Encrypt.generateSalt());
+        curatorRepository.save(new Curator(curator, encryptPassword));
     }
 
     @Transactional

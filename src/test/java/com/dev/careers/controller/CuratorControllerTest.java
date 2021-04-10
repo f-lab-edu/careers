@@ -32,13 +32,12 @@ public class CuratorControllerTest {
 
     @Test
     public void create() throws Exception {
-        Curator curator = new Curator();
-        curator.setName("admin");
-        curator.setPassword("Abc12345@");
-        curator.setEmail("admin@curators.com");
+        Curator curator = new Curator(1L,"admin",
+            "Abc12345@","admin@curators.com");
 
         mvc.perform(post("/curators").contentType(MediaType.APPLICATION_JSON)
-            .content("{\"name\": \"admin\", \"password\": \"Abc12345@\", \"email\": \"admin@curators.com\"}"))
+            .content("{\"name\": \"admin\", \"password\": \"Abc12345@\", "
+                + "\"email\": \"admin@curators.com\"}"))
             .andDo(print())
             .andExpect(status().isCreated());
 

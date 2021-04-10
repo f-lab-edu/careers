@@ -33,11 +33,8 @@ public class CuratorServiceTest {
 
     @Test
     public void addCurator(){
-        Curator curator = new Curator();
-        curator.setId(1L);
-        curator.setName("aa");
-        curator.setPassword("aaa1@");
-        curator.setEmail("aa@never.com");
+        Curator curator = new Curator(1L,"admin",
+            "Abc12345@","admin@curators.com");
 
         verify(curatorRepository).save(any());
 
