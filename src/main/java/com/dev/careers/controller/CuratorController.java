@@ -31,7 +31,7 @@ public class CuratorController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/curators/confirmEmail/{email}")
+    @PostMapping("/curators/confirm-Email/{email}")
     public Boolean confirmEmail(@PathVariable("email") String email) {
         return curatorService.isDuplicateEmail(email);
     }
