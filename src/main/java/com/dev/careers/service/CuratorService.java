@@ -8,7 +8,6 @@ import com.dev.careers.service.error.DuplicatedEmailException;
 import com.dev.careers.service.error.SqlInsertException;
 import com.dev.careers.service.error.ViolationException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

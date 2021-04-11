@@ -27,7 +27,7 @@ public class CuratorController {
     private final SessionAuthenticator sessionAuthenticator;
 
     @PostMapping("join")
-    public void joinMember(@Valid @ModelAttribute Curator curator, BindingResult bindingResult)
+    public void joinCurator(@Valid @ModelAttribute Curator curator, BindingResult bindingResult)
         throws Exception {
         verifyCuratorParameter(bindingResult);
 
@@ -35,7 +35,7 @@ public class CuratorController {
     }
 
     @PostMapping("login")
-    public void loginMember(@Valid @ModelAttribute LoginParamter loginParamter,
+    public void loginCurator(@Valid @ModelAttribute LoginParamter loginParamter,
         BindingResult bindingResult)
         throws NoSuchAlgorithmException {
 

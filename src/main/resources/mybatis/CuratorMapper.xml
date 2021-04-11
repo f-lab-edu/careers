@@ -2,9 +2,57 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dev.careers.mapper.CuratorMapper">
 
+  <resultMap id="userProfile" type="Profile">
+    <result column="curatorId" property="curatorId"/>
+    <result column="curatorName" property="curatorName"/>
+    <result column="title" property="title"/>
+    <result column="introduction" property="introduction"/>
+    <collection property="careers" resultMap="careerList"/>
+    <collection property="academics" resultMap="academicList"/>
+  </resultMap>
+
+  <resultMap id="careerList" type="Career">
+    <result column="company" property="company"/>
+    <result column="companyTitle" property="companyTitle"/>
+  </resultMap>
+
+  <resultMap id="academicList" type="Academic">
+    <result column="name" property="name"/>
+    <result column="major" property="major"/>
+  </resultMap>
+
   <insert id="insertCurator" parameterType="Curator">
     INSERT INTO Curator (email, name, password, salt)
     VALUES (#{email}, #{name}, #{password}, #{salt});
+  </insert>
+
+  <insert id="insertProfile" parameterType="Profile" useGeneratedKeys="true" keyProperty="profileId">
+    INSERT INTO Profile (curatorId, curatorName, title, introduction)
+    VALUES (#{curatorId}, #{curatorName}, #{title}, #{introduction});
+  </insert>
+
+  <insert id="insertCareer" parameterType="Career">
+    INSERT INTO Career (profileId, company, companyTitle)
+    VALUES
+    <foreach collection="list" item="item" separator=",">
+    (
+        #{item.profileId}
+      , #{item.company}
+      , #{item.companyTitle}
+    )
+    </foreach>
+  </insert>
+
+  <insert id="insertAcademic" parameterType="Academic">
+    INSERT INTO Academic (profileId, name, major)
+    VALUES
+    <foreach collection="list" item="item" separator=",">
+    (
+        #{item.profileId}
+      , #{item.name}
+      , #{item.major}
+    )
+    </foreach>
   </insert>
 
   <select id="getMemberInfo" resultType="Curator">
@@ -14,7 +62,22 @@
   </select>
 
   <select id="checkEmailExists" resultType="boolean">
-    select exists(select 1 from curator where email = #{email});
+    select exists(select 1 from Curator where email = #{email});
   </select>
 
+  <select id="getUserProfile" resultMap="userProfile" parameterType="int">
+    select
+      profile.curatorId,
+      profile.curatorName,
+      profile.title,
+      profile.introduction,
+      career.company,
+      career.companyTitle,
+      academic.name,
+      academic.major
+    from Profile
+           left join Career on profile.profileId = career.profileId
+           left join Academic on profile.profileId = career.profileId
+    where profile.curatorId = #{curatorId};
+  </select>
 </mapper>
