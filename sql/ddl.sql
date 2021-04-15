@@ -17,3 +17,21 @@ create table Profile(
     primary key (profileId),
     foreign key (curatorId, curatorName) references curator (id, name)
 );
+
+create table Career(
+    careerId int(10) not null auto_increment,
+    profileId int(10),
+    company varchar(64),
+    companyTitle varchar(64),
+    primary key (careerId),
+    foreign key (profileId) references profile (profileId)
+);
+
+create table Academic(
+    academicId int(10) not null auto_increment,
+    profileId int(10),
+    name varchar(64),
+    major varchar(64),
+    primary key (academicId),
+    foreign key (profileId) references profile (profileId)
+);

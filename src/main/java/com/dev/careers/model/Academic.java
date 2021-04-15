@@ -6,6 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Academic {
+    private int academicId;
     private int profileId;
     private String name;
     private String major;

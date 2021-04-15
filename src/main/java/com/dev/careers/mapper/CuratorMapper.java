@@ -14,8 +14,4 @@ public interface CuratorMapper {
     int insertCurator(Curator curator);
     Curator getMemberInfo(@Param("email") String email);
     boolean checkEmailExists(@Param("email") String email);
-    int insertProfile(Profile profile);
-    Profile getUserProfile(int curatorId);
-    int insertCareer(List<Career> career);
-    int insertAcademic(List<Academic> academic);
 }

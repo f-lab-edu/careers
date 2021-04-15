@@ -6,6 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Career {
+    private int careerId;
     private int profileId;
     private String company;
     private String companyTitle;

@@ -1,5 +1,6 @@
 package com.dev.careers.service.session;
 
+import com.dev.careers.service.error.ViolationException;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Component;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SessionAuthenticator {
 
-    private final static String sessionName = "userID";
+    private final static String SESSIONNAME = "userID";
     private final HttpSession httpSession;
 
     public SessionAuthenticator(HttpSession httpSession) {
@@ -15,17 +16,17 @@ public class SessionAuthenticator {
     }
 
     public void login(Integer id) {
-        httpSession.setAttribute(sessionName,id);
+        httpSession.setAttribute(SESSIONNAME,id);
     }
 
     public void logout() {
-        httpSession.removeAttribute(sessionName);
+        httpSession.removeAttribute(SESSIONNAME);
     }
 
     public int successLoginUserId(){
-        if (httpSession.getAttribute(sessionName) == null){
-            return 0;
-        }
-        return (int)httpSession.getAttribute(sessionName);
+        Object userId = Optional.ofNullable(httpSession.getAttribute(SESSIONNAME))
+            .orElseThrow(ViolationException::new);
+
+        return (Integer) userId;
     }
 }
