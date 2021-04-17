@@ -8,5 +8,5 @@ public interface CuratorRepository {
 
     void save(Curator curator);
 
-    Boolean checkEmail(String email);
+    Boolean isCheckEmail(String email);
 }

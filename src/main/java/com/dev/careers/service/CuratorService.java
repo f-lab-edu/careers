@@ -28,6 +28,6 @@ public class CuratorService {
 
     @Transactional
     public Boolean isDuplicateEmail(String email) {
-       return curatorRepository.checkEmail(email);
+       return curatorRepository.isCheckEmail(email);
     }
 }
