@@ -35,7 +35,7 @@ public class CuratorService {
         }
     }
 
-    public Integer getUserIdByEmailAndPassword(LoginParamter loginParamter) throws NoSuchAlgorithmException {
+    public int getUserIdByEmailAndPassword(LoginParamter loginParamter) throws NoSuchAlgorithmException {
         Optional<Curator> memberInfo = Optional
             .ofNullable(curatorMapper.getMemberInfo(loginParamter.getEmail()));
 
@@ -46,7 +46,7 @@ public class CuratorService {
         memberInfo.filter(v -> hashing.equals(v.getPassword()))
             .orElseThrow(ViolationException::new);
 
-        Integer id = memberInfo
+        int id = memberInfo
             .map(v -> v.getId())
             .orElseThrow(ViolationException::new);
 

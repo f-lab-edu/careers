@@ -15,7 +15,7 @@ public class SessionAuthenticator {
         this.httpSession = httpSession;
     }
 
-    public void login(Integer id) {
+    public void login(int id) {
         httpSession.setAttribute(SESSIONNAME,id);
     }
 
@@ -27,6 +27,6 @@ public class SessionAuthenticator {
         Object userId = Optional.ofNullable(httpSession.getAttribute(SESSIONNAME))
             .orElseThrow(ViolationException::new);
 
-        return (Integer) userId;
+        return (int) userId;
     }
 }
