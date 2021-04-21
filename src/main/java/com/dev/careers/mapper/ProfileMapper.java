@@ -9,11 +9,18 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ProfileMapper {
     int insertProfile(Profile profile);
+
     Profile getUserProfile(int curatorId);
+
     boolean existCuratorId(int curatorId);
+
     int updateProfile(Profile profile);
+
     int updateCareer(List<Career> career);
+
     int updateAcademic(List<Academic> academic);
+
     List<Integer> getCareerIdList(int profileId);
+
     List<Integer> getAcademicIdList(int profileId);
 }
