@@ -27,7 +27,7 @@ public class ProfileController {
         profileService.updateProfile(profile, curatorId);
     }
 
-    @GetMapping("get")
+    @GetMapping
     public Profile getProfile(){
         return profileService.getProfile(sessionAuthenticator.successLoginUserId());
     }
