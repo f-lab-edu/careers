@@ -5,10 +5,8 @@ import com.dev.careers.service.ProfileService;
 import com.dev.careers.service.session.SessionAuthenticator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("profile")
+@RequestMapping("profiles")
 @Log4j2
 public class ProfileController {
 
     private final SessionAuthenticator sessionAuthenticator;
     private final ProfileService profileService;
 
-    @PostMapping("update")
+    @PutMapping("update")
     public void updateProfile(@RequestBody Profile profile){
         int curatorId = sessionAuthenticator.successLoginUserId();
         profileService.updateProfile(profile, curatorId);
