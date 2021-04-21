@@ -8,13 +8,13 @@
   </insert>
 
   <select id="getMemberInfo" resultType="Curator">
-    select id, email, password, salt
-    from Curator
-    where email = #{email};
+    SELECT id, email, password, salt
+    FROM Curator
+    WHERE email = #{email};
   </select>
 
   <select id="checkEmailExists" resultType="boolean">
-    select exists(select 1 from Curator where email = #{email});
+    SELECT exists(SELECT 1 FROM Curator WHERE email = #{email});
   </select>
 
 </mapper>

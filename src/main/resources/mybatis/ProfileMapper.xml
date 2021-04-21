@@ -56,7 +56,7 @@
   </insert>
 
   <select id="getUserProfile" resultMap="userProfile" parameterType="int">
-    select profile.profileId,
+    SELECT profile.profileId,
            profile.curatorId,
            profile.curatorName,
            profile.title,
@@ -65,14 +65,14 @@
            career.companyTitle,
            academic.name,
            academic.major
-    from Profile
-           left join Career on profile.profileId = career.profileId
-           left join Academic on profile.profileId = career.profileId
-    where profile.curatorId = #{curatorId};
+    FROM Profile
+           LEFT JOIN Career ON profile.profileId = career.profileId
+           LEFT JOIN Academic ON profile.profileId = career.profileId
+    WHERE profile.curatorId = #{curatorId};
   </select>
 
   <select id="existCuratorId" resultType="boolean" parameterType="int">
-    select exists(select 1 from Profile where curatorId = #{curatorId});
+    SELECT exists(SELECT 1 FROM Profile WHERE curatorId = #{curatorId});
   </select>
 
     <update id="updateProfile" parameterType="Profile" useGeneratedKeys="true"
@@ -95,7 +95,7 @@
       , #{item.companyTitle}
       )
     </foreach>
-    on duplicate key update
+    ON duplicate key update
     company=values(company)
     ,companyTitle=values(companyTitle)
   </insert>
@@ -112,20 +112,20 @@
       , #{item.major}
       )
     </foreach>
-    on duplicate key update
+    ON DUPLICATE KEY UPDATE
     name=values(name)
     ,major=values(major)
   </insert>
 
   <select id="getCareerIdList" parameterType="int" resultType="int">
-    select careerId
-    from Career
-    where profileId = #{profileId};
+    SELECT careerId
+    FROM Career
+    WHERE profileId = #{profileId};
   </select>
 
   <select id="getAcademicIdList" parameterType="int" resultType="int">
-    select academicId
-    from Academic
-    where profileId = #{profileId};
+    SELECT academicId
+    FROM Academic
+    WHERE profileId = #{profileId};
   </select>
 </mapper>

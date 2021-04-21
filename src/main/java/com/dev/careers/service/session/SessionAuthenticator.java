@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SessionAuthenticator {
 
-    private final static String SESSIONNAME = "userID";
+    private final static String SESSION_NAME = "userID";
     private final HttpSession httpSession;
 
     public SessionAuthenticator(HttpSession httpSession) {
@@ -16,15 +16,15 @@ public class SessionAuthenticator {
     }
 
     public void login(int id) {
-        httpSession.setAttribute(SESSIONNAME,id);
+        httpSession.setAttribute(SESSION_NAME,id);
     }
 
     public void logout() {
-        httpSession.removeAttribute(SESSIONNAME);
+        httpSession.removeAttribute(SESSION_NAME);
     }
 
     public int successLoginUserId(){
-        Object userId = Optional.ofNullable(httpSession.getAttribute(SESSIONNAME))
+        Object userId = Optional.ofNullable(httpSession.getAttribute(SESSION_NAME))
             .orElseThrow(ViolationException::new);
 
         return (int) userId;
