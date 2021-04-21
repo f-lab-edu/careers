@@ -35,7 +35,7 @@ public class CuratorService {
         }
     }
 
-    public Integer login(LoginParamter loginParamter) throws NoSuchAlgorithmException {
+    public Integer getUserIdByEmailAndPassword(LoginParamter loginParamter) throws NoSuchAlgorithmException {
         Optional<Curator> memberInfo = Optional
             .ofNullable(curatorMapper.getMemberInfo(loginParamter.getEmail()));
 

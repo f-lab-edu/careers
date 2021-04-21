@@ -40,7 +40,7 @@ public class CuratorController {
         throws NoSuchAlgorithmException {
 
         verifyCuratorParameter(bindingResult);
-        Integer id = curatorService.login(loginParamter);
+        Integer id = curatorService.getUserIdByEmailAndPassword(loginParamter);
         sessionAuthenticator.login(id);
     }
 
