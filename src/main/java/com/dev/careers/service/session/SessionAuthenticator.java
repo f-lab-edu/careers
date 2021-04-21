@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SessionAuthenticator {
 
-    private final static String SESSION_NAME = "userID";
+    public final static String SESSION_NAME = "userID";
     private final HttpSession httpSession;
 
     public SessionAuthenticator(HttpSession httpSession) {

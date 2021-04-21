@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dev.careers.service.error.CuratorExceptionHandler;
+import com.dev.careers.service.session.SessionAuthenticator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -77,6 +78,6 @@ class CuratorControllerTest {
             .param("email", "aaa@google.com")
             .param("password", "test123!@"))
             .andExpect(status().isOk())
-            .andExpect(request().sessionAttribute("userID", notNullValue()));
+            .andExpect(request().sessionAttribute(SessionAuthenticator.SESSION_NAME, notNullValue()));
     }
 }
