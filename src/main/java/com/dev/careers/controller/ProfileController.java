@@ -21,7 +21,7 @@ public class ProfileController {
     private final SessionAuthenticator sessionAuthenticator;
     private final ProfileService profileService;
 
-    @PutMapping("update")
+    @PutMapping()
     public void updateProfile(@RequestBody Profile profile){
         int curatorId = sessionAuthenticator.successLoginUserId();
         profileService.updateProfile(profile, curatorId);
