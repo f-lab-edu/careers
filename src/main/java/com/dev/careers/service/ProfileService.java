@@ -24,11 +24,9 @@ public class ProfileService {
         int profileId = 0;
         if (profileMapper.existCuratorId(curatorId)){
             profileId = profileMapper.updateProfile(profile);
-            log.info("이미 등록되어있는 사용자 프로필");
         } else{
             profileMapper.insertProfile(profile);
             profileId = profile.getProfileId();
-            log.info("새로 등록한 사용자 프로필");
         }
 
         int i = 0;
