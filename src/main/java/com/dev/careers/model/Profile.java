@@ -9,7 +9,6 @@ import lombok.Setter;
 public class Profile {
     private int profileId;
     private int curatorId;
-    private String curatorName;
     private String title;
     private String introduction;
     private List<Career> careers;

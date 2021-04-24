@@ -6,7 +6,6 @@
   <resultMap id="userProfile" type="Profile">
     <result column="profileId" property="profileId"/>
     <result column="curatorId" property="curatorId"/>
-    <result column="curatorName" property="curatorName"/>
     <result column="title" property="title"/>
     <result column="introduction" property="introduction"/>
     <collection property="careers" resultMap="careerList"/>
@@ -27,8 +26,8 @@
 
   <insert id="insertProfile" parameterType="Profile" useGeneratedKeys="true"
     keyProperty="profileId">
-    INSERT INTO Profile (curatorId, curatorName, title, introduction)
-    VALUES (#{curatorId}, #{curatorName}, #{title}, #{introduction});
+    INSERT INTO Profile (curatorId, title, introduction)
+    VALUES (#{curatorId}, #{title}, #{introduction});
   </insert>
 
   <insert id="insertCareer" parameterType="Career">
@@ -58,14 +57,15 @@
   <select id="getUserProfile" resultMap="userProfile" parameterType="int">
     SELECT profile.profileId,
            profile.curatorId,
-           profile.curatorName,
            profile.title,
            profile.introduction,
+           curator.name,
            career.company,
            career.companyTitle,
            academic.name,
            academic.major
     FROM Profile
+           LEFT JOIN Curator ON profile.curatorId = curator.id
            LEFT JOIN Career ON profile.profileId = career.profileId
            LEFT JOIN Academic ON profile.profileId = career.profileId
     WHERE profile.curatorId = #{curatorId};
