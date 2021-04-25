@@ -85,12 +85,11 @@
 
   <insert id="updateCareer" parameterType="Career">
     INSERT INTO Career
-    (careerId, profileId, company, companyTitle)
+    (profileId, company, companyTitle)
     VALUES
     <foreach collection="list" item="item" separator=",">
       (
-      #{item.careerId}
-      , #{item.profileId}
+      #{item.profileId}
       , #{item.company}
       , #{item.companyTitle}
       )
@@ -102,12 +101,11 @@
 
   <insert id="updateAcademic" parameterType="Academic">
     INSERT INTO Academic
-    (academicId, profileId, name, major)
+    (profileId, name, major)
     VALUES
     <foreach collection="list" item="item" separator=",">
       (
-      #{item.academicId}
-      , #{item.profileId}
+      #{item.profileId}
       , #{item.name}
       , #{item.major}
       )

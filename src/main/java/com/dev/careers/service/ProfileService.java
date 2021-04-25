@@ -4,7 +4,9 @@ import com.dev.careers.mapper.ProfileMapper;
 import com.dev.careers.model.Academic;
 import com.dev.careers.model.Career;
 import com.dev.careers.model.Profile;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -29,25 +31,28 @@ public class ProfileService {
             profileId = profile.getProfileId();
         }
 
-        int i = 0;
         if (profileId > 0){
-            List<Integer> careerIdList = profileMapper.getCareerIdList(profileId);
-            for (Integer id : careerIdList){
-                profile.getCareers().get(i++).setCareerId(id);
-            }
-            for (Career career : profile.getCareers()) {
-                career.setProfileId(profileId);
-            }
+            List<Career> updateCareers = new ArrayList<>();
+            int finalProfileId = profileId;
+            profile.getCareers().forEach(
+                x -> updateCareers.add(new Career(
+                    finalProfileId,
+                    x.getCompany(),
+                    x.getCompanyTitle()
+                ))
+            );
+            profile.setCareers(updateCareers);
             profileMapper.updateCareer(profile.getCareers());
 
-            i=0;
-            List<Integer> academicIdList = profileMapper.getAcademicIdList(profileId);
-            for (Integer id : academicIdList){
-                profile.getAcademics().get(i++).setAcademicId(id);
-            }
-            for (Academic academic : profile.getAcademics()){
-                academic.setProfileId(profileId);
-            }
+            List<Academic> updateAcademics = new ArrayList<>();
+            profile.getAcademics().forEach(
+                x -> updateAcademics.add(new Academic(
+                    finalProfileId,
+                    x.getName(),
+                    x.getMajor()
+                ))
+            );
+            profile.setAcademics(updateAcademics);
             profileMapper.updateAcademic(profile.getAcademics());
         }
     }
