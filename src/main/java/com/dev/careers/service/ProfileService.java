@@ -4,9 +4,8 @@ import com.dev.careers.mapper.ProfileMapper;
 import com.dev.careers.model.Academic;
 import com.dev.careers.model.Career;
 import com.dev.careers.model.Profile;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -24,37 +23,39 @@ public class ProfileService {
         profile.setCuratorId(curatorId);
 
         int profileId = 0;
-        if (profileMapper.existCuratorId(curatorId)){
+        if (profileMapper.existCuratorId(curatorId)) {
             profileId = profileMapper.updateProfile(profile);
-        } else{
+        } else {
             profileMapper.insertProfile(profile);
             profileId = profile.getProfileId();
         }
 
-        if (profileId > 0){
-            List<Career> updateCareers = new ArrayList<>();
-            int finalProfileId = profileId;
-            profile.getCareers().forEach(
-                x -> updateCareers.add(new Career(
+        int finalProfileId = profileId;
+        List<Career> updateCareers = profile.getCareers()
+            .stream()
+            .map(
+                x -> new Career(
                     finalProfileId,
                     x.getCompany(),
                     x.getCompanyTitle()
                 ))
-            );
-            profile.setCareers(updateCareers);
-            profileMapper.updateCareer(profile.getCareers());
+            .collect(Collectors.toList());
 
-            List<Academic> updateAcademics = new ArrayList<>();
-            profile.getAcademics().forEach(
-                x -> updateAcademics.add(new Academic(
+        profile.setCareers(updateCareers);
+        profileMapper.updateCareer(profile.getCareers());
+
+        List<Academic> updateAcademics = profile.getAcademics()
+            .stream()
+            .map(
+                x -> new Academic(
                     finalProfileId,
                     x.getName(),
                     x.getMajor()
-                ))
-            );
-            profile.setAcademics(updateAcademics);
-            profileMapper.updateAcademic(profile.getAcademics());
-        }
+                )
+            )
+            .collect(Collectors.toList());
+        profile.setAcademics(updateAcademics);
+        profileMapper.updateAcademic(profile.getAcademics());
     }
 
     public Profile getProfile(int curatorId) {
