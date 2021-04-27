@@ -26,7 +26,6 @@ public class CuratorService {
         if (curatorMapper.checkEmailExists(curator.getEmail())) {
             throw new DuplicatedEmailException();
         }
-
         String salt = passwordEncryptor.makeSalt();
         curatorMapper.insertCurator(
             curator.getEmail(),

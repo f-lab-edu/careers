@@ -10,7 +10,7 @@ import org.springframework.lang.Nullable;
 @Getter
 @RequiredArgsConstructor
 public class Curator {
-
+    
     @Nullable
     private int id;
 
