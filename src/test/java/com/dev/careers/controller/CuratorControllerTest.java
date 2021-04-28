@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dev.careers.service.error.CuratorExceptionHandler;
