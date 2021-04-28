@@ -23,4 +23,6 @@ public interface ProfileMapper {
     List<Integer> getCareerIdList(int profileId);
 
     List<Integer> getAcademicIdList(int profileId);
+
+    int getProfileId(int curatorId);
 }

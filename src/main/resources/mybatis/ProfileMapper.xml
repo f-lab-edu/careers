@@ -75,21 +75,22 @@
     SELECT exists(SELECT 1 FROM Profile WHERE curatorId = #{curatorId});
   </select>
 
-    <update id="updateProfile" parameterType="Profile" useGeneratedKeys="true"
-      keyProperty="profileId">
-      UPDATE Profile
-      SET title        = #{title},
-          introduction = #{introduction}
-      WHERE curatorId = #{curatorId};
-    </update>
+  <update id="updateProfile" parameterType="Profile" useGeneratedKeys="true"
+    keyProperty="profileId">
+    UPDATE Profile
+    SET title        = #{title},
+        introduction = #{introduction}
+    WHERE curatorId = #{curatorId};
+  </update>
 
   <insert id="updateCareer" parameterType="Career">
     INSERT INTO Career
-    (profileId, company, companyTitle)
+    (careerId, profileId, company, companyTitle)
     VALUES
     <foreach collection="list" item="item" separator=",">
       (
-      #{item.profileId}
+      #{item.careerId}
+      , #{item.profileId}
       , #{item.company}
       , #{item.companyTitle}
       )
@@ -101,11 +102,12 @@
 
   <insert id="updateAcademic" parameterType="Academic">
     INSERT INTO Academic
-    (profileId, name, major)
+    (academicId, profileId, name, major)
     VALUES
     <foreach collection="list" item="item" separator=",">
       (
-      #{item.profileId}
+      #{item.academicId}
+      , #{item.profileId}
       , #{item.name}
       , #{item.major}
       )
@@ -125,5 +127,11 @@
     SELECT academicId
     FROM Academic
     WHERE profileId = #{profileId};
+  </select>
+
+  <select id="getProfileId" parameterType="int" resultType="int">
+    SELECT profileId
+    FROM Profile
+    WHERE curatorId = #{curatorId};
   </select>
 </mapper>
