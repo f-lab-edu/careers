@@ -14,10 +14,6 @@ public class CuratorService {
     private CuratorRepository curatorRepository;
     private Sha256Encrypt sha256Encrypt;
 
-    public CuratorService(CuratorRepository curatorRepository, Sha256Encrypt sha256Encrypt) {
-        this.curatorRepository = curatorRepository;
-        this.sha256Encrypt = sha256Encrypt;
-    }
 
     @Transactional
     public void addCurator(Curator curator) {

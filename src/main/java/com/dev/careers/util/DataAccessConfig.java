@@ -19,12 +19,13 @@ public class DataAccessConfig {
         sessionFactoryBean.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         sessionFactoryBean.setMapperLocations(
-            resolver.getResource("classpath:mybatis/mappers/*.xml"));
+            resolver.getResources("classpath:mybatis/mappers/*.xml"));
         return sessionFactoryBean.getObject();
     }
 
     @Bean
-    public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
+    public SqlSessionTemplate sqlSessionTemplate(
+        SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 }
