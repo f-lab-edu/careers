@@ -28,7 +28,6 @@ public class CuratorServiceTest {
     public void setUp(){
         MockitoAnnotations.openMocks(this);
 
-        //curatorService = new CuratorService(curatorRepository, sha256Encrypt);
     }
 
     @Test

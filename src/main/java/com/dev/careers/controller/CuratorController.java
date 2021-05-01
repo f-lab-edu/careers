@@ -1,6 +1,7 @@
 package com.dev.careers.controller;
 
 import com.dev.careers.domain.Curator;
+import com.dev.careers.domain.HttpStatusConstants;
 import com.dev.careers.service.CuratorService;
 import java.net.URISyntaxException;
 import javax.validation.Valid;
