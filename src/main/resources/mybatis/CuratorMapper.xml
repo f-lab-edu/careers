@@ -6,7 +6,14 @@
     VALUES (#{email}, #{name}, #{password}, #{salt});
   </select>
 
+  <select id="getMemberInfo" resultType="hashmap">
+    select email, password, salt
+    from Curator
+    where email = #{email};
+  </select>
+
   <select id="checkEmailExists" resultType="boolean">
     select exists(select 1 from curator where email = #{email});
   </select>
+
 </mapper>
