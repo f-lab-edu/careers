@@ -1,5 +1,6 @@
 package com.dev.careers.util.encryption;
 
+import com.dev.careers.domain.Curator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
@@ -7,6 +8,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Sha256Encrypt{
+
+    public Curator passwordEncoder (Curator curator){
+        String encryptPassword = encrypt(curator.getPassword(), generateSalt());
+        return new Curator(curator, encryptPassword);
+    }
 
     public String encrypt(String password, String salt) {
         String result = "";

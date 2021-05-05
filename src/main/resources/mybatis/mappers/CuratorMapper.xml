@@ -11,4 +11,8 @@
     <select id="isExistEmail" parameterType="String" resultType="Boolean">
         SELECT IF(COUNT(email), 0, 1) FROM curators WHERE email = #{email}
     </select>
+
+    <select id="login" parameterType="com.dev.careers.domain.Curator" resultType="Boolean">
+        SELECT IF(COUNT(email), 1, 0) FROM curators WHERE email = #{email} AND password = #{password}
+    </select>
 </mapper>

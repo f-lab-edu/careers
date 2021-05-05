@@ -17,13 +17,17 @@ public class CuratorService {
 
     @Transactional
     public void addCurator(Curator curator) {
-        String encryptPassword = sha256Encrypt.encrypt(curator.getPassword(),
-            sha256Encrypt.generateSalt());
-        curatorRepository.save(new Curator(curator, encryptPassword));
+        curatorRepository.save(sha256Encrypt.passwordEncoder(curator));
     }
 
     @Transactional
     public Boolean isDuplicateEmail(String email) {
        return curatorRepository.isExistEmail(email);
     }
+
+
+    public Boolean loginProcess(Curator curator) {
+        return curatorRepository.login(sha256Encrypt.passwordEncoder(curator));
+    }
+
 }

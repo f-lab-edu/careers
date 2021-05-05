@@ -20,7 +20,6 @@ public class Curator {
 
     private Long id;
 
-    @NotNull
     private String name;
 
     @NotNull
