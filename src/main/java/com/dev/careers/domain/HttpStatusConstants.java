@@ -8,6 +8,6 @@ public class HttpStatusConstants {
         HttpStatus.BAD_REQUEST);
     public final static ResponseEntity<Void> CREATE = new ResponseEntity<Void>(
         HttpStatus.CREATED);
-    public  final static ResponseEntity<Void> OK = new ResponseEntity<>(HttpStatus.OK);
+    public final static ResponseEntity<Void> OK = new ResponseEntity<>(HttpStatus.OK);
 
 }

@@ -46,14 +46,13 @@ public class CuratorController {
         if(!curatorService.loginProcess(curator)){
             return HttpStatusConstants.BAD_REQUEST;
         }
-        sessionContainer.setHttpSession(curator);
-        
+
         return HttpStatusConstants.OK;
     }
 
     @PostMapping("/curators/curator-logout")
     public void curatorLogout(HttpSession httpSession){
-        sessionContainer.sessionComplete(sessionContainer.SESSIONNAME);
+        curatorService.logoutProcess();
     }
 
 
