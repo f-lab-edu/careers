@@ -38,7 +38,7 @@ public class CuratorController {
         return curatorService.isDuplicateEmail(email);
     }
 
-    @PostMapping("/curators/curator-login")
+    @PostMapping("/curators/login")
     public ResponseEntity<Void> curatorLogin(@Valid @RequestBody Curator curator,
         HttpSession httpSession,
         BindingResult bindingResult) {
@@ -50,7 +50,7 @@ public class CuratorController {
         return HttpStatusConstants.OK;
     }
 
-    @PostMapping("/curators/curator-logout")
+    @PostMapping("/curators/logout")
     public void curatorLogout(HttpSession httpSession){
         curatorService.logoutProcess();
     }
