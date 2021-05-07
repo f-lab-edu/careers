@@ -34,7 +34,7 @@ public class CuratorService {
     }
 
     public void logoutProcess(){
-        sessionContainer.sessionComplete(sessionContainer.SESSIONNAME);
+        sessionContainer.httpSessionRemove(sessionContainer.SESSIONNAME);
     }
 
 }

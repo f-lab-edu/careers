@@ -4,7 +4,7 @@ import javax.servlet.http.HttpSession;
 
 public class SessionContainer {
 
-    public final static String SESSIONNAME = new String("sessionInfo");
+    public final static String SESSIONNAME = "sessionInfo";
     private final HttpSession httpSession;
 
     public SessionContainer(HttpSession httpSession) {
@@ -19,7 +19,7 @@ public class SessionContainer {
         httpSession.setAttribute(SESSIONNAME, curator);
     }
 
-    public void sessionComplete(String sessionName){
+    public void httpSessionRemove(String sessionName){
         httpSession.removeAttribute(sessionName);
     }
 
