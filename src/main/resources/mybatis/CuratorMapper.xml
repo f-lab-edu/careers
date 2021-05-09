@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dev.careers.mapper.CuratorMapper">
-  <select id="insertCurator" resultType="int">
+
+  <insert id="insertCurator" parameterType="Curator">
     INSERT INTO Curator (email, name, password, salt)
     VALUES (#{email}, #{name}, #{password}, #{salt});
-  </select>
+  </insert>
 
-  <select id="getMemberInfo" resultType="hashmap">
-    select email, password, salt
-    from Curator
-    where email = #{email};
+  <select id="getMemberInfo" resultType="Curator">
+    SELECT id, email, password, salt
+    FROM Curator
+    WHERE email = #{email};
   </select>
 
   <select id="checkEmailExists" resultType="boolean">
-    select exists(select 1 from curator where email = #{email});
+    SELECT exists(SELECT 1 FROM Curator WHERE email = #{email});
   </select>
 
 </mapper>

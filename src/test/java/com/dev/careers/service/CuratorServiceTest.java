@@ -2,13 +2,13 @@ package com.dev.careers.service;
 
 import com.dev.careers.model.Curator;
 import com.dev.careers.model.LoginParamter;
+import com.dev.careers.service.error.DuplicatedEmailException;
 import com.dev.careers.service.error.ViolationException;
 import java.security.NoSuchAlgorithmException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -28,7 +28,7 @@ class CuratorServiceTest {
         );
         curatorService.join(curator);
         org.junit.jupiter.api.Assertions.assertThrows(
-            DuplicateKeyException.class,
+            DuplicatedEmailException.class,
             () -> curatorService.join(curator));
     }
 
@@ -48,7 +48,7 @@ class CuratorServiceTest {
         );
 
         org.junit.jupiter.api.Assertions.assertDoesNotThrow(
-            () -> curatorService.login(paramter));
+            () -> curatorService.getUserIdByEmailAndPassword(paramter));
     }
 
     @Test
@@ -67,7 +67,7 @@ class CuratorServiceTest {
         );
         org.junit.jupiter.api.Assertions.assertThrows(
             ViolationException.class,
-            () -> curatorService.login(paramter));
+            () -> curatorService.getUserIdByEmailAndPassword(paramter));
     }
 
     @Test
@@ -86,6 +86,6 @@ class CuratorServiceTest {
         );
         org.junit.jupiter.api.Assertions.assertThrows(
             ViolationException.class,
-            () -> curatorService.login(paramter));
+            () -> curatorService.getUserIdByEmailAndPassword(paramter));
     }
 }

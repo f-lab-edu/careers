@@ -5,9 +5,11 @@ import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 @Getter
+@Setter
 @RequiredArgsConstructor
 public class Curator {
     
