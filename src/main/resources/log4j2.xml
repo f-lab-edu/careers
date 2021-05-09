@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  status는 log4j2의 내부 로그 레벨  -->
+<Configuration status="INFO">
+  <!--  설정파일에서 사용하는 프로퍼티  -->
+  <Properties>
+    <Property name="LogFileName">Careers Log</Property>
+    <Property name="LayoutPattern">
+      %style{%d{yyyy/MM/dd HH:mm:ss,SSS}}{yellow} %highlight{[%-5p]}{FATAL=bg_red,
+      ERROR=Bright red, INFO=green, DEBUG=blue, TRACE=White} [%t] %style{[%C{1.}]}{cyan} : %m%n
+    </Property>
+  </Properties>
+
+  <!--  로그가 출력되는 위치 설정-->
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="${LayoutPattern}" disableAnsi="false" charset="UTF-8"/>
+    </Console>
+    <RollingFile name="File" immediateFlush="true" append="true" ignoreExceptions="false" fileName="logs/${LogFileName}.log" filePattern="logs/${LogFileName}_%d{yyyy-MM-dd}_%i.log.zip">
+      <PatternLayout pattern="${LayoutPattern}" charset="UTF-8"/>
+      <Policies>
+        <!--  파일 사이즈 2MB 기준으로 새로운 파일 생성  -->
+        <SizeBasedTriggeringPolicy size="2MB"/>
+        <!-- filePattern의 최소단위에 따라 interval 단위로 새로운 로그파일에 기록  -->
+        <!-- 현재는 dd 즉 일 단위임으로  interval은 1일 단위 -->
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+      </Policies>
+      <!--  파일 용량 초과 시 로그파일 생성 최대 갯수 설정  -->
+      <!--  fileIndex max 설정으로 로그파일 인덱스가 높은것이 최신로그파일 -->
+      <!-- 0부터 5개 까지만 생성. -->
+      <DefaultRolloverStrategy max="5" fileIndex="max">
+        <Delete basePath="logs" maxDepth="1">
+          <!--  exceeds 숫자만큼 압축 파일이 생기면 첫번째 파일을 제거한다.  -->
+          <IfAccumulatedFileCount exceeds="6"/>
+        </Delete>
+      </DefaultRolloverStrategy>
+    </RollingFile>
+  </Appenders>
+
+  <!--  패키지별로 로깅 작업 설정  -->
+  <Loggers>
+    <!--  모든 패키지에 대한 로깅을 하기 위한 설정  -->
+    <Root level="info" additivity="false">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="File"/>
+    </Root>
+    <!-- 스프링 프레임워크에서 찍는건 level을 info로 설정  -->
+    <logger name="org.springframework" level="info" additivity="false">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="File"/>
+    </logger>
+  </Loggers>
+</Configuration>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dev.careers.mapper.ProfileMapper">
+
+  <resultMap id="userProfile" type="Profile">
+    <result column="profileId" property="profileId"/>
+    <result column="curatorId" property="curatorId"/>
+    <result column="title" property="title"/>
+    <result column="introduction" property="introduction"/>
+    <collection property="careers" resultMap="careerList"/>
+    <collection property="academics" resultMap="academicList"/>
+  </resultMap>
+
+  <resultMap id="careerList" type="Career">
+    <result column="profileId" property="profileId"/>
+    <result column="company" property="company"/>
+    <result column="companyTitle" property="companyTitle"/>
+  </resultMap>
+
+  <resultMap id="academicList" type="Academic">
+    <result column="profileId" property="profileId"/>
+    <result column="name" property="name"/>
+    <result column="major" property="major"/>
+  </resultMap>
+
+  <insert id="insertProfile" parameterType="Profile" useGeneratedKeys="true"
+    keyProperty="profileId">
+    INSERT INTO Profile (curatorId, title, introduction)
+    VALUES (#{curatorId}, #{title}, #{introduction});
+  </insert>
+
+  <insert id="insertCareer" parameterType="Career">
+    INSERT INTO Career (profileId, company, companyTitle)
+    VALUES
+    <foreach collection="list" item="item" separator=",">
+      (
+      #{item.profileId}
+      , #{item.company}
+      , #{item.companyTitle}
+      )
+    </foreach>
+  </insert>
+
+  <insert id="insertAcademic" parameterType="Academic">
+    INSERT INTO Academic (profileId, name, major)
+    VALUES
+    <foreach collection="list" item="item" separator=",">
+      (
+      #{item.profileId}
+      , #{item.name}
+      , #{item.major}
+      )
+    </foreach>
+  </insert>
+
+  <select id="getUserProfile" resultMap="userProfile" parameterType="int">
+    SELECT profile.profileId,
+           profile.curatorId,
+           profile.title,
+           profile.introduction,
+           curator.name,
+           career.company,
+           career.companyTitle,
+           academic.name,
+           academic.major
+    FROM Profile
+           LEFT JOIN Curator ON profile.curatorId = curator.id
+           LEFT JOIN Career ON profile.profileId = career.profileId
+           LEFT JOIN Academic ON profile.profileId = career.profileId
+    WHERE profile.curatorId = #{curatorId};
+  </select>
+
+  <select id="existCuratorId" resultType="boolean" parameterType="int">
+    SELECT exists(SELECT 1 FROM Profile WHERE curatorId = #{curatorId});
+  </select>
+
+  <update id="updateProfile" parameterType="Profile" useGeneratedKeys="true"
+    keyProperty="profileId">
+    UPDATE Profile
+    SET title        = #{title},
+        introduction = #{introduction}
+    WHERE curatorId = #{curatorId};
+  </update>
+
+  <insert id="updateCareer" parameterType="Career">
+    INSERT INTO Career
+    (careerId, profileId, company, companyTitle)
+    VALUES
+    <foreach collection="list" item="item" separator=",">
+      (
+      #{item.careerId}
+      , #{item.profileId}
+      , #{item.company}
+      , #{item.companyTitle}
+      )
+    </foreach>
+    ON duplicate key update
+    company=values(company)
+    ,companyTitle=values(companyTitle)
+  </insert>
+
+  <insert id="updateAcademic" parameterType="Academic">
+    INSERT INTO Academic
+    (academicId, profileId, name, major)
+    VALUES
+    <foreach collection="list" item="item" separator=",">
+      (
+      #{item.academicId}
+      , #{item.profileId}
+      , #{item.name}
+      , #{item.major}
+      )
+    </foreach>
+    ON DUPLICATE KEY UPDATE
+    name=values(name)
+    ,major=values(major)
+  </insert>
+
+  <select id="getCareerIdList" parameterType="int" resultType="int">
+    SELECT careerId
+    FROM Career
+    WHERE profileId = #{profileId};
+  </select>
+
+  <select id="getAcademicIdList" parameterType="int" resultType="int">
+    SELECT academicId
+    FROM Academic
+    WHERE profileId = #{profileId};
+  </select>
+
+  <select id="getProfileId" parameterType="int" resultType="int">
+    SELECT profileId
+    FROM Profile
+    WHERE curatorId = #{curatorId};
+  </select>
+</mapper>
