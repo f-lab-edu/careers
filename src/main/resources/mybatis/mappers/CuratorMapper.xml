@@ -12,7 +12,7 @@
         SELECT IF(COUNT(email), 0, 1) FROM curators WHERE email = #{email}
     </select>
 
-    <select id="existByEmailPassword" parameterType="com.dev.careers.domain.Curator" resultType="Boolean">
+    <select id="existByEmailPassword" parameterType="com.dev.careers.domain.Curator" resultType="boolean">
         SELECT IF(COUNT(email), 1, 0) FROM curators WHERE email = #{email} AND password = #{password}
     </select>
 </mapper>
