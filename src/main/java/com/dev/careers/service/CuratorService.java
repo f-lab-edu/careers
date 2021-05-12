@@ -23,7 +23,7 @@ public class CuratorService {
     }
 
     @Transactional
-    public Boolean isDuplicateEmail(String email) {
+    public boolean isDuplicateEmail(String email) {
        return curatorRepository.isExistEmail(email);
     }
 
