@@ -2,7 +2,6 @@ package com.dev.careers.controller;
 
 import com.dev.careers.domain.Curator;
 import com.dev.careers.domain.HttpStatusConstants;
-import com.dev.careers.domain.SessionContainer;
 import com.dev.careers.service.CuratorService;
 import java.net.URISyntaxException;
 import javax.servlet.http.HttpSession;
@@ -20,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class CuratorController {
 
     private CuratorService curatorService;
-    private SessionContainer sessionContainer;
-
 
     @PostMapping("/curators")
     public ResponseEntity<Void> create(@Valid @RequestBody Curator curator,
