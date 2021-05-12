@@ -7,6 +7,7 @@ import com.dev.careers.service.encryption.PasswordEncryptor;
 import com.dev.careers.service.error.DuplicatedEmailException;
 import com.dev.careers.service.error.SqlInsertException;
 import com.dev.careers.service.error.ViolationException;
+import com.dev.careers.service.session.SessionAuthenticator;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class CuratorService {
 
     private final CuratorMapper curatorMapper;
     private final PasswordEncryptor passwordEncryptor;
+    private final SessionAuthenticator sessionAuthenticator;
 
     public void join(Curator curator) {
         //중복검증

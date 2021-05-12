@@ -12,6 +12,8 @@ import org.apache.ibatis.annotations.Param;
 public interface CuratorMapper {
 
     int insertCurator(Curator curator);
+
     Curator getMemberInfo(@Param("email") String email);
+
     boolean checkEmailExists(@Param("email") String email);
 }
