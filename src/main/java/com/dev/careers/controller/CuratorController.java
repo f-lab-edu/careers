@@ -32,7 +32,7 @@ public class CuratorController {
     }
 
     @PostMapping("/curators/confirm-Email/{email}")
-    public Boolean confirmEmail(@PathVariable("email") String email) {
+    public boolean confirmEmail(@PathVariable("email") String email) {
         return curatorService.isDuplicateEmail(email);
     }
 }

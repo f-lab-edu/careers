@@ -8,5 +8,5 @@ public interface CuratorRepository {
 
     void save(Curator curator);
 
-    Boolean isExistEmail(String email);
+    boolean isExistEmail(String email);
 }

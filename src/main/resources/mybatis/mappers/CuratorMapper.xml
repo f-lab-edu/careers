@@ -8,7 +8,7 @@
         VALUES(#{id}, #{name}, #{password}, #{email})
     </insert>
 
-    <select id="isExistEmail" parameterType="String" resultType="Boolean">
+    <select id="isExistEmail" parameterType="String" resultType="boolean">
         SELECT IF(COUNT(email), 0, 1) FROM curators WHERE email = #{email}
     </select>
 </mapper>
