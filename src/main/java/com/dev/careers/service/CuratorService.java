@@ -1,7 +1,7 @@
 package com.dev.careers.service;
 
 import com.dev.careers.domain.Curator;
-import com.dev.careers.domain.SessionFacado;
+import com.dev.careers.domain.SessionFacade;
 import com.dev.careers.repository.CuratorRepository;
 import com.dev.careers.util.encryption.Sha256Encrypt;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ public class CuratorService {
 
     private CuratorRepository curatorRepository;
     private Sha256Encrypt sha256Encrypt;
-    private SessionFacado sessionFacado;
+    private SessionFacade sessionFacade;
 
     @Transactional
     public void addCurator(Curator curator) {
@@ -30,12 +30,12 @@ public class CuratorService {
 
     public boolean loginProcess(Curator curator) {
         boolean result = curatorRepository.existByEmailPassword(sha256Encrypt.passwordEncoder(curator));
-        sessionFacado.setHttpSession(curator);
+        sessionFacade.setHttpSession(curator);
         return result;
     }
 
     public void logoutProcess(){
-        sessionFacado.httpSessionRemove(sessionFacado.SESSIONNAME);
+        sessionFacade.httpSessionRemove(sessionFacade.SESSIONNAME);
     }
 
 }

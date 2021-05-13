@@ -2,12 +2,12 @@ package com.dev.careers.domain;
 
 import javax.servlet.http.HttpSession;
 
-public class SessionFacado {
+public class SessionFacade {
 
     public final static String SESSIONNAME = "sessionInfo";
     private final HttpSession httpSession;
 
-    public SessionFacado(HttpSession httpSession) {
+    public SessionFacade(HttpSession httpSession) {
         this.httpSession = httpSession;
     }
 
