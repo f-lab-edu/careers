@@ -3,9 +3,9 @@ package com.dev.careers.service.session;
 import com.dev.careers.service.error.ViolationException;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
-import org.springframework.stereotype.Component;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
-@Component
+@EnableRedisHttpSession
 public class SessionAuthenticator {
 
     public final static String SESSION_NAME = "userID";
