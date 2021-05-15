@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 
+/**
+ * LoginParamter Model
+ */
 @Getter
 @AllArgsConstructor
 public class LoginParamter {

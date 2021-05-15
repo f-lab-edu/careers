@@ -3,6 +3,9 @@ package com.dev.careers.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Career Model
+ */
 @Getter
 @AllArgsConstructor
 public class Career {

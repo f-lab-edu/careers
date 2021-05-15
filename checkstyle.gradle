@@ -1,0 +1,22 @@
+apply plugin: 'checkstyle'
+
+checkstyle {
+    toolVersion = "8.42"
+
+    // 경고가 있는 경우 빌드를 계속 진행 유무
+    ignoreFailures = false
+
+    // checkstyle 규칙위반한 내용 콘솔에 표출여부
+    showViolations = true
+
+    // checkstyle 파일 경로설정(Default값과 동일하지만 명시적으로 설정함.)
+    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+}
+
+checkstyleMain {
+    // checkstyle을 적용할 필요가 없는 파일들을 설정
+//    exclude 'resources/main/mybatis/**'
+    reports {
+        html.destination rootProject.file("build/reports/checkstyle/main.html")
+    }
+}
