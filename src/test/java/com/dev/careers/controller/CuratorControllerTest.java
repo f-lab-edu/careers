@@ -4,7 +4,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dev.careers.service.error.CuratorExceptionHandler;
@@ -15,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,6 +77,7 @@ class CuratorControllerTest {
             .param("email", "aaa@google.com")
             .param("password", "test123!@"))
             .andExpect(status().isOk())
-            .andExpect(request().sessionAttribute(SessionAuthenticator.SESSION_NAME, notNullValue()));
+            .andExpect(request().sessionAttribute(
+                SessionAuthenticator.SESSION_NAME, notNullValue()));
     }
 }

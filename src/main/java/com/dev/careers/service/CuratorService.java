@@ -7,22 +7,28 @@ import com.dev.careers.service.encryption.PasswordEncryptor;
 import com.dev.careers.service.error.DuplicatedEmailException;
 import com.dev.careers.service.error.SqlInsertException;
 import com.dev.careers.service.error.ViolationException;
-import com.dev.careers.service.session.SessionAuthenticator;
-import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * 큐레이터 회원관리 서비스
+ *
+ * @author junehee
+ */
 @RequiredArgsConstructor
 @Service
 public class CuratorService {
 
     private final CuratorMapper curatorMapper;
     private final PasswordEncryptor passwordEncryptor;
-    private final SessionAuthenticator sessionAuthenticator;
 
+    /**
+     * 큐레이터 회원가입 시 중복체크하여 문제없으면 Mybatis를 이용하여 insert 한다.
+     *
+     * @param curator 회원가입 요청한 큐레이터 정보
+     */
     public void join(Curator curator) {
-        //중복검증
         if (curatorMapper.checkEmailExists(curator.getEmail())) {
             throw new DuplicatedEmailException("이미 가입된 이메일 입니다.");
         }
@@ -37,7 +43,14 @@ public class CuratorService {
         }
     }
 
-    public int getUserIdByEmailAndPassword(LoginParamter loginParamter) throws NoSuchAlgorithmException {
+    /**
+     * 회원가입되어있는 큐레이터 정보(이메일, 패스워드)를 받아 큐레이터ID를 반환한다.
+     * 만약 비밀번호가 일치하지않거나 큐레이터ID를 읽어올 수 없는 경우에는 예외가 발생한다.
+     *
+     * @param loginParamter 로그인 정보
+     * @return 큐레이터 ID
+     */
+    public int getUserIdByEmailAndPassword(LoginParamter loginParamter) {
         Optional<Curator> memberInfo = Optional
             .ofNullable(curatorMapper.getMemberInfo(loginParamter.getEmail()));
 

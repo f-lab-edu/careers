@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
 
+/**
+ * Curator Model
+ */
 @Getter
 @Setter
 @RequiredArgsConstructor

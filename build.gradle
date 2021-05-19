@@ -4,6 +4,9 @@ plugins {
     id 'java'
 }
 
+//checkstyle 설정파일 별도 checkstyle.gradle파일로 분리
+apply from: 'checkstyle.gradle'
+
 group = 'com.dev'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'

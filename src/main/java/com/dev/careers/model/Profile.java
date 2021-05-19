@@ -4,6 +4,9 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Profile Model
+ */
 @Setter
 @Getter
 public class Profile {
