@@ -6,6 +6,9 @@ import com.dev.careers.model.Profile;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
+/**
+ * 프로필 Mapper
+ */
 @Mapper
 public interface ProfileMapper {
     int insertProfile(Profile profile);

@@ -11,6 +11,11 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * 큐레이터 프로필 관리 서비스
+ *
+ * @author junehee
+ */
 @Log4j2
 @RequiredArgsConstructor
 @Service
@@ -18,6 +23,12 @@ public class ProfileService {
 
     private final ProfileMapper profileMapper;
 
+    /**
+     * 등록되어있는 큐레이터 ID가 없으면 insert, 있으면  update를 진행한다.
+     *
+     * @param profile 프로필 정보
+     * @param curatorId 큐레이터 아이디
+     */
     @Transactional
     public void updateProfile(Profile profile, int curatorId) {
         profile.setCuratorId(curatorId);
@@ -35,6 +46,12 @@ public class ProfileService {
         updateAcademic(profileId, profile);
     }
 
+    /**
+     * Career 프로필 업데이트
+     *
+     * @param profileId 프로필아이디
+     * @param profile 프로필 정보
+     */
     private void updateCareer(int profileId, Profile profile) {
         int finalProfileId = profileId;
 
@@ -49,8 +66,8 @@ public class ProfileService {
             .collect(Collectors.toList());
 
         List<Integer> careerIdList = profileMapper.getCareerIdList(profileId);
-        int i=0;
-        for (Integer id : careerIdList){
+        int i = 0;
+        for (Integer id : careerIdList) {
             updateCareers.get(i++).setCareerId(id);
         }
 
@@ -58,7 +75,13 @@ public class ProfileService {
         profileMapper.updateCareer(profile.getCareers());
     }
 
-    private void updateAcademic(int profileId, Profile profile){
+    /**
+     * Academic 프로필 업데이트
+     *
+     * @param profileId 프로필아이디
+     * @param profile 프로필 정보
+     */
+    private void updateAcademic(int profileId, Profile profile) {
         int finalProfileId = profileId;
         List<Academic> updateAcademics = profile.getAcademics()
             .stream()
@@ -73,8 +96,8 @@ public class ProfileService {
             .collect(Collectors.toList());
 
         List<Integer> academicIdList = profileMapper.getAcademicIdList(profileId);
-        int i=0;
-        for (Integer id : academicIdList){
+        int i = 0;
+        for (Integer id : academicIdList) {
             updateAcademics.get(i++).setAcademicId(id);
         }
 
@@ -82,6 +105,12 @@ public class ProfileService {
         profileMapper.updateAcademic(profile.getAcademics());
     }
 
+    /**
+     * 프로필 정보 반환
+     *
+     * @param curatorId 큐레이터 아이디
+     * @return 프로필 정보
+     */
     public Profile getProfile(int curatorId) {
         return profileMapper.getUserProfile(curatorId);
     }
