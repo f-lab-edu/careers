@@ -10,5 +10,5 @@ public interface CuratorRepository {
 
     boolean isExistEmail(String email);
 
-    boolean existByEmailPassword(Curator curator);
+    Curator getCuratorInfo(Curator curator);
 }

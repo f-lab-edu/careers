@@ -37,12 +37,10 @@ public class CuratorController {
 
     @PostMapping("/curators/login")
     public ResponseEntity<Void> curatorLogin(@Valid @RequestBody Curator curator,
-        HttpSession httpSession,
         BindingResult bindingResult) {
         vaildCuratorParameter(bindingResult);
-        if(!curatorService.loginProcess(curator)){
-            return HttpStatusConstants.BAD_REQUEST;
-        }
+
+        curatorService.loginProcess(curator);
 
         return HttpStatusConstants.OK;
     }

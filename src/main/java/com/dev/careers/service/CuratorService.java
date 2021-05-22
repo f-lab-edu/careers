@@ -4,6 +4,9 @@ import com.dev.careers.domain.Curator;
 import com.dev.careers.domain.SessionAuthenticate;
 import com.dev.careers.repository.CuratorRepository;
 import com.dev.careers.util.encryption.Sha256Encrypt;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import javax.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +31,22 @@ public class CuratorService {
     }
 
 
-    public boolean loginProcess(Curator curator) {
-        boolean result = curatorRepository.existByEmailPassword(sha256Encrypt.passwordEncoder(curator));
+    public void loginProcess(Curator curator) {
+        Optional<Curator> curatortInfo = Optional
+            .ofNullable(curatorRepository.getCuratorInfo(curator));
+
+        String salt = curatortInfo.map(v -> v.getSalt()).
+            orElseThrow(()-> new NoSuchElementException());
+
+        String password = sha256Encrypt.encrypt(curator.getPassword(), salt);
+
+        curatortInfo.filter(v-> curator.getEmail().equals(v.getEmail())).orElseThrow(()
+            -> new ValidationException());
+
+        curatortInfo.filter(v -> v.getPassword().equals(password)).orElseThrow(()
+            -> new ValidationException());
+
         sessionAuthenticate.setHttpSession(curator);
-        return result;
     }
 
     public void logoutProcess(){

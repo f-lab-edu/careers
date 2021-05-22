@@ -1,5 +1,6 @@
 package com.dev.careers.domain;
 
+import com.sun.istack.internal.Nullable;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -18,8 +19,10 @@ public class Curator {
         this.password = password;
     }
 
+    @Nullable
     private Long id;
 
+    @Nullable
     private String name;
 
     @NotNull
@@ -30,4 +33,7 @@ public class Curator {
     @NotNull
     @Email(message = "Email with invalid form.")
     private String email;
+
+    @Nullable
+    private String salt;
 }
