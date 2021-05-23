@@ -38,7 +38,7 @@ public class CuratorControllerTest {
     @Before
     public void setUp(){
         curator = new Curator(1L,"admin",
-            "Abc12345@","admin@careers.com");
+            "Abc12345@","admin@careers.com", "");
     }
 
     @Test
@@ -64,8 +64,6 @@ public class CuratorControllerTest {
 
     @Test
     public void curatorLogin() throws Exception{
-
-        given(curatorService.loginProcess(curator)).willReturn(true);
 
         mvc.perform(post("/curators/curator-login")
             .contentType(MediaType.APPLICATION_JSON)
