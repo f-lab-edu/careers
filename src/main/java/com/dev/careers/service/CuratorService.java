@@ -41,10 +41,10 @@ public class CuratorService {
         String password = sha256Encrypt.encrypt(curator.getPassword(), salt);
 
         curatortInfo.filter(v-> curator.getEmail().equals(v.getEmail())).orElseThrow(()
-            -> new IllegalArgumentException("이메일이 일치하지 않습니다."));
+            -> new ValidationException());
 
         curatortInfo.filter(v -> v.getPassword().equals(password)).orElseThrow(()
-            -> new IllegalArgumentException("비밀번호가 일치하지 않습니다."));
+            -> new ValidationException());
 
         sessionAuthenticate.setHttpSession(curator);
     }
