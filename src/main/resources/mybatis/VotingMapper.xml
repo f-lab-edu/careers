@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dev.careers.mapper.VotingMapper">
+  <select id="getVotingList" resultType="com.dev.careers.model.Voting">
+    SELECT id, title, writer, timestamp FROM voting;
+  </select>
+</mapper>
