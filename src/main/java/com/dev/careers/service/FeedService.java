@@ -1,6 +1,7 @@
 package com.dev.careers.service;
 
 import com.dev.careers.mapper.FeedMapper;
+import com.dev.careers.model.Criteria;
 import com.dev.careers.model.Feed;
 import com.dev.careers.service.error.SqlInsertException;
 import java.util.Date;
@@ -45,8 +46,6 @@ public class FeedService {
             log.warn(ex.getMessage());
             throw new SqlInsertException("피드 컨텐츠가 없어 정보를 저장하지 못했습니다.");
         }
-
-
     }
 
     /**
@@ -58,6 +57,24 @@ public class FeedService {
     @Transactional
     public List<Feed> getTotalFeeds(int curatorId) {
         return feedMapper.getFeedList(curatorId);
+    }
+
+    /**
+     * 메인화면에 전달받은 페이징 정보에 맞게 피드 리스트를 전달.
+     *
+     * @param criteria 페이징 정보
+     * @return 피드 리스트 전달
+     */
+    @Transactional
+    public List<Feed> getMainFeeds(Criteria criteria) {
+        int totalFeedCount = feedMapper.getTotalFeedCount();
+        int maxOffset = (totalFeedCount / criteria.getLimit());
+
+        if (criteria.getOffset() <= maxOffset) {
+            return feedMapper.getPartialFeed(criteria.getOffset(), criteria.getLimit());
+        } else {
+            throw new RuntimeException("전달 데이터가 없습니다.");
+        }
     }
 
     /**
