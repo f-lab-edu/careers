@@ -34,3 +34,13 @@ create table Academic(
     primary key (academicId),
     foreign key (profileId) references profile (profileId)
 );
+
+create table Feed(
+    feedId int(10) not null auto_increment,
+    content varchar(64) not null,
+    url varchar(64),
+    date timestamp not null,
+    curatorId int(10),
+    primary key (feedId),
+    foreign key (curatorId) references Curator (id)
+);
