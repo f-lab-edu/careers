@@ -3,19 +3,21 @@ package com.dev.careers.service;
 import com.dev.careers.mapper.FeedMapper;
 import com.dev.careers.model.Feed;
 import com.dev.careers.service.error.SqlInsertException;
-import java.util.Date;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 피드 관리 서비스
  *
  * @author junehee
  */
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class FeedService {
@@ -30,11 +32,10 @@ public class FeedService {
      */
     @Transactional
     public void updateFeed(int curatorId, Feed feed) {
-        java.util.Date nowDate = new Date();
-        java.sql.Timestamp timestamp = new java.sql.Timestamp(nowDate.getTime());
+        Date nowDate = new Date();
+        Timestamp timestamp = new Timestamp(nowDate.getTime());
         feed.setDate(timestamp);
         feed.setCuratorId(curatorId);
-
         try {
             if (feed.getFeedId() > 0) {
                 feedMapper.updateFeedInfo(feed);

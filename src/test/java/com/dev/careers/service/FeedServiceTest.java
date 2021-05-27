@@ -31,7 +31,7 @@ class FeedServiceTest {
     FeedMapper feedMapper;
 
     @Test
-    @DisplayName("피드 추가")
+    @DisplayName("피드 추가 시 DB 호출 확인")
     public void insertFeed(){
         doNothing()
             .when(feedMapper)
@@ -49,7 +49,7 @@ class FeedServiceTest {
     }
 
     @Test
-    @DisplayName("피드 삭제")
+    @DisplayName("사용자가 선택한 피드 삭제")
     public void deleteFeed(){
         assertDoesNotThrow(() -> feedService.deleteFeed(2));
     }
