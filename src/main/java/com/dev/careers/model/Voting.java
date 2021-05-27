@@ -4,9 +4,11 @@ import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 @Getter
+@Setter
 public class Voting {
 
     @Nullable
