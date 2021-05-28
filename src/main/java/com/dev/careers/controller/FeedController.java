@@ -1,5 +1,6 @@
 package com.dev.careers.controller;
 
+import com.dev.careers.annotation.LoginChecker;
 import com.dev.careers.model.Feed;
 import com.dev.careers.service.FeedService;
 import com.dev.careers.service.session.SessionAuthenticator;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -20,25 +20,44 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @AllArgsConstructor
 @RestController
-@RequestMapping("feeds")
 public class FeedController {
 
     private final SessionAuthenticator sessionAuthenticator;
     private final FeedService feedService;
 
-    @PutMapping
-    public void putFeed(@RequestBody Feed feed) {
-        int curatorId = sessionAuthenticator.successLoginUserId();
+    /**
+     * 피드를 추가 수정할 수 있다.
+     * feedId에 값이 존재하지 않는 경우 = 추가
+     * feedId에 값이 존재할 경우 = 수정
+     *
+     * @param feed 피드 정보
+     * @param curatorId 큐레이터 아이디
+     */
+    @PutMapping("/curators/{curatorId}/feeds")
+    @LoginChecker
+    public void putFeed(@RequestBody Feed feed, @PathVariable("curatorId") int curatorId) {
         feedService.updateFeed(curatorId, feed);
     }
 
-    @GetMapping
-    public List<Feed> getFeeds() {
-        int curatorId = sessionAuthenticator.successLoginUserId();
+    /**
+     * 설정되어있는 피드 정보를 가져온다.
+     *
+     * @param curatorId 큐레이터 아이디
+     * @return 본인이 작성한 피드 리스트
+     */
+    @GetMapping("/curators/{curatorId}/feeds")
+    @LoginChecker
+    public List<Feed> getFeeds(@PathVariable("curatorId") int curatorId) {
         return feedService.getTotalFeeds(curatorId);
     }
 
+    /**
+     * 피드 삭제
+     *
+     * @param feedId 피드 아이디
+     */
     @DeleteMapping("{feedId}")
+    @LoginChecker
     public void deleteFeed(@PathVariable int feedId) {
         sessionAuthenticator.successLoginUserId();
         feedService.deleteFeed(feedId);

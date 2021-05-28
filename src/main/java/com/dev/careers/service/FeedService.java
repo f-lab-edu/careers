@@ -3,14 +3,13 @@ package com.dev.careers.service;
 import com.dev.careers.mapper.FeedMapper;
 import com.dev.careers.model.Feed;
 import com.dev.careers.service.error.SqlInsertException;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
 
 /**
  * 피드 관리 서비스

@@ -4,13 +4,14 @@ import com.dev.careers.mapper.ProfileMapper;
 import com.dev.careers.model.Academic;
 import com.dev.careers.model.Career;
 import com.dev.careers.model.Profile;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 /**
  * 큐레이터 프로필 관리 서비스
