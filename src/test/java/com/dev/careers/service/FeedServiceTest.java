@@ -31,7 +31,7 @@ class FeedServiceTest {
     FeedMapper feedMapper;
 
     @Test
-    @DisplayName("피드 추가 시 DB 호출 확인")
+    @DisplayName("피드 추가에 성공하면 데이터베이스에 값이 저장된다")
     public void insertFeed(){
         doNothing()
             .when(feedMapper)
