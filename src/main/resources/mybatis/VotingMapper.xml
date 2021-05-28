@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dev.careers.mapper.VotingMapper">
-  <resultMap id="votingList" type="com.dev.careers.model.Voting">
+  <resultMap id="VotingList" type="com.dev.careers.model.Voting">
     <result column="VOTING_ID" property="id"/>
     <result column="VOTING_TITLE" property="title"/>
     <result column="VOTING_WRITER" property="writer"/>
     <result column="TIMESTAMP" property="timestamp"/>
   </resultMap>
 
-  <select id="getVotingList" resultType="votingList">
+  <resultMap id="Voting" type="com.dev.careers.model.Voting">
+    <result column="VOTING_ID" property="id"/>
+    <result column="VOTING_TITLE" property="title"/>
+    <result column="VOTING_WRITER" property="writer"/>
+    <result column="TIMESTAMP" property="timestamp"/>
+    <result column="EXPLANATION" property="explanation"/>
+  </resultMap>
+
+  <select id="getVotingList" resultType="VotingList">
     SELECT id, title, writer, timestamp FROM voting;
+  </select>
+
+  <select id="getVoting" resultType="Voting">
+    SELECT id, title, writer, timestamp, explanation FROM voting WHERE id = #{id};
   </select>
 </mapper>

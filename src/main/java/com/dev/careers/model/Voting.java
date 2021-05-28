@@ -1,5 +1,6 @@
 package com.dev.careers.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.NotEmpty;
@@ -26,4 +27,8 @@ public class Voting {
     private String explanation;
 
     private List<VotingItem> votingItem;
+
+    public void setVotingItem(List<VotingItem> votingItem){
+        this.votingItem = new ArrayList<>(votingItem);
+    }
 }
