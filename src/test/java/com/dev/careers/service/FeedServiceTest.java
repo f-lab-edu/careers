@@ -38,9 +38,13 @@ class FeedServiceTest {
             .insertFeedInfo(any(Feed.class));
 
         int curatorId = 1;
-        Feed feed = new Feed();
-        feed.setContent("피드 내용 추가");
-        feed.setUrl("www.naver.com");
+        Feed feed = new Feed(
+            0,
+            "피드 내용 추가",
+            "www.naver.com",
+            null,
+            0
+        );
 
         feedService.updateFeed(curatorId, feed);
 
@@ -62,8 +66,13 @@ class FeedServiceTest {
             .insertFeedInfo(any(Feed.class));
 
         int curatorId = 1;
-        Feed feed = new Feed();
-        feed.setUrl("www.naver.com");
+        Feed feed = new Feed(
+            0,
+            null,
+            "www.naver.com",
+            null,
+            0
+        );
 
         assertThrows(SqlInsertException.class,
             () -> feedService.updateFeed(curatorId, feed));

@@ -33,20 +33,23 @@ public class FeedService {
     public void updateFeed(int curatorId, Feed feed) {
         Date nowDate = new Date();
         Timestamp timestamp = new Timestamp(nowDate.getTime());
-        feed.setDate(timestamp);
-        feed.setCuratorId(curatorId);
+        Feed updateFeed = new Feed(
+            feed.getFeedId(),
+            feed.getContent(),
+            feed.getUrl(),
+            timestamp,
+            curatorId);
+
         try {
             if (feed.getFeedId() > 0) {
-                feedMapper.updateFeedInfo(feed);
+                feedMapper.updateFeedInfo(updateFeed);
             } else {
-                feedMapper.insertFeedInfo(feed);
+                feedMapper.insertFeedInfo(updateFeed);
             }
         } catch (Exception ex) {
             log.warn(ex.getMessage());
             throw new SqlInsertException("피드 컨텐츠가 없어 정보를 저장하지 못했습니다.");
         }
-
-
     }
 
     /**
