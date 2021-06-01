@@ -40,9 +40,9 @@ public class FeedController {
     }
 
     @GetMapping
-    public List<Feed> getFeeds() {
+    public List<Feed> getCreatedFeeds() {
         int curatorId = sessionAuthenticator.successLoginUserId();
-        return feedService.getTotalFeeds(curatorId);
+        return feedService.getCreatedFeeds(curatorId);
     }
 
     @DeleteMapping("{feedId}")

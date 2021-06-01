@@ -55,7 +55,7 @@ public class FeedService {
      * @return 작성한 피드 리스트
      */
     @Transactional
-    public List<Feed> getTotalFeeds(int curatorId) {
+    public List<Feed> getCreatedFeeds(int curatorId) {
         return feedMapper.getFeedList(curatorId);
     }
 
