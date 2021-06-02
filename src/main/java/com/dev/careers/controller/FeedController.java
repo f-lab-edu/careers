@@ -3,22 +3,12 @@ package com.dev.careers.controller;
 import com.dev.careers.model.Criteria;
 import com.dev.careers.model.Feed;
 import com.dev.careers.service.FeedService;
-import com.dev.careers.service.error.ViolationException;
 import com.dev.careers.service.session.SessionAuthenticator;
-import java.util.List;
-import java.util.Optional;
-import javax.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 피드 추가, 수정, 삭제 요청 수신
@@ -32,6 +22,12 @@ public class FeedController {
 
     private final SessionAuthenticator sessionAuthenticator;
     private final FeedService feedService;
+
+    @PostMapping
+    public void postFeed(@Valid @RequestBody Feed feed){
+        int curatorId = sessionAuthenticator.successLoginUserId();
+        feedService.insertFeed(curatorId, feed);
+    }
 
     @PutMapping
     public void putFeed(@Valid @RequestBody Feed feed) {

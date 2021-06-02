@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +26,29 @@ public class FeedService {
     private final FeedMapper feedMapper;
 
     /**
-     * 피드 추가, 갱신을 처리(feedId값을 기준) feedId = 0 피드 추가 feedId > 1 피드 갱신
+     * 피드 추가
+     * 피드는 서버시간 기준으로 Date가 설정되며, 저장 실패 시 FailToSaveFeedException 예외가 발생한다.
+     *
+     * @param curatorId 큐레이터 아이디
+     * @param feed      업데이트 할 피드정보
+     */
+    @Transactional
+    public void insertFeed(int curatorId, Feed feed){
+        java.sql.Timestamp timestamp = new Timestamp(new Date().getTime());
+        feed.setDate(timestamp);
+        feed.setCuratorId(curatorId);
+
+        try {
+            feedMapper.insertFeedInfo(feed);
+        } catch (Exception ex){
+            throw new FailToSaveFeedException("피드를 저장하지 못했습니다.");
+        }
+
+    }
+
+    /**
+     * 피드 갱신
+     * 피드 갱신 요청이 들어온 서버시간 기준으로 Date가 업데이트 되며, 업데이트 실패 시 FailToSaveFeedException 예외가 발생한다.
      *
      * @param curatorId 큐레이터 아이디
      * @param feed      업데이트 할 피드정보
@@ -36,14 +59,11 @@ public class FeedService {
         java.sql.Timestamp timestamp = new java.sql.Timestamp(nowDate.getTime());
         feed.setDate(timestamp);
         feed.setCuratorId(curatorId);
+
         try {
-            if (feed.getFeedId() > 0) {
-                feedMapper.updateFeedInfo(feed);
-            } else {
-                feedMapper.insertFeedInfo(feed);
-            }
+            feedMapper.updateFeedInfo(feed);
         } catch (Exception ex) {
-            throw new FailToSaveFeedException("피드를 저장하지 못했습니다.");
+            throw new FailToSaveFeedException("피드를 업데이트하지 못했습니다.");
         }
     }
 

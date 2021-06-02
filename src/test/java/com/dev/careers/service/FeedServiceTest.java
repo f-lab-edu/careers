@@ -36,7 +36,7 @@ class FeedServiceTest {
         feed.setContent("피드 내용 추가");
         feed.setUrl("www.naver.com");
 
-        feedService.updateFeed(curatorId, feed);
+        feedService.insertFeed(curatorId, feed);
 
         verify(feedMapper, times(1))
             .insertFeedInfo(any(Feed.class));
@@ -60,7 +60,7 @@ class FeedServiceTest {
         feed.setUrl("www.naver.com");
 
         assertThrows(FailToSaveFeedException.class,
-            () -> feedService.updateFeed(curatorId, feed));
+            () -> feedService.insertFeed(curatorId, feed));
 
         verify(feedMapper, times(1))
             .insertFeedInfo(any(Feed.class));
