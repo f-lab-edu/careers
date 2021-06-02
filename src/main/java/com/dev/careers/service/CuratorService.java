@@ -7,10 +7,9 @@ import com.dev.careers.service.encryption.PasswordEncryptor;
 import com.dev.careers.service.error.DuplicatedEmailException;
 import com.dev.careers.service.error.FailToSaveCuratorException;
 import com.dev.careers.service.error.ViolationException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 /**
  * 큐레이터 회원관리 서비스

@@ -4,21 +4,20 @@ import com.dev.careers.mapper.FeedMapper;
 import com.dev.careers.model.Criteria;
 import com.dev.careers.model.Feed;
 import com.dev.careers.service.error.FailToSaveFeedException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 피드 관리 서비스
  *
  * @author junehee
  */
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class FeedService {
@@ -26,20 +25,24 @@ public class FeedService {
     private final FeedMapper feedMapper;
 
     /**
-     * 피드 추가
-     * 피드는 서버시간 기준으로 Date가 설정되며, 저장 실패 시 FailToSaveFeedException 예외가 발생한다.
+     * 피드 추가 피드는 서버시간 기준으로 Date가 설정되며, 저장 실패 시 FailToSaveFeedException 예외가 발생한다.
      *
      * @param curatorId 큐레이터 아이디
      * @param feed      업데이트 할 피드정보
      */
     @Transactional
     public void insertFeed(int curatorId, Feed feed) {
-        java.sql.Timestamp timestamp = new Timestamp(new Date().getTime());
-        feed.setDate(timestamp);
-        feed.setCuratorId(curatorId);
+        Date nowDate = new Date();
+        Timestamp timestamp = new Timestamp(nowDate.getTime());
+        Feed newFeed = new Feed(
+            feed.getFeedId(),
+            feed.getContent(),
+            feed.getUrl(),
+            timestamp,
+            curatorId);
 
         try {
-            feedMapper.insertFeedInfo(feed);
+            feedMapper.insertFeedInfo(newFeed);
         } catch (Exception ex) {
             throw new FailToSaveFeedException("피드를 저장하지 못했습니다.");
         }
@@ -47,21 +50,24 @@ public class FeedService {
     }
 
     /**
-     * 피드 갱신
-     * 피드 갱신 요청이 들어온 서버시간 기준으로 Date가 업데이트 되며, 업데이트 실패 시 FailToSaveFeedException 예외가 발생한다.
+     * 피드 갱신 피드 갱신 요청이 들어온 서버시간 기준으로 Date가 업데이트 되며, 업데이트 실패 시 FailToSaveFeedException 예외가 발생한다.
      *
      * @param curatorId 큐레이터 아이디
      * @param feed      업데이트 할 피드정보
      */
     @Transactional
     public void updateFeed(int curatorId, Feed feed) {
-        java.util.Date nowDate = new Date();
-        java.sql.Timestamp timestamp = new java.sql.Timestamp(nowDate.getTime());
-        feed.setDate(timestamp);
-        feed.setCuratorId(curatorId);
+        Date nowDate = new Date();
+        Timestamp timestamp = new Timestamp(nowDate.getTime());
+        Feed updateFeed = new Feed(
+            feed.getFeedId(),
+            feed.getContent(),
+            feed.getUrl(),
+            timestamp,
+            curatorId);
 
         try {
-            feedMapper.updateFeedInfo(feed);
+            feedMapper.updateFeedInfo(updateFeed);
         } catch (Exception ex) {
             throw new FailToSaveFeedException("피드를 업데이트하지 못했습니다.");
         }
@@ -79,10 +85,10 @@ public class FeedService {
     }
 
     /**
-     * 메인화면에 전달받은 페이징 정보에 맞게 피드 리스트를 전달.
+     * 페이징 정보에 맞는 메인화면에 전달할 피드 리스트
      *
      * @param criteria 페이징 정보
-     * @return 피드 리스트 전달
+     * @return 페이징 정보에 맞는 피드 리스트 전달
      */
     @Transactional
     public List<Feed> getMainFeeds(Criteria criteria) {

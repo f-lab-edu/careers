@@ -17,22 +17,35 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class CareersExceptionHandler {
 
+    /**
+     * 회원가입 시 이메일 중복으로 인한 예외 처리 로그인 시 비밀번호 불일치로 인한 예외 처리
+     *
+     * @param ex 올바르지 않는 요청에 대한 결과
+     * @return 상태코드 및 에러 메시지
+     */
     @ExceptionHandler(value = {DuplicatedEmailException.class, ViolationException.class})
     public ResponseEntity<ResponseErrorMessage> badRequest(final RuntimeException ex) {
         ResponseErrorMessage responseErrorMessage = new ResponseErrorMessage(
-                HttpStatus.BAD_REQUEST.toString(),
-                ex.getMessage()
+            HttpStatus.BAD_REQUEST.toString(),
+            ex.getMessage()
         );
 
         log.error(responseErrorMessage);
         return new ResponseEntity<>(responseErrorMessage, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * 서버에서 사용할 수 없는 암호화 알고리즘 사용시 예외 처리
+     *
+     * @param ex 올바르지 않는 요청에 대한 결과
+     * @return 상태코드 및 에러 메시지
+     */
     @ExceptionHandler(value = NotSupportAlgorithmException.class)
-    public ResponseEntity<ResponseErrorMessage> passwordAlgorithmException(final RuntimeException ex) {
+    public ResponseEntity<ResponseErrorMessage> passwordAlgorithmException(
+        final RuntimeException ex) {
         ResponseErrorMessage responseErrorMessage = new ResponseErrorMessage(
-                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
-                ex.getMessage()
+            HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+            ex.getMessage()
         );
 
         log.error(responseErrorMessage);
@@ -40,16 +53,22 @@ public class CareersExceptionHandler {
         return new ResponseEntity<>(responseErrorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * 큐레이터, 피드 저장 실패 시 해당 예외 발생
+     *
+     * @param ex 올바르지 않는 요청에 대한 결과
+     * @return 상태코드 및 에러 메시지
+     */
     @ExceptionHandler(value = {FailToSaveFeedException.class, FailToSaveCuratorException.class})
-    public ResponseEntity<ResponseErrorMessage> failToSaveException(final RuntimeException ex){
+    public ResponseEntity<ResponseErrorMessage> failToSaveException(final RuntimeException ex) {
         ResponseErrorMessage responseErrorMessage = new ResponseErrorMessage(
-                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
-                ex.getMessage()
+            HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+            ex.getMessage()
         );
 
         log.error(responseErrorMessage);
 
-        return new ResponseEntity<>(responseErrorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(responseErrorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -59,12 +78,13 @@ public class CareersExceptionHandler {
      * @param ex 올바르지 않는 요청에 대한 결과
      * @return 상태코드 및 에러 메시지
      */
-    @ExceptionHandler(value= MethodArgumentNotValidException.class)
-    public ResponseEntity<ResponseErrorMessage> argumentNotValidException(MethodArgumentNotValidException ex){
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity<ResponseErrorMessage> argumentNotValidException(
+        MethodArgumentNotValidException ex) {
 
         ResponseErrorMessage responseErrorMessage = new ResponseErrorMessage(
-                HttpStatus.BAD_REQUEST.toString(),
-                ex.getBindingResult().getFieldError().getDefaultMessage());
+            HttpStatus.BAD_REQUEST.toString(),
+            ex.getBindingResult().getFieldError().getDefaultMessage());
 
         log.error(responseErrorMessage);
 

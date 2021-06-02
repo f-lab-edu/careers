@@ -1,13 +1,12 @@
 package com.dev.careers.model;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
 
 /**
  * Curator Model

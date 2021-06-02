@@ -37,7 +37,8 @@ dependencies {
     // Redis 세션 적용하기위한 의존성 추가
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis'
     implementation group: 'org.springframework.session', name: 'spring-session-data-redis'
-
+    // Aop 적용하기 위해 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
