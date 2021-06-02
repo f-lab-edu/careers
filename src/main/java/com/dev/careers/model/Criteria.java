@@ -13,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 public class Criteria {
 
     @NotNull
-    @Min(value = 0, message = "The minimum value of the offSet is 0")
+    @Min(value = 0, message = "시작 피드 번호의 최소값은 0 입니다.")
     private int offset;
 
     @NotNull
-    @Min(value = 1, message = "Limit must be set to at least 1")
+    @Min(value = 1, message = "최대 전송할 피드 갯수의 최소값은 1 입니다.")
     private int limit;
 }

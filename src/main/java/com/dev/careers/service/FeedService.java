@@ -3,13 +3,14 @@ package com.dev.careers.service;
 import com.dev.careers.mapper.FeedMapper;
 import com.dev.careers.model.Criteria;
 import com.dev.careers.model.Feed;
-import com.dev.careers.service.error.SqlInsertException;
-import java.util.Date;
-import java.util.List;
+import com.dev.careers.service.error.FailToSaveFeedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 피드 관리 서비스
@@ -35,7 +36,6 @@ public class FeedService {
         java.sql.Timestamp timestamp = new java.sql.Timestamp(nowDate.getTime());
         feed.setDate(timestamp);
         feed.setCuratorId(curatorId);
-
         try {
             if (feed.getFeedId() > 0) {
                 feedMapper.updateFeedInfo(feed);
@@ -43,8 +43,7 @@ public class FeedService {
                 feedMapper.insertFeedInfo(feed);
             }
         } catch (Exception ex) {
-            log.warn(ex.getMessage());
-            throw new SqlInsertException("피드 컨텐츠가 없어 정보를 저장하지 못했습니다.");
+            throw new FailToSaveFeedException("피드를 저장하지 못했습니다.");
         }
     }
 

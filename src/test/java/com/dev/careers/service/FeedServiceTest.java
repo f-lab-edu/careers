@@ -1,25 +1,19 @@
 package com.dev.careers.service;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.dev.careers.mapper.FeedMapper;
 import com.dev.careers.model.Feed;
-import com.dev.careers.service.error.SqlInsertException;
+import com.dev.careers.service.error.FailToSaveFeedException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class FeedServiceTest {
@@ -57,7 +51,7 @@ class FeedServiceTest {
     @Test
     @DisplayName("피드 내용없이 추가요청 시 실패")
     public void insertFeedFailToNotContent(){
-        doThrow(new SqlInsertException("피드 내용이 없어 실패"))
+        doThrow(new FailToSaveFeedException("피드 내용이 없어 실패"))
             .when(feedMapper)
             .insertFeedInfo(any(Feed.class));
 
@@ -65,7 +59,7 @@ class FeedServiceTest {
         Feed feed = new Feed();
         feed.setUrl("www.naver.com");
 
-        assertThrows(SqlInsertException.class,
+        assertThrows(FailToSaveFeedException.class,
             () -> feedService.updateFeed(curatorId, feed));
 
         verify(feedMapper, times(1))

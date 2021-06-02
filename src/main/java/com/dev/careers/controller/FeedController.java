@@ -34,7 +34,7 @@ public class FeedController {
     private final FeedService feedService;
 
     @PutMapping
-    public void putFeed(@RequestBody Feed feed) {
+    public void putFeed(@Valid @RequestBody Feed feed) {
         int curatorId = sessionAuthenticator.successLoginUserId();
         feedService.updateFeed(curatorId, feed);
     }
@@ -57,18 +57,10 @@ public class FeedController {
      * offset 시작 피드 번호 (최소값 : 0)
      *
      * @param criteria 페이징 정보
-     * @param bindingResult 페이징 정보 검증결과
      * @return 피드 리스트 전달
      */
     @GetMapping("main")
-    public List<Feed> getMainFeeds(@Valid @RequestBody Criteria criteria,
-        BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            Optional<ObjectError> objectError = bindingResult.getAllErrors().stream().findFirst();
-            if (objectError.isPresent()) {
-                throw new ViolationException();
-            }
-        }
+    public List<Feed> getMainFeeds(@Valid @RequestBody Criteria criteria) {
 
         sessionAuthenticator.successLoginUserId();
         return feedService.getMainFeeds(criteria);

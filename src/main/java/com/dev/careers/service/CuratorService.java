@@ -5,11 +5,12 @@ import com.dev.careers.model.Curator;
 import com.dev.careers.model.LoginParamter;
 import com.dev.careers.service.encryption.PasswordEncryptor;
 import com.dev.careers.service.error.DuplicatedEmailException;
-import com.dev.careers.service.error.SqlInsertException;
+import com.dev.careers.service.error.FailToSaveCuratorException;
 import com.dev.careers.service.error.ViolationException;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * 큐레이터 회원관리 서비스
@@ -39,7 +40,7 @@ public class CuratorService {
 
         int errorCode = curatorMapper.insertCurator(curator);
         if (errorCode != 1) {
-            throw new SqlInsertException("회원가입 정보를 저장하지 못했습니다.");
+            throw new FailToSaveCuratorException("회원가입 정보를 저장하지 못했습니다.");
         }
     }
 
