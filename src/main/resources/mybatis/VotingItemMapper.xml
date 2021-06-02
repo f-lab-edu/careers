@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dev.careers.mapper.VotingItemMapper">
-  <select id="getVotingItemList" resultType="com.dev.careers.model.VotingItem">
-    SELECT id, name, voteCount FROM votingitem WHERE id = #{id}
+  <select id="getVotingItemList" parameterType="int" resultType="com.dev.careers.model.VotingItem">
+    SELECT votingItemId, votingItemName, voteCount FROM votingItem WHERE votingId = #{votingId}
   </select>
+
+  <insert id="saveVotingItem" parameterType="java.util.List">
+    INSERT INTO votingItem(votingItemid, votingId, votingItemName, voteCount) VALUES
+    <foreach collection="list" item="item" separator=",">
+    (
+     #{item.votingItemId}
+     , #{item.votingId}
+     , #{item.votingItemName}
+     , #{item.voteCount}
+    )
+    </foreach>
+  </insert>
+
+  <delete id="removeVotingItem" parameterType="int">
+    DELETE FROM votingItem WHERE votingId = #{votingId}
+  </delete>
 </mapper>

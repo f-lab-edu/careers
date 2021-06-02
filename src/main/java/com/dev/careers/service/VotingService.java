@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 /**
  * 투표 관리 서비스
  *
- * @author byeongjun
+ * @author Byeong-jun
  */
 @AllArgsConstructor
 @Service
@@ -32,8 +32,18 @@ public class VotingService {
         Voting voting = votingMapper.getVoting(id).orElseThrow(
             ()-> new VotingNotFoundException(id));
 
-        List<VotingItem> votingItem = votingItemMapper.getVotingItemList(id);
-        voting.setVotingItem(votingItem);
+        List<VotingItem> votingItems = votingItemMapper.getVotingItemList(id);
+        voting.setVotingItems(votingItems);
         return voting;
+    }
+
+    public void addVoting(Voting voting) {
+        votingMapper.saveVoting(voting);
+        votingItemMapper.saveVotingMapper(voting.getVotingItems());
+    }
+
+    public void deleteVoting(int id) {
+        votingMapper.removeVoting(id);
+        votingItemMapper.removeVotingItem(id);
     }
 }

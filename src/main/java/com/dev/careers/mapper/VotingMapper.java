@@ -10,5 +10,9 @@ public interface VotingMapper {
 
     List<Voting> getVotingList();
 
-    Optional<Voting> getVoting(int id);
+    Optional<Voting> getVoting(int votingId);
+
+    void saveVoting(Voting voting);
+
+    void removeVoting(int votingId);
 }

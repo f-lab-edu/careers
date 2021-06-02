@@ -13,22 +13,22 @@ import org.springframework.lang.Nullable;
 public class Voting {
 
     @Nullable
-    private int id;
+    private int votingId;
 
     @NotEmpty
-    private String title;
+    private String votingTitle;
 
     @NotEmpty
-    private String writer;
+    private String votingWriter;
 
     private Date timestamp;
 
     @NotEmpty
-    private String explanation;
+    private String votingExplanation;
 
-    private List<VotingItem> votingItem;
+    private List<VotingItem> votingItems;
 
-    public void setVotingItem(List<VotingItem> votingItem){
-        this.votingItem = new ArrayList<>(votingItem);
+    public void setVotingItems(List<VotingItem> votingItem){
+        this.votingItems = new ArrayList<>(votingItem);
     }
 }

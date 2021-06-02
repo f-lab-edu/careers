@@ -6,9 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class VotingItem {
-    private int id;
+    private int votingItemId;
 
-    private String name;
+    private int votingId;
+
+    private String votingItemName;
 
     private int voteCount;
 }
