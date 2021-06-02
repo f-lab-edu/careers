@@ -33,14 +33,14 @@ public class FeedService {
      * @param feed      업데이트 할 피드정보
      */
     @Transactional
-    public void insertFeed(int curatorId, Feed feed){
+    public void insertFeed(int curatorId, Feed feed) {
         java.sql.Timestamp timestamp = new Timestamp(new Date().getTime());
         feed.setDate(timestamp);
         feed.setCuratorId(curatorId);
 
         try {
             feedMapper.insertFeedInfo(feed);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             throw new FailToSaveFeedException("피드를 저장하지 못했습니다.");
         }
 
@@ -88,12 +88,13 @@ public class FeedService {
     public List<Feed> getMainFeeds(Criteria criteria) {
         int totalFeedCount = feedMapper.getTotalFeedCount();
         int maxOffset = (totalFeedCount / criteria.getLimit());
+        int startOffset = criteria.getOffset() - 1;
 
-        if (criteria.getOffset() <= maxOffset) {
-            return feedMapper.getPartialFeed(criteria.getOffset(), criteria.getLimit());
-        } else {
-            throw new RuntimeException("전달 데이터가 없습니다.");
+        if (startOffset > maxOffset) {
+            return null;
         }
+
+        return feedMapper.getPartialFeed(startOffset, criteria.getLimit());
     }
 
     /**
