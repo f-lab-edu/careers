@@ -1,5 +1,6 @@
 package com.dev.careers.controller;
 
+import com.dev.careers.annotation.LoginChecker;
 import com.dev.careers.model.Curator;
 import com.dev.careers.model.LoginParamter;
 import com.dev.careers.service.CuratorService;
@@ -63,6 +64,7 @@ public class CuratorController {
      * 로그아웃
      */
     @DeleteMapping("logout")
+    @LoginChecker
     public void logout() {
         sessionAuthenticator.logout();
     }
