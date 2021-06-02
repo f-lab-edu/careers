@@ -1,7 +1,6 @@
 package com.dev.careers.service;
 
 import com.dev.careers.mapper.FeedMapper;
-import com.dev.careers.model.Criteria;
 import com.dev.careers.model.Feed;
 import com.dev.careers.service.error.FailToSaveFeedException;
 import java.sql.Timestamp;
@@ -87,20 +86,21 @@ public class FeedService {
     /**
      * 페이징 정보에 맞는 메인화면에 전달할 피드 리스트
      *
-     * @param criteria 페이징 정보
+     * @param offset 시작 피드 번호
+     * @param limit  전달할 최대 피드 갯수
      * @return 페이징 정보에 맞는 피드 리스트 전달
      */
     @Transactional
-    public List<Feed> getMainFeeds(Criteria criteria) {
+    public List<Feed> getMainFeeds(int offset, int limit) {
         int totalFeedCount = feedMapper.getTotalFeedCount();
-        int maxOffset = (totalFeedCount / criteria.getLimit());
-        int startOffset = criteria.getOffset() - 1;
+        int maxOffset = (totalFeedCount / limit);
+        int startOffset = offset - 1;
 
         if (startOffset > maxOffset) {
             return null;
         }
 
-        return feedMapper.getPartialFeed(startOffset, criteria.getLimit());
+        return feedMapper.getPartialFeed(startOffset, limit);
     }
 
     /**
