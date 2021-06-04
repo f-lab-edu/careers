@@ -34,3 +34,13 @@ create table Academic(
     primary key (academicId),
     foreign key (profileId) references profile (profileId)
 );
+
+create table Comments(
+    commentsId int(10) not null auto_increment,
+    feedId int(10) not null,
+    curatorId int(10) not null,
+    opinion varchar(64) not null,
+    primary key(commentsId),
+    foreign key (feedId) references Feed (feedId),
+    foreign key (curatorId) references Curator (id)
+);
