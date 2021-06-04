@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.dev.careers.service.error.CuratorExceptionHandler;
+import com.dev.careers.service.error.CareersExceptionHandler;
 import com.dev.careers.service.session.SessionAuthenticator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +28,7 @@ class CuratorControllerTest {
     @BeforeEach
     public void beforeEach() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(curatorController)
-            .setControllerAdvice(new CuratorExceptionHandler()).build();
+            .setControllerAdvice(new CareersExceptionHandler()).build();
 
         mockMvc.perform(post("/curators/join")
             .param("email", "aaa@google.com")

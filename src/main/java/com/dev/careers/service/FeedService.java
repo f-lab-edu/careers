@@ -2,7 +2,7 @@ package com.dev.careers.service;
 
 import com.dev.careers.mapper.FeedMapper;
 import com.dev.careers.model.Feed;
-import com.dev.careers.service.error.SqlInsertException;
+import com.dev.careers.service.error.FailToSaveFeedException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +24,32 @@ public class FeedService {
     private final FeedMapper feedMapper;
 
     /**
-     * 피드 추가, 갱신을 처리(feedId값을 기준) feedId = 0 피드 추가 feedId > 1 피드 갱신
+     * 피드 추가 피드는 서버시간 기준으로 Date가 설정되며, 저장 실패 시 FailToSaveFeedException 예외가 발생한다.
+     *
+     * @param curatorId 큐레이터 아이디
+     * @param feed      업데이트 할 피드정보
+     */
+    @Transactional
+    public void insertFeed(int curatorId, Feed feed) {
+        Date nowDate = new Date();
+        Timestamp timestamp = new Timestamp(nowDate.getTime());
+        Feed newFeed = new Feed(
+            feed.getFeedId(),
+            feed.getContent(),
+            feed.getUrl(),
+            timestamp,
+            curatorId);
+
+        try {
+            feedMapper.insertFeedInfo(newFeed);
+        } catch (Exception ex) {
+            throw new FailToSaveFeedException("피드를 저장하지 못했습니다.");
+        }
+
+    }
+
+    /**
+     * 피드 갱신 피드 갱신 요청이 들어온 서버시간 기준으로 Date가 업데이트 되며, 업데이트 실패 시 FailToSaveFeedException 예외가 발생한다.
      *
      * @param curatorId 큐레이터 아이디
      * @param feed      업데이트 할 피드정보
@@ -41,14 +66,9 @@ public class FeedService {
             curatorId);
 
         try {
-            if (feed.getFeedId() > 0) {
-                feedMapper.updateFeedInfo(updateFeed);
-            } else {
-                feedMapper.insertFeedInfo(updateFeed);
-            }
+            feedMapper.updateFeedInfo(updateFeed);
         } catch (Exception ex) {
-            log.warn(ex.getMessage());
-            throw new SqlInsertException("피드 컨텐츠가 없어 정보를 저장하지 못했습니다.");
+            throw new FailToSaveFeedException("피드를 업데이트하지 못했습니다.");
         }
     }
 
@@ -59,8 +79,28 @@ public class FeedService {
      * @return 작성한 피드 리스트
      */
     @Transactional
-    public List<Feed> getTotalFeeds(int curatorId) {
+    public List<Feed> getCreatedFeeds(int curatorId) {
         return feedMapper.getFeedList(curatorId);
+    }
+
+    /**
+     * 페이징 정보에 맞는 메인화면에 전달할 피드 리스트
+     *
+     * @param offset 시작 피드 번호
+     * @param limit  전달할 최대 피드 갯수
+     * @return 페이징 정보에 맞는 피드 리스트 전달
+     */
+    @Transactional
+    public List<Feed> getMainFeeds(int offset, int limit) {
+        int totalFeedCount = feedMapper.getTotalFeedCount();
+        int maxOffset = (totalFeedCount / limit);
+        int startOffset = offset - 1;
+
+        if (startOffset > maxOffset) {
+            return null;
+        }
+
+        return feedMapper.getPartialFeed(startOffset, limit);
     }
 
     /**

@@ -1,19 +1,22 @@
 package com.dev.careers.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import com.dev.careers.mapper.FeedMapper;
 import com.dev.careers.model.Feed;
-import com.dev.careers.service.error.SqlInsertException;
+import com.dev.careers.service.error.FailToSaveFeedException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class FeedServiceTest {
@@ -28,22 +31,22 @@ class FeedServiceTest {
     @DisplayName("피드 추가에 성공하면 데이터베이스에 값이 저장된다.")
     public void insertFeed() {
         doNothing()
-                .when(feedMapper)
-                .insertFeedInfo(any(Feed.class));
+            .when(feedMapper)
+            .insertFeedInfo(any(Feed.class));
 
         int curatorId = 1;
         Feed feed = new Feed(
-                0,
-                "피드 내용 추가",
-                "www.naver.com",
-                null,
-                0
+            0,
+            "피드 내용 추가",
+            "www.naver.com",
+            null,
+            0
         );
 
-        feedService.updateFeed(curatorId, feed);
+        feedService.insertFeed(curatorId, feed);
 
         verify(feedMapper, times(1))
-                .insertFeedInfo(any(Feed.class));
+            .insertFeedInfo(any(Feed.class));
     }
 
     @Test
@@ -59,22 +62,23 @@ class FeedServiceTest {
     @Test
     @DisplayName("피드 내용없이 추가요청 시 SqlInsertException 예외가 발생한다.")
     public void insertFeedFailToNotContent() {
-        doThrow(new SqlInsertException("피드 내용이 없어 실패"))
-                .when(feedMapper)
-                .insertFeedInfo(any(Feed.class));
+        doThrow(new FailToSaveFeedException("피드 내용이 없어 실패"))
+            .when(feedMapper)
+            .insertFeedInfo(any(Feed.class));
 
         int curatorId = 1;
         Feed feed = new Feed(
-                0,
-                null,
-                "www.naver.com",
-                null,
-                0
+            0,
+            null,
+            "www.naver.com",
+            null,
+            0
         );
 
-        assertThrows(SqlInsertException.class,
-                () -> feedService.updateFeed(curatorId, feed));
+        assertThrows(FailToSaveFeedException.class,
+            () -> feedService.insertFeed(curatorId, feed));
 
-        verify(feedMapper).insertFeedInfo(any(Feed.class));
+        verify(feedMapper, times(1))
+            .insertFeedInfo(any(Feed.class));
     }
 }

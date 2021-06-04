@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Feed Model
@@ -15,7 +14,7 @@ public class Feed {
 
     public int feedId;
 
-    @NotNull
+    @NotNull(message = "컨텐츠 내용을 입력해주세요")
     public String content;
 
     public String url;
