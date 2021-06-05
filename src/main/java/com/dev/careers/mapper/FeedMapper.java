@@ -16,5 +16,9 @@ public interface FeedMapper {
 
     List<Feed> getFeedList(int curatorId);
 
+    int getTotalFeedCount();
+
+    List<Feed> getPartialFeed(int offset, int limit);
+
     void deleteFeed(int feedId);
 }

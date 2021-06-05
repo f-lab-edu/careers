@@ -4,7 +4,6 @@ import com.dev.careers.model.Curator;
 import com.dev.careers.model.LoginParamter;
 import com.dev.careers.service.error.DuplicatedEmailException;
 import com.dev.careers.service.error.ViolationException;
-import java.security.NoSuchAlgorithmException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +84,7 @@ class CuratorServiceTest {
             "test445@#"
         );
         org.junit.jupiter.api.Assertions.assertThrows(
-            ViolationException.class,
+                ViolationException.class,
             () -> curatorService.getUserIdByEmailAndPassword(paramter));
     }
 }

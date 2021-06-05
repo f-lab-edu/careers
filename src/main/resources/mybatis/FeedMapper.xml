@@ -23,6 +23,23 @@
     WHERE curatorId = #{curatorId};
   </select>
 
+  <select id="getTotalFeedCount" resultType="int">
+    SELECT count(feedId)
+    FROM Feed
+  </select>
+
+  <select id="getPartialFeed" resultType="Feed">
+    SELECT feedId, content, url, date, curatorId
+    FROM
+    (
+        SELECT feedId, content, url, date, curatorId
+        FROM Feed
+        ORDER BY date
+        DESC
+    ) Feed
+    WHERE feedId LIMIT #{limit} OFFSET #{offset};
+  </select>
+
   <delete id="deleteFeed" parameterType="int">
     DELETE FROM Feed
     WHERE feedId = #{feedId};
