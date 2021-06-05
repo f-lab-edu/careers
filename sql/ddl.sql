@@ -37,18 +37,19 @@ create table Academic(
 
 create table Voting(
   votingId int(10),
-  votingTitle varchar(20) not null,
-  votingWriter varchar(50) not null,
-  votingExplanation varchar(50) not null,
+  votingTitle varchar(20) NOT NULL,
+  votingWriter int(10) NOT NULL,
+  votingExplanation varchar(50) NOT NULL,
   timestamp date DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (votingId)
+  PRIMARY KEY (votingId),
+  FOREIGN KEY (votingWriter) REFERENCES Curator(id)
 );
 
 CREATE TABLE VotingItem(
   votingItemId int(10) auto_increment,
-  votingId int(10),
-  votingItemName varchar(20),
-  voteCount int(10000),
+  votingId int(10) NOT NULL,
+  votingItemName varchar(20) NOT NULL,
+  voteCount int(10000) DEFAULT 0,
   PRIMARY KEY(votingItemId),
-  FOREIGN KEY(votingId) references Voting(votingId)
+  FOREIGN KEY(votingId) REFERENCES Voting(votingId)
 );

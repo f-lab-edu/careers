@@ -19,7 +19,7 @@ public class Voting {
     private String votingTitle;
 
     @NotEmpty
-    private String votingWriter;
+    private int votingWriter;
 
     private Date timestamp;
 

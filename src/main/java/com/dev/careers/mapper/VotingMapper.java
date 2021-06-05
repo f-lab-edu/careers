@@ -15,4 +15,6 @@ public interface VotingMapper {
     void saveVoting(Voting voting);
 
     void removeVoting(int votingId);
+
+    int getVotingWriter(int votingId);
 }
