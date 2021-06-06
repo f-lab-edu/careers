@@ -1,5 +1,6 @@
 package com.dev.careers.model;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +22,9 @@ public class Voting {
     @NotEmpty
     private int votingWriter;
 
-    private Date timestamp;
+    private Timestamp timestamp;
+
+    private Timestamp deadline;
 
     @NotEmpty
     private String votingExplanation;

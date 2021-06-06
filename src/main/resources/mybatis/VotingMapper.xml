@@ -21,7 +21,7 @@
   </select>
 
   <select id="getVoting" resultType="Voting">
-    SELECT votingId, votingTitle, votingWriter, votingExplanation, timestamp
+    SELECT votingId, votingTitle, votingWriter, votingExplanation, timestamp, deadline
     FROM voting WHERE votingId = #{votingId};
   </select>
 
