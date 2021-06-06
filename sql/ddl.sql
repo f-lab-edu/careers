@@ -45,12 +45,12 @@ create table Feed(
     foreign key (curatorId) references Curator (id)
 );
 
-create table Comments
-(
-    commentsId int(10) not null auto_increment,
+create table Comment(
+    commentId int(10) not null auto_increment,
     feedId     int(10) not null,
     curatorId  int(10) not null,
     opinion    varchar(64) not null,
-    primary key (commentsId),
+    primary key (commentId),
     foreign key (feedId) references Feed (feedId),
+    foreign key (curatorId) references Curator (id)
 );
