@@ -18,8 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Byeong-jun
  */
-@AllArgsConstructor
+
 @Service
+@AllArgsConstructor
 public class VotingService {
 
     private final VotingMapper votingMapper;

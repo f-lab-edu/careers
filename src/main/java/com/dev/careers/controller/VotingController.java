@@ -1,6 +1,7 @@
 package com.dev.careers.controller;
 
 import com.dev.careers.model.Voting;
+import com.dev.careers.model.VotingItem;
 import com.dev.careers.service.VotingService;
 import com.dev.careers.service.session.SessionAuthenticator;
 import java.util.List;
@@ -63,6 +64,5 @@ public class VotingController {
     public void delete(@PathVariable("id") int id){
         votingService.deleteVoting(id, sessionAuthenticator.successLoginUserId());
     }
-
 
 }

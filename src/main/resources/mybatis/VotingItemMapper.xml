@@ -17,6 +17,15 @@
     </foreach>
   </insert>
 
+  <select id="getVotingItem" parameterType="com.dev.careers.model.VotingItem">
+    SELECT votingItmeId, votingItem, votingItemName, voteCount FROM votingItem
+    WHERE votingId = #{votingId} and votingItmeName = #{votingItemName}
+  </select>
+
+  <update id="updateVotingItemCount" parameterType="com.dev.careers.model.VotingItem">
+    UPDATE votingItem SET voteCount = #{voteCount} WHERE votingItemId = #{votingItemId}
+  </update>
+
   <delete id="removeVotingItem" parameterType="int">
     DELETE FROM votingItem WHERE votingId = #{votingId}
   </delete>

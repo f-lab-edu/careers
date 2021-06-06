@@ -1,11 +1,14 @@
 package com.dev.careers.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
 public class VotingItem {
+
     private int votingItemId;
 
     private int votingId;
