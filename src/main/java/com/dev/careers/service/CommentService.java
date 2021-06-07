@@ -31,8 +31,8 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(int commentId) {
-        commentMapper.deleteComment(commentId);
+    public void deleteComment(int feedId, int commentId) {
+        commentMapper.deleteComment(feedId, commentId);
     }
 
     public List<CommentList> getComment(int feedId) {

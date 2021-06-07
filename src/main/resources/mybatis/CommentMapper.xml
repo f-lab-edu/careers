@@ -25,8 +25,8 @@
 
   <delete id="deleteComment" parameterType="int">
     DELETE
-    FROM Feed
-    WHERE commentId = #{commentId};
+    FROM Comment
+    WHERE feedId = #{feedId} AND commentId = #{commentId};
   </delete>
 
   <select id="getComment" resultMap="comments" parameterType="int">
