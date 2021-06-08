@@ -35,6 +35,7 @@ public class CommentController {
     @PostMapping("comments")
     @LoginChecker
     public int postComment(@Valid @RequestBody Comment comment) {
+
         return commentService.insertComment(comment);
     }
 
@@ -53,12 +54,13 @@ public class CommentController {
     /**
      * 댓글 삭제
      *
-     * @param feedId 피드 아이디
+     * @param feedId    피드 아이디
      * @param commentId 삭제 할 댓글 아이디
      */
     @DeleteMapping("feeds/{feedId}/comments/{commentId}")
     @LoginChecker
-    public void deleteComment(@PathVariable("feedId") int feedId, @PathVariable("commentId") int commentId) {
+    public void deleteComment(@PathVariable("feedId") int feedId,
+        @PathVariable("commentId") int commentId) {
 
         commentService.deleteComment(feedId, commentId);
     }
