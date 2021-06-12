@@ -5,7 +5,7 @@
     SELECT votingItemId, votingItemName, voteCount FROM votingItem WHERE votingId = #{votingId}
   </select>
 
-  <insert id="saveVotingItem" parameterType="java.util.List">
+  <insert id="saveVotingItems" parameterType="java.util.List">
     INSERT INTO votingItem(votingItemid, votingId, votingItemName, voteCount) VALUES
     <foreach collection="list" item="item" separator=",">
     (
@@ -17,16 +17,11 @@
     </foreach>
   </insert>
 
-  <select id="getVotingItem" parameterType="com.dev.careers.model.VotingItem">
-    SELECT votingItmeId, votingItem, votingItemName, voteCount FROM votingItem
-    WHERE votingId = #{votingId} and votingItmeName = #{votingItemName}
-  </select>
-
   <update id="updateVotingItemCount" parameterType="com.dev.careers.model.VotingItem">
     UPDATE votingItem SET voteCount = #{voteCount} WHERE votingItemId = #{votingItemId}
   </update>
 
-  <delete id="removeVotingItem" parameterType="int">
+  <delete id="removeVotingItems" parameterType="int">
     DELETE FROM votingItem WHERE votingId = #{votingId}
   </delete>
 </mapper>

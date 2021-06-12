@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 
+/**
+ * 투표 Mapper
+ */
 @Mapper
 public interface VotingMapper {
 
@@ -12,9 +15,9 @@ public interface VotingMapper {
 
     Optional<Voting> getVoting(int votingId);
 
+    int getVotingWriter(int votingId);
+
     void saveVoting(Voting voting);
 
     void removeVoting(int votingId);
-
-    int getVotingWriter(int votingId);
 }
