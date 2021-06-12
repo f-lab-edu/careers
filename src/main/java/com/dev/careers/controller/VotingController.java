@@ -1,7 +1,6 @@
 package com.dev.careers.controller;
 
 import com.dev.careers.model.Voting;
-import com.dev.careers.model.VotingItem;
 import com.dev.careers.service.VotingService;
 import com.dev.careers.service.session.SessionAuthenticator;
 import java.util.List;
@@ -28,40 +27,43 @@ public class VotingController {
     private final SessionAuthenticator sessionAuthenticator;
 
     /**
-     * 투표 목록 조회
+     * 투표 목록 조회 후 투표 목록 반환
+     *
+     * @return 투표 가능한 목록
      */
     @GetMapping("/curator/votings")
-    public List<Voting> getVotings(){
-        List<Voting> votings  = votingService.getVotings();
-        return votings;
+    public List<Voting> getVotings() {
+        return votingService.getVotings();
     }
 
     /**
-     * 투표 상세 조회
-     * @Param 해당 투표 아이디
-     * @Return 투표 정보
+     * 투표 상세 조회 후 해당 투표 반환
+     *
+     * @param id 상세 조회할 투표 아이디
+     * @return voting 투표 상세 정보를 담은 투표 객체
      */
     @GetMapping("/curator/{id}/votings")
-    public Voting detail(@PathVariable("id") int id){
-        Voting voting = votingService.getVoting(id);
-        return voting;
+    public Voting detail(@PathVariable("id") int id) {
+        return votingService.getVoting(id);
     }
 
     /**
-     * 투표 작성
-     * @Param 작성한 투표 정보
+     * 신규 투표 저장
+     *
+     * @param voting 저장할 투표 객체
      */
     @PostMapping("/curator/votings")
-    public void create(@Valid @RequestBody Voting voting){
+    public void create(@Valid @RequestBody Voting voting) {
         votingService.addVoting(voting);
     }
 
     /**
-     * 투표 삭제
-     * @Param 삭제 대상 투표 아이디
+     * 투표 삭제 및 투표 아이템 삭제
+     *
+     * @param id 투표 삭제할 투표 아이디
      */
     @DeleteMapping("/curator/{id}/votings/")
-    public void delete(@PathVariable("id") int id){
+    public void delete(@PathVariable("id") int id) {
         votingService.deleteVoting(id, sessionAuthenticator.successLoginUserId());
     }
 

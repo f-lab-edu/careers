@@ -17,17 +17,21 @@
   </resultMap>
 
   <select id="getVotingList" resultType="VotingList">
-    SELECT votingId, votingTitle, votingWriter, timestamp FROM voting;
+    SELECT votingId, votingTitle, votingWriter, deadline FROM voting WHERE deadline>=timestamp
   </select>
 
-  <select id="getVoting" resultType="Voting">
-    SELECT votingId, votingTitle, votingWriter, votingExplanation, timestamp, deadline
+  <select id="getVoting" parameterType="int" resultType="Voting">
+    SELECT votingId, votingTitle, votingWriter, votingExplanation, "timestamp", deadline
     FROM voting WHERE votingId = #{votingId};
   </select>
 
+  <select id="getVotingWriter" parameterType="int" resultType="String">
+    SELECT votingWriter FROM Voting WHERE votingId = #{votingId}
+  </select>
+
   <insert id="saveVoting" parameterType="com.dev.careers.model.Voting">
-    INSERT INTO voting(votingId, votingTitle, votingWriter, votingExplanation)
-    VALUES(#{votingId}, #{votingTitle}, #{votingWriter}, #{votingExplanation})
+    INSERT INTO voting(votingId, votingTitle, votingWriter, "timestamp", deadline,votingExplanation)
+    VALUES(#{votingId}, #{votingTitle}, #{votingWriter}, #{timestamp}, #{deadline},#{votingExplanation})
   </insert>
 
   <delete id="removeVoting" parameterType="int">

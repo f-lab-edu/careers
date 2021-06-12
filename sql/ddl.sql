@@ -40,8 +40,8 @@ create table Voting(
   votingTitle varchar(20) NOT NULL,
   votingWriter int(10) NOT NULL,
   votingExplanation varchar(50) NOT NULL,
-  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  deadline TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  timestamp TIMESTAMP,
+  deadline TIMESTAMP,
   PRIMARY KEY (votingId),
   FOREIGN KEY (votingWriter) REFERENCES Curator(id)
 );

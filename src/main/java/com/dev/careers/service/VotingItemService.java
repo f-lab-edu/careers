@@ -5,22 +5,22 @@ import com.dev.careers.model.VotingItem;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
+/**
+ * 투표 아이템 관리 서비스
+ */
 @Service
 @AllArgsConstructor
 public class VotingItemService {
 
-    private VotingItemMapper votingItemMapper;
+    private final VotingItemMapper votingItemMapper;
 
-    public void countUpdate(int votingId, String votingItemName){
-        VotingItem votingItem = VotingItem.builder()
-            .votingId(votingId).votingItemName(votingItemName).build();
-
-        VotingItem importedVotingItem = votingItemMapper.getVotingItem(votingItem);
-
-        votingItem = VotingItem.builder()
-            .votingItemId(importedVotingItem.getVotingItemId())
-            .voteCount(importedVotingItem.getVoteCount() + 1).build();
-
+    /**
+     * 투표 아이템 투표 갯수 변경
+     *
+     * @param votingItem 갯수 증가 시킬 투표 아이템 객체
+     */
+    public void countUpdate(VotingItem votingItem) {
         votingItemMapper.updateVotingItemCount(votingItem);
     }
 }
