@@ -32,7 +32,7 @@ class CuratorServiceTest {
     }
 
     @Test
-    @DisplayName("회원가입된 정보로 로그인 요청 시 로그인 성공다.")
+    @DisplayName("회원가입된 정보로 로그인 요청 시 로그인 성공한다.")
     public void successLogin() {
         Curator curator = new Curator(
             "test@google.com",
