@@ -17,5 +17,5 @@ public interface CommentMapper {
 
     void deleteComment(int feedId, int commentId);
 
-    List<CommentList> getComment(int feedId);
+    List<Comment> getComment(int feedId);
 }

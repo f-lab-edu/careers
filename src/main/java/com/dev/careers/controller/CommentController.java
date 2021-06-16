@@ -73,7 +73,7 @@ public class CommentController {
      */
     @GetMapping("comments/{feedId}")
     @LoginChecker
-    public List<CommentList> getComments(@PathVariable("feedId") int feedId) {
+    public List<Comment> getComments(@PathVariable("feedId") int feedId) {
 
         return commentService.getComment(feedId);
     }

@@ -3,9 +3,10 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dev.careers.mapper.CommentMapper">
 
-  <resultMap id="comments" type="CommentList">
+  <resultMap id="comments" type="Comment">
     <result column="feedId" property="feedId"/>
     <result column="commentId" property="commentId"/>
+    <result column="curatorId" property="curatorId"/>
     <result column="name" property="name"/>
     <result column="title" property="title"/>
     <result column="opinion" property="opinion"/>
@@ -32,6 +33,7 @@
   <select id="getComment" resultMap="comments" parameterType="int">
     SELECT feed.feedId,
            comment.commentId,
+           comment.curatorId,
            curator.name,
            profile.title,
            comment.opinion

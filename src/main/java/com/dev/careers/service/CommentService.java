@@ -59,7 +59,7 @@ public class CommentService {
      * @param feedId 피드 아이디
      * @return 댓글 리스트 반환
      */
-    public List<CommentList> getComment(int feedId) {
+    public List<Comment> getComment(int feedId) {
         return commentMapper.getComment(feedId);
     }
 

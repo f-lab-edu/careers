@@ -24,4 +24,10 @@ public class Comment {
 
     @NonNull
     private String opinion;
+
+    @Nullable
+    private String name;
+
+    @Nullable
+    private String title;
 }
