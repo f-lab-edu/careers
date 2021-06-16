@@ -20,11 +20,11 @@ public class VotingItemController {
     private final VotingItemService votingItemService;
 
     /**
-     * 투표 아이템 투표 갯수 변경
+     * 투표 아이템 투표 개수 변경
      *
      * @param votingItem 갯수 증가 시킬 투표 아이템 객체
      */
-    @PostMapping("/curator/VotingItems")
+    @PostMapping("/curator/votings/voting-items")
     public void countUpdate(@Valid @RequestBody VotingItem votingItem) {
         votingItemService.countUpdate(votingItem);
     }

@@ -17,7 +17,7 @@
   </resultMap>
 
   <select id="getVotingList" resultType="VotingList">
-    SELECT votingId, votingTitle, votingWriter, deadline FROM voting WHERE deadline>=timestamp
+    SELECT votingId, votingTitle, votingWriter, deadline FROM voting WHERE deadline>= CURRENT_TIMESTAMP
   </select>
 
   <select id="getVoting" parameterType="int" resultType="Voting">

@@ -1,17 +1,16 @@
 package com.dev.careers.model;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 /**
  * 투표 정보 모델
  */
 @Getter
-@Setter
+@NoArgsConstructor
 public class Voting {
 
     /**
@@ -28,6 +27,20 @@ public class Voting {
         this.votingItems = voting.getVotingItems();
         this.timestamp = timestamp;
         this.deadline = deadline;
+    }
+
+    /**
+     * 투표 상세 조회 요청받은 투표 데이터와 투표 아이템 테이터 하나에 객체로 반환하기 위한 결합 생성자
+     *
+     * @param voting 상세 조회 투표
+     * @param votingItems 상세 조회 투표 아이템 리스트
+     */
+    public Voting(Voting voting, List<VotingItem> votingItems) {
+        this.votingId = voting.getVotingId();
+        this.votingTitle = voting.getVotingTitle();
+        this.votingWriter = voting.getVotingWriter();
+        this.deadline = voting.getDeadline();
+        this.votingItems = votingItems;
     }
 
     private int votingId;
@@ -47,7 +60,4 @@ public class Voting {
 
     private List<VotingItem> votingItems;
 
-    public void setVotingItems(List<VotingItem> votingItem) {
-        this.votingItems = new ArrayList<>(votingItem);
-    }
 }

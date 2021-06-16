@@ -50,8 +50,8 @@ public class VotingService {
         Voting voting = votingMapper.getVoting(id).orElseThrow(
             () -> new VotingNotFoundException(id));
         List<VotingItem> votingItems = votingItemMapper.getVotingItemList(id);
-        voting.setVotingItems(votingItems);
-        return voting;
+        Voting getResultVoting = new Voting(voting, votingItems);
+        return getResultVoting;
     }
 
     /**
@@ -75,7 +75,7 @@ public class VotingService {
     }
 
     /**
-     * 투표 삭제, 해당 투표 아이템 삭제
+     * 투표 취소, 해당 투표 아이템 삭제
      *
      * @param votingId 삭제 대상 투표 아이디
      * @param votingWriter 삭제 대상 투표 작성자

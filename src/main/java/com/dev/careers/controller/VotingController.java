@@ -58,7 +58,7 @@ public class VotingController {
     }
 
     /**
-     * 투표 삭제 및 투표 아이템 삭제
+     * 투표 취소, 해당 투표 아이템 삭제
      *
      * @param id 투표 삭제할 투표 아이디
      */
