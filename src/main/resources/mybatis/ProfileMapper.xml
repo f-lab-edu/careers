@@ -70,7 +70,7 @@
     FROM Profile
            LEFT JOIN Curator ON profile.curatorId = curator.id
            LEFT JOIN Career ON profile.profileId = career.profileId
-           LEFT JOIN Academic ON profile.profileId = career.profileId
+           LEFT JOIN Academic ON profile.profileId = academic.profileId
     WHERE profile.curatorId = #{curatorId};
   </select>
 
