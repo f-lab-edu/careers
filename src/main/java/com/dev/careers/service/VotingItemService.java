@@ -4,6 +4,7 @@ import com.dev.careers.mapper.VotingItemMapper;
 import com.dev.careers.model.VotingItem;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -20,6 +21,7 @@ public class VotingItemService {
      *
      * @param votingItem 갯수 증가 시킬 투표 아이템 객체
      */
+    @Transactional
     public void countUpdate(VotingItem votingItem) {
         votingItemMapper.updateVotingItemCount(votingItem);
     }

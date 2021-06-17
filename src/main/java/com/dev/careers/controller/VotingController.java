@@ -5,12 +5,14 @@ import com.dev.careers.service.VotingService;
 import com.dev.careers.service.session.SessionAuthenticator;
 import java.util.List;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -27,13 +29,17 @@ public class VotingController {
     private final SessionAuthenticator sessionAuthenticator;
 
     /**
-     * 투표 목록 조회 후 투표 목록 반환
+     * 투표 목록 조회 후 페이징 처리된 투표 목록 반환
      *
-     * @return 투표 가능한 목록
+     * @param limit 반환될 투표 리스트에 포함된 투표 개수
+     * @param offset 페이징 처리된 투표 리스트 시작 위치
+     * @return list 투표 가능한 목록
      */
     @GetMapping("/curator/votings")
-    public List<Voting> getVotings() {
-        return votingService.getVotings();
+    public List<Voting> getVotings(
+        @Min(value = 1) @RequestParam("limit") int limit,
+        @Min(value = 1) @RequestParam("offset") int offset) {
+        return votingService.getVotings(limit, offset);
     }
 
     /**

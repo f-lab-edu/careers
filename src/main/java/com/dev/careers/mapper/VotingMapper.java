@@ -11,7 +11,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface VotingMapper {
 
-    List<Voting> getVotingList();
+    int getTotalVotingCount();
+
+    List<Voting> getVotingList(int limit, int offset);
 
     Optional<Voting> getVoting(int votingId);
 

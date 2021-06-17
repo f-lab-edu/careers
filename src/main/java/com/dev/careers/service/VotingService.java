@@ -6,10 +6,12 @@ import com.dev.careers.model.Voting;
 import com.dev.careers.model.VotingItem;
 import com.dev.careers.service.error.AuthorMismatchException;
 import com.dev.careers.service.error.FailToSaveVotingException;
+import com.dev.careers.service.error.OffsetOutOfRangeException;
 import com.dev.careers.service.error.VotingNotFoundException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,11 +34,21 @@ public class VotingService {
     /**
      * 투표 가능한 투표들 조희 후 투표 목록 반환
      *
+     * @param limit 반환될 투표 리스트에 포함된 투표 개수
+     * @param offset 페이징 처리된 투표 리스트 시작 위치
      * @return List 투표 가능한 목록
      */
     @Transactional
-    public List<Voting> getVotings() {
-        return votingMapper.getVotingList();
+    public List<Voting> getVotings(int limit, int offset) {
+        int totalVotingCount = votingMapper.getTotalVotingCount();
+        int maxOffset = (totalVotingCount / limit);
+        int startOffset = offset - 1;
+
+        if (startOffset > maxOffset) {
+            throw new OffsetOutOfRangeException("Offset이 범위를 초과 하였습니다.");
+        }
+
+        return votingMapper.getVotingList(limit, startOffset).stream().collect(Collectors.toList());
     }
 
     /**
