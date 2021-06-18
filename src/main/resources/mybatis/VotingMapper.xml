@@ -21,13 +21,13 @@
   </select>
 
   <select id="getVotingList" parameterType="int" resultType="VotingList">
+    <![CDATA[
     SELECT votingId, votingTitle, votingWriter, deadline
-    FROM voitng AS result JOIN
-        (SELECT votingId
+    FROM (SELECT votingId
         FROM voting
-        WHERE deadline>= CURRENT_TIMESTAMP
-        ORDER BY LIMIT #{limit} OFFSET #{offset}
-        ) AS element ON result.votingId = element.votingId
+        WHERE deadline >= CURRENT_TIMESTAMP
+        ) WHERE votingId <= #{cursor} ORDER BY LIMIT #{limit}
+        ]]>
   </select>
 
   <select id="getVoting" parameterType="int" resultType="Voting">
@@ -39,9 +39,17 @@
     SELECT votingWriter FROM Voting WHERE votingId = #{votingId}
   </select>
 
-  <insert id="saveVoting" parameterType="com.dev.careers.model.Voting">
+  <insert id="saveVoting" parameterType="com.dev.careers.model.Voting" useGeneratedKeys="true"
+    keyColumn="votingId">
     INSERT INTO voting(votingId, votingTitle, votingWriter, "timestamp", deadline,votingExplanation)
-    VALUES(#{votingId}, #{votingTitle}, #{votingWriter}, #{timestamp}, #{deadline},#{votingExplanation})
+    VALUES(
+           #{votingId},
+           #{votingTitle},
+           #{votingWriter},
+           #{timestamp},
+           #{deadline},
+           #{votingExplanation}
+           )
   </insert>
 
   <delete id="removeVoting" parameterType="int">

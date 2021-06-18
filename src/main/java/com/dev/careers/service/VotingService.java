@@ -5,8 +5,8 @@ import com.dev.careers.mapper.VotingMapper;
 import com.dev.careers.model.Voting;
 import com.dev.careers.model.VotingItem;
 import com.dev.careers.service.error.AuthorMismatchException;
+import com.dev.careers.service.error.CursorOutOfRangeException;
 import com.dev.careers.service.error.FailToSaveVotingException;
-import com.dev.careers.service.error.OffsetOutOfRangeException;
 import com.dev.careers.service.error.VotingNotFoundException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -34,21 +34,20 @@ public class VotingService {
     /**
      * 투표 가능한 투표들 조희 후 투표 목록 반환
      *
+     * @param cursor 페이징 처리된 투표 리스트 현재 위치 ID
      * @param limit 반환될 투표 리스트에 포함된 투표 개수
-     * @param offset 페이징 처리된 투표 리스트 시작 위치
      * @return List 투표 가능한 목록
      */
     @Transactional
-    public List<Voting> getVotings(int limit, int offset) {
-        int totalVotingCount = votingMapper.getTotalVotingCount();
-        int maxOffset = (totalVotingCount / limit);
-        int startOffset = offset - 1;
+    public List<Voting> getVotings(int cursor, int limit) {
+        int votingTotalCount = votingMapper.getTotalVotingCount();
+        votingTotalCount -= 1;
 
-        if (startOffset > maxOffset) {
-            throw new OffsetOutOfRangeException("Offset이 범위를 초과 하였습니다.");
+        if (votingTotalCount < cursor) {
+            throw new CursorOutOfRangeException("Cursor 범위가 초과하였습니다.");
         }
 
-        return votingMapper.getVotingList(limit, startOffset).stream().collect(Collectors.toList());
+        return votingMapper.getVotingList(cursor, limit).stream().collect(Collectors.toList());
     }
 
     /**
@@ -78,6 +77,7 @@ public class VotingService {
         Timestamp deadline = Timestamp.valueOf(today.plusDays(7));
 
         Voting addedTimeVoting = new Voting(voting, timestamp, deadline);
+
         try {
             votingMapper.saveVoting(addedTimeVoting);
             votingItemMapper.saveVotingItems(addedTimeVoting.getVotingItems());

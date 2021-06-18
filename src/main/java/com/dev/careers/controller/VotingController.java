@@ -29,17 +29,17 @@ public class VotingController {
     private final SessionAuthenticator sessionAuthenticator;
 
     /**
-     * 투표 목록 조회 후 페이징 처리된 투표 목록 반환
+     * 투표 목록 조회 후 cursor 페이징 처리된 투표 목록 반환
      *
+     * @param cursor 페이징 처리된 투표 리스트 현재 위치 ID
      * @param limit 반환될 투표 리스트에 포함된 투표 개수
-     * @param offset 페이징 처리된 투표 리스트 시작 위치
      * @return list 투표 가능한 목록
      */
     @GetMapping("/curator/votings")
     public List<Voting> getVotings(
-        @Min(value = 1) @RequestParam("limit") int limit,
-        @Min(value = 1) @RequestParam("offset") int offset) {
-        return votingService.getVotings(limit, offset);
+        @Min(value = 1) @RequestParam("cursor") int cursor,
+        @Min(value = 1) @RequestParam("limit") int limit) {
+        return votingService.getVotings(cursor, limit);
     }
 
     /**

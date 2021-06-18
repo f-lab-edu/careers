@@ -34,13 +34,13 @@ public class VotingExceptionHandler {
     }
 
     /**
-     * 투표 리스트 조회 페이징 처리과정에서 offset 범위 초과 예외 처리 핸들러
+     * 투표 리스트 조회 페이징 처리과정에서 Cursor 범위 초과 시 발생 예외 처리 핸들러
      *
-     * @param exception 투표 상세 조회 페이징 Offset 예외
+     * @param exception 투표 상세 조회 페이징 Cursor 예외
      * @return 예외 메세지와 400 Status Code
      */
-    @ExceptionHandler(value = OffsetOutOfRangeException.class)
-    public ResponseEntity<String> offsetOutOfRangeException(RuntimeException exception) {
+    @ExceptionHandler(value = CursorOutOfRangeException.class)
+    public ResponseEntity<String> cursorOutOfRangeException(RuntimeException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

@@ -13,7 +13,7 @@ public interface VotingMapper {
 
     int getTotalVotingCount();
 
-    List<Voting> getVotingList(int limit, int offset);
+    List<Voting> getVotingList(int cursor, int limit);
 
     Optional<Voting> getVoting(int votingId);
 
