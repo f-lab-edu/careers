@@ -33,21 +33,23 @@ public class VotingService {
 
     /**
      * 투표 가능한 투표들 조희 후 투표 목록 반환
+     * cursor 0일 경우 투표 전체 개수를 할당하여 투표 목록 조회 시작점으로 설정 후 가장 최근 목록 조회
      *
      * @param cursor 페이징 처리된 투표 리스트 현재 위치 ID
-     * @param limit 반환될 투표 리스트에 포함된 투표 개수
      * @return List 투표 가능한 목록
      */
     @Transactional
-    public List<Voting> getVotings(int cursor, int limit) {
+    public List<Voting> getVotings(int cursor) {
         int votingTotalCount = votingMapper.getTotalVotingCount();
-        votingTotalCount -= 1;
 
+        if (cursor == 0) {
+            cursor = votingTotalCount;
+        }
         if (votingTotalCount < cursor) {
             throw new CursorOutOfRangeException("Cursor 범위가 초과하였습니다.");
         }
 
-        return votingMapper.getVotingList(cursor, limit).stream().collect(Collectors.toList());
+        return votingMapper.getVotingList(cursor).stream().collect(Collectors.toList());
     }
 
     /**
