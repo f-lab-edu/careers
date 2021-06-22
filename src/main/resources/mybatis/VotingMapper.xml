@@ -26,7 +26,7 @@
     FROM (SELECT votingId
         FROM voting
         WHERE deadline >= CURRENT_TIMESTAMP
-        ) WHERE votingId <= #{cursor} ORDER BY votingId DESC LIMIT 10
+        ) WHERE votingId <= #{cursor} ORDER BY votingId DESC LIMIT #{limit}
         ]]>
   </select>
 

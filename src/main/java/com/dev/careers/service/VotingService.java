@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,9 @@ public class VotingService {
     private final VotingMapper votingMapper;
 
     private final VotingItemMapper votingItemMapper;
+
+    @Value("${voting.limit}")
+    private final int limit;
 
     /**
      * 투표 가능한 투표들 조희 후 투표 목록 반환
@@ -49,7 +53,7 @@ public class VotingService {
             throw new CursorOutOfRangeException("Cursor 범위가 초과하였습니다.");
         }
 
-        return votingMapper.getVotingList(cursor).stream().collect(Collectors.toList());
+        return votingMapper.getVotingList(cursor, limit).stream().collect(Collectors.toList());
     }
 
     /**
