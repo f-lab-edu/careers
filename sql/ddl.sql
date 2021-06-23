@@ -50,7 +50,7 @@ CREATE TABLE VotingItem(
   votingItemId int(10) auto_increment,
   votingId int(10) NOT NULL,
   votingItemName varchar(20) NOT NULL,
-  voteCount int(10000) DEFAULT 0,
+  voteCount int(11) DEFAULT 0,
   PRIMARY KEY(votingItemId),
   FOREIGN KEY(votingId) REFERENCES Voting(votingId)
 );
