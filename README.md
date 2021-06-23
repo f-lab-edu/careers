@@ -36,6 +36,7 @@ ___
 
 ### 💠 Git-Flow 브랜치 전략
 Git-Flow 브랜치 전략에 기능별로 브랜치를 나누어서 작업을 진행하였고 기능이 구현이 되면 Pull-Request를 통한 반드시 코드 리뷰가 완료된 후 Marge가 진행될 수록하여 완성도 높은 코드가 나올 수 있도록 하였습니다.
+
 ![git-flow](https://user-images.githubusercontent.com/59943196/122962571-85636f80-d3c0-11eb-8401-7c1d020354cb.png)
 <br/>
 
@@ -44,10 +45,16 @@ ___
 화면 구성와 기능 정의 등 프로젝트에 전반적인 내용을 확인하실 수 있습니다.  
 그리고 프로젝트를 진행하면서 발생한 문제를 해결하는 이야기를 작성한 블로그 주소도 포함돼있습니다.  
 - 📍 [화면 구성](https://github.com/f-lab-edu/careers/wiki/Careers-Prototyping)
-- 📍 [화면 구성](https://github.com/f-lab-edu/careers/wiki/Careers-Prototyping)
-- 📍 [화면 구성](https://github.com/f-lab-edu/careers/wiki/Careers-Prototyping)
-- 📍 [화면 구성](https://github.com/f-lab-edu/careers/wiki/Careers-Prototyping)
-- 📍 [화면 구성](https://github.com/f-lab-edu/careers/wiki/Careers-Prototyping)
+- 📍 [기능 정의](https://github.com/f-lab-edu/careers/wiki/Use-Case)
+
+### 💠 Rules  
+
+- 📍 [Pre-commit](https://github.com/f-lab-edu/careers/wiki/PR-commit-message-rule)
+- 📍 [코딩 컨벤션](https://github.com/f-lab-edu/careers/wiki/Code-style)
+
+### 💠 ISSUE
+
+- 📍 [이슈 기록](https://github.com/f-lab-edu/careers/wiki/Record)
 <br/>
 
 ## 📌 프로젝트 구성
