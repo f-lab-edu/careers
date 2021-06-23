@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+    stages {
+        stage('Git Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Unit Test') {
+            steps {
+                echo 'Careers Test'
+
+                sh 'chmod +x gradlew'
+                sh './gradlew clean checkstyleTest'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Careers Build'
+
+                sh './gradlew build -x test'
+            }
+        }
+    }
+}
