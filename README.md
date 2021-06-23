@@ -64,7 +64,7 @@ ___
 
 ## 📌 프로젝트 ERD
 ___
-![ERD](https://user-images.githubusercontent.com/39672033/121915202-f7f3a000-cd6d-11eb-8e2c-224f826a31c6.png)
+![ERD](https://user-images.githubusercontent.com/59943196/123129303-d047ba80-d486-11eb-96e8-e999f1e6699f.png)
 <br/>
 
 ## 📌 사용 기술
