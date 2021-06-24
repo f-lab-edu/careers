@@ -48,12 +48,12 @@ ___
 - 📍 [기능 정의](https://github.com/f-lab-edu/careers/wiki/Use-Case)
 
 ### 💠 Rules  
-
+프로젝트를 협업하는 과정에서 일관성 있는 코드들 작성하기 위해 정한 규칙입니다.
 - 📍 [Pre-commit](https://github.com/f-lab-edu/careers/wiki/PR-commit-message-rule)
 - 📍 [코딩 컨벤션](https://github.com/f-lab-edu/careers/wiki/Code-style)
 
 ### 💠 ISSUE
-
+프로젝트를 진행하면서 부딪힌 이슈와 그에 따른 문제해결 과정을 정리한 블로그 글입니다.
 - 📍 [이슈 기록](https://github.com/f-lab-edu/careers/wiki/Record)
 <br/>
 
