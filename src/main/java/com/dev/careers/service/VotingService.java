@@ -50,7 +50,7 @@ public class VotingService {
             cursor = votingTotalCount;
         }
         if (votingTotalCount < cursor) {
-            throw new CursorOutOfRangeException("Cursor 범위가 초과하였습니다.");
+            throw new CursorOutOfRangeException("투표 목록 조회 범위를 초과하였습니다.");
         }
 
         return votingMapper.getVotingList(cursor, limit).stream().collect(Collectors.toList());
