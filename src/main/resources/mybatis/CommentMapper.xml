@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dev.careers.mapper.CommentMapper">
+
+  <resultMap id="comments" type="Comment">
+    <result column="feedId" property="feedId"/>
+    <result column="commentId" property="commentId"/>
+    <result column="curatorId" property="curatorId"/>
+    <result column="name" property="name"/>
+    <result column="title" property="title"/>
+    <result column="opinion" property="opinion"/>
+  </resultMap>
+
+  <insert id="insertComment" parameterType="Comment" useGeneratedKeys="true"
+    keyProperty="commentId">
+    INSERT INTO Comment(commentId, feedId, curatorId, opinion)
+    VALUES (#{commentId}, #{feedId}, #{curatorId}, #{opinion});
+  </insert>
+
+  <update id="updateComment" parameterType="Comment">
+    UPDATE Comment
+    SET opinion = #{opinion}
+    WHERE commentId = #{commentId};
+  </update>
+
+  <delete id="deleteComment" parameterType="int">
+    DELETE
+    FROM Comment
+    WHERE feedId = #{feedId} AND commentId = #{commentId};
+  </delete>
+
+  <select id="getComment" resultMap="comments" parameterType="int">
+    SELECT feed.feedId,
+           comment.commentId,
+           comment.curatorId,
+           curator.name,
+           profile.title,
+           comment.opinion
+    FROM Feed
+            LEFT JOIN Comment ON feed.feedId = comment.feedId
+            LEFT JOIN Curator ON curator.id = comment.curatorId
+            LEFT JOIN Profile ON profile.curatorId = comment.curatorId
+    WHERE feed.feedId = #{feedId};
+  </select>
+
+</mapper>

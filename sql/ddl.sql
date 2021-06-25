@@ -2,7 +2,7 @@ create table Curator(
     id int(10) not null auto_increment,
     email varchar(64) not null,
     name varchar(64) not null,
-    password varchar(64) not null,
+    password varchar(200) not null,
     salt varchar(64) not null,
     primary key (id),
     unique index idx_email (email)
@@ -42,5 +42,15 @@ create table Feed(
     date timestamp not null,
     curatorId int(10),
     primary key (feedId),
+    foreign key (curatorId) references Curator (id)
+);
+
+create table Comment(
+    commentId int(10) not null auto_increment,
+    feedId     int(10) not null,
+    curatorId  int(10) not null,
+    opinion    varchar(64) not null,
+    primary key (commentId),
+    foreign key (feedId) references Feed (feedId),
     foreign key (curatorId) references Curator (id)
 );
