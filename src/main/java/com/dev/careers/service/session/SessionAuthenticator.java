@@ -27,14 +27,13 @@ public class SessionAuthenticator {
     }
 
     /**
-     * 요청헤더에 SESSION_NAME의 value값을 가져와 반환한다.
-     * value가 없으면 예외를 발생시킨다.
+     * 요청헤더에 SESSION_NAME의 value값을 가져와 반환한다. value가 없으면 예외를 발생시킨다.
      *
      * @return 큐레이터 아이디
      */
     public int successLoginUserId() {
         Object userId = Optional.ofNullable(httpSession.getAttribute(SESSION_NAME))
-            .orElseThrow(ViolationException::new);
+            .orElseThrow(() -> new ViolationException("로그인을 해주세요."));
 
         return (int) userId;
     }
