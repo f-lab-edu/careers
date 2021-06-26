@@ -16,10 +16,8 @@ public class Comment {
     @Nullable
     private int commentId;
 
-    @NonNull
     private int feedId;
 
-    @NonNull
     private int curatorId;
 
     @NonNull

@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 
 /**
@@ -109,10 +109,12 @@ public class ProfileService {
 
     /**
      * 프로필 정보 반환
+     * Redis캐시를 사용하여 빠른 응답을 제공한다.
      *
      * @param curatorId 큐레이터 아이디
      * @return 프로필 정보
      */
+    @Cacheable(key = "#curatorId", value = "getProfile")
     public Profile getProfile(int curatorId) {
         return profileMapper.getUserProfile(curatorId);
     }
