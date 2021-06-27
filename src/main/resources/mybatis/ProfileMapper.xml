@@ -13,12 +13,14 @@
   </resultMap>
 
   <resultMap id="careerList" type="Career">
+    <result column="careerId" property="careerId"/>
     <result column="profileId" property="profileId"/>
     <result column="company" property="company"/>
     <result column="companyTitle" property="companyTitle"/>
   </resultMap>
 
   <resultMap id="academicList" type="Academic">
+    <result column="academicId" property="academicId"/>
     <result column="profileId" property="profileId"/>
     <result column="name" property="name"/>
     <result column="major" property="major"/>
@@ -59,15 +61,16 @@
            profile.curatorId,
            profile.title,
            profile.introduction,
-           curator.name,
+           career.careerId,
            career.company,
            career.companyTitle,
+           academic.academicId,
            academic.name,
            academic.major
     FROM Profile
            LEFT JOIN Curator ON profile.curatorId = curator.id
            LEFT JOIN Career ON profile.profileId = career.profileId
-           LEFT JOIN Academic ON profile.profileId = career.profileId
+           LEFT JOIN Academic ON profile.profileId = academic.profileId
     WHERE profile.curatorId = #{curatorId};
   </select>
 
