@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'org.asciidoctor.convert' version '1.5.9.2' //Spring_Rest_Docs asciidoctor 플러그인 적용
 }
 
 //checkstyle 설정파일 별도 checkstyle.gradle파일로 분리
@@ -17,6 +18,17 @@ configurations {
     }
     // spring-boot-starter-web와 Log4j2 라이브러리 충돌로 인한 설정
     compile.exclude module: 'spring-boot-starter-logging'
+}
+
+//Spring_Rest_Docs 생성 snippets 출력 위치 정의
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+//Spring_Rest_Docs asciidoctor 작업 구성
+asciidoctor {
+    inputs.dir snippetsDir
+    dependsOn test
 }
 
 repositories {
@@ -42,8 +54,12 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //Spring_Rest_Docs 의존성 추가
+    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.6.RELEASE'
+    testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.6.RELEASE'
 }
 
 test {
     useJUnitPlatform()
+    outputs.dir snippetsDir //test snippets 디렉터리를 출력으로 추가 하도록 작업 구성
 }
