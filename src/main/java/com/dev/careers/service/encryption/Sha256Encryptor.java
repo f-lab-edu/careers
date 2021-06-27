@@ -47,7 +47,7 @@ public class Sha256Encryptor implements PasswordEncryptor {
         } catch (NoSuchAlgorithmException ex) {
             throw new NotSupportAlgorithmException("사용할 수 없는 암호화 알고리즘 입니다.");
         }
-        return new String(password);
+        return byteArrayToString(password);
     }
 
     /**

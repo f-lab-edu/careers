@@ -1,0 +1,98 @@
+pipeline {
+    environment {
+        registry = "qzqz0826/careers-application"
+        registryCredential = 'docker-hub'
+        dockerImage = ''
+    }
+    agent any
+    stages {
+        stage('Git Clone') {
+            steps {
+                echo 'Source Clone'
+
+                git branch: 'main', credentialsId: 'Careers-Git', url: 'git@github.com:f-lab-edu/careers.git'
+            }
+        }
+
+
+        stage('Unit Test') {
+            steps {
+                echo 'Careers Test'
+
+                sh 'chmod +x gradlew'
+                sh './gradlew clean checkstyleTest'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Careers Build'
+
+                sh './gradlew build -x test'
+            }
+        }
+
+        stage('Docekr Build') {
+            steps {
+                 script {
+                    echo 'Docekr Build & Push'
+
+                    dockerImage = docker.build(registry + ":$BUILD_NUMBER", '--build-arg JAR_FILE=build/libs/*.jar .')
+                }
+            }
+        }
+
+        stage('Docker Publish') {
+            steps {
+                echo 'Docker Publish'
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push("$BUILD_NUMBER")
+                    }
+                }
+            }
+        }
+
+        stage('Docker Image Cleaning up') {
+            steps {
+                sh "docker rmi $registry:$BUILD_NUMBER"
+            }
+        }
+
+        stage('Deploy') {
+            steps([$class: 'BapSshPromotionPublisherPlugin']) {
+                echo 'SSH Publish'
+                sshPublisher(
+                    continueOnError: false, //서버에 문제가 발생 시 진행여부
+                    failOnError: true, //서버에 deploy 시 문제가 있는 경우 빌드 실패로 표시 여부
+                    publishers :[
+                        sshPublisherDesc(
+                            configName: "careers-instance-1",//Jenkins 시스템 정보에 사전 입력한 서버 ID
+                            verbose: true,
+                            transfers: [
+                                sshTransfer(
+                                    sourceFiles: "", //젠킨스 서버에서 전송할 파일
+                                    removePrefix: "", //파일에서 삭제할 경로가 있다면 작성
+                                    remoteDirectory: "", //배포할 위치
+                                    execCommand: "./script.sh $BUILD_NUMBER" //원격지에서 실행할 커맨드
+                                )
+                            ]
+                        ),
+                        sshPublisherDesc(
+                            configName: "careers-instance-2",//Jenkins 시스템 정보에 사전 입력한 서버 ID
+                            verbose: true,
+                            transfers: [
+                                sshTransfer(
+                                    sourceFiles: "", //젠킨스 서버에서 전송할 파일
+                                    removePrefix: "", //파일에서 삭제할 경로가 있다면 작성
+                                    remoteDirectory: "", //배포할 위치
+                                    execCommand: "./script.sh $BUILD_NUMBER" //원격지에서 실행할 커맨드
+                                )
+                            ]
+                        )
+                    ]
+                )
+            }
+        }
+    }
+}

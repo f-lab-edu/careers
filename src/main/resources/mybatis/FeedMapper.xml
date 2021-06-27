@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dev.careers.mapper.FeedMapper">
+
+  <insert id="insertFeedInfo" parameterType="Feed">
+    INSERT INTO Feed
+      (content, url, date, curatorId)
+    VALUES (#{content}, #{url}, #{date}, #{curatorId});
+  </insert>
+
+  <update id="updateFeedInfo" parameterType="Feed">
+    UPDATE Feed
+    SET content = #{content},
+        url     = #{url},
+        date    = #{date}
+    WHERE feedId = #{feedId};
+  </update>
+
+  <select id="getFeedList" resultType="Feed">
+    SELECT feedId, content, url, date, curatorId
+    FROM Feed
+    WHERE curatorId = #{curatorId};
+  </select>
+
+  <select id="getTotalFeedCount" resultType="int">
+    SELECT count(feedId)
+    FROM Feed
+  </select>
+
+  <select id="getPartialFeed" resultType="Feed">
+    SELECT feedId, content, url, date, curatorId
+    FROM
+    (
+        SELECT feedId, content, url, date, curatorId
+        FROM Feed
+        ORDER BY date
+        DESC
+    ) Feed
+    WHERE feedId LIMIT #{limit} OFFSET #{offset};
+  </select>
+
+  <delete id="deleteFeed" parameterType="int">
+    DELETE FROM Feed
+    WHERE feedId = #{feedId};
+  </delete>
+
+</mapper>

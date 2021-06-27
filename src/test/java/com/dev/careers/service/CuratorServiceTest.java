@@ -4,7 +4,6 @@ import com.dev.careers.model.Curator;
 import com.dev.careers.model.LoginParamter;
 import com.dev.careers.service.error.DuplicatedEmailException;
 import com.dev.careers.service.error.ViolationException;
-import java.security.NoSuchAlgorithmException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,8 @@ class CuratorServiceTest {
     CuratorService curatorService;
 
     @Test
-    @DisplayName("중복된 이메일 회원가입 요청")
-    public void dupicatedEmail() throws Exception {
+    @DisplayName("중복된 이메일 회원가입 요청 시 DuplicatedEmailException 예외가 발생한다.")
+    public void dupicatedEmail() {
         Curator curator = new Curator(
             "test@google.com",
             "홍길동",
@@ -33,8 +32,8 @@ class CuratorServiceTest {
     }
 
     @Test
-    @DisplayName("로그인 성공")
-    public void successLogin() throws NoSuchAlgorithmException {
+    @DisplayName("회원가입된 정보로 로그인 요청 시 로그인 성공한다.")
+    public void successLogin() {
         Curator curator = new Curator(
             "test@google.com",
             "홍길동",
@@ -52,8 +51,8 @@ class CuratorServiceTest {
     }
 
     @Test
-    @DisplayName("비밀번호 오류로 인한 로그인 실패")
-    public void failToLogin() throws NoSuchAlgorithmException {
+    @DisplayName("회원가입된 정보로 로그인 하지 않았을 경우 ViolationException 예외가 발생한다.")
+    public void passwordMismatchAtLogin() {
         Curator curator = new Curator(
             "test@google.com",
             "홍길동",
@@ -71,8 +70,8 @@ class CuratorServiceTest {
     }
 
     @Test
-    @DisplayName("가입하지 않는 이메일로 인한 로그인 실패")
-    public void failToLogin2() throws NoSuchAlgorithmException {
+    @DisplayName("가입하지 않는 이메일로 인한 로그인 요청 시 ViolationException 예외 발생한다.")
+    public void unsubscribedLoginAttempt() {
         Curator curator = new Curator(
             "test@google.com",
             "홍길동",

@@ -7,16 +7,18 @@ import com.dev.careers.model.Profile;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+
 
 /**
  * 큐레이터 프로필 관리 서비스
  *
  * @author junehee
  */
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class ProfileService {

@@ -5,7 +5,7 @@ import com.dev.careers.model.Curator;
 import com.dev.careers.model.LoginParamter;
 import com.dev.careers.service.encryption.PasswordEncryptor;
 import com.dev.careers.service.error.DuplicatedEmailException;
-import com.dev.careers.service.error.SqlInsertException;
+import com.dev.careers.service.error.FailToSaveCuratorException;
 import com.dev.careers.service.error.ViolationException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -39,13 +39,13 @@ public class CuratorService {
 
         int errorCode = curatorMapper.insertCurator(curator);
         if (errorCode != 1) {
-            throw new SqlInsertException("회원가입 정보를 저장하지 못했습니다.");
+            throw new FailToSaveCuratorException("회원가입 정보를 저장하지 못했습니다.");
         }
     }
 
     /**
-     * 회원가입되어있는 큐레이터 정보(이메일, 패스워드)를 받아 큐레이터ID를 반환한다.
-     * 만약 비밀번호가 일치하지않거나 큐레이터ID를 읽어올 수 없는 경우에는 예외가 발생한다.
+     * 회원가입되어있는 큐레이터 정보(이메일, 패스워드)를 받아 큐레이터ID를 반환한다. 만약 비밀번호가 일치하지않거나 큐레이터ID를 읽어올 수 없는 경우에는 예외가
+     * 발생한다.
      *
      * @param loginParamter 로그인 정보
      * @return 큐레이터 ID
@@ -59,11 +59,11 @@ public class CuratorService {
 
         String hashing = passwordEncryptor.hashing(loginParamter.getPassword().getBytes(), salt);
         memberInfo.filter(v -> hashing.equals(v.getPassword()))
-            .orElseThrow(ViolationException::new);
+            .orElseThrow(() -> new ViolationException("등록되지 않은 회원입니다."));
 
         int id = memberInfo
             .map(v -> v.getId())
-            .orElseThrow(ViolationException::new);
+            .orElseThrow(() -> new ViolationException("회원정보를 가져올 수 없습니다."));
 
         return id;
     }

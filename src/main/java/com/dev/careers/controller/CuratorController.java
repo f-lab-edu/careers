@@ -1,5 +1,6 @@
 package com.dev.careers.controller;
 
+import com.dev.careers.annotation.LoginChecker;
 import com.dev.careers.model.Curator;
 import com.dev.careers.model.LoginParamter;
 import com.dev.careers.service.CuratorService;
@@ -35,11 +36,9 @@ public class CuratorController {
      * 회원가입
      *
      * @param curator 회원가입 할 큐레이터 정보
-     * @param bindingResult 데이터 유효성 검사 후 결과
      */
     @PostMapping("join")
-    public void joinCurator(@Valid @ModelAttribute Curator curator, BindingResult bindingResult) {
-        verifyCuratorParameter(bindingResult);
+    public void joinCurator(@Valid @ModelAttribute Curator curator) {
 
         curatorService.join(curator);
     }
@@ -48,13 +47,10 @@ public class CuratorController {
      * 로그인
      *
      * @param loginParamter 로그인 정보
-     * @param bindingResult 유효성 검사 결과
      */
     @PostMapping("login")
-    public void loginCurator(@Valid @ModelAttribute LoginParamter loginParamter,
-        BindingResult bindingResult) {
+    public void loginCurator(@Valid @ModelAttribute LoginParamter loginParamter) {
 
-        verifyCuratorParameter(bindingResult);
         int id = curatorService.getUserIdByEmailAndPassword(loginParamter);
         sessionAuthenticator.login(id);
     }
@@ -63,21 +59,8 @@ public class CuratorController {
      * 로그아웃
      */
     @DeleteMapping("logout")
+    @LoginChecker
     public void logout() {
         sessionAuthenticator.logout();
-    }
-
-    /**
-     * 요청 파라미터 유효성 검사
-     *
-     * @param bindingResult 유효성 검사결과
-     */
-    public void verifyCuratorParameter(BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            Optional<ObjectError> objectError = bindingResult.getAllErrors().stream().findFirst();
-            if (objectError.isPresent()) {
-                throw new ViolationException();
-            }
-        }
     }
 }

@@ -14,8 +14,15 @@ checkstyle {
 }
 
 checkstyleMain {
-    // checkstyle을 적용할 필요가 없는 파일들을 설정
-//    exclude 'resources/main/mybatis/**'
+    //checkstyle을 적용할 필요가 없는 파일들을 설정
+    //exclude 'resource/mybatis/**'
+    reports {
+        html.destination rootProject.file("build/reports/checkstyle/main.html")
+    }
+}
+checkstyleTest{
+    exclude 'src/test/java/com/dev/careers/controller/**',
+            'src/test/java/com/dev/careers/service/CuratorServiceTest.java'
     reports {
         html.destination rootProject.file("build/reports/checkstyle/main.html")
     }
