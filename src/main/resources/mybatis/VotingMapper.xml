@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dev.careers.mapper.VotingMapper">
+  <resultMap id="VotingList" type="com.dev.careers.model.Voting">
+    <result column="votingId" property="votingId"/>
+    <result column="votingTitle" property="votingTitle"/>
+    <result column="votingWriter" property="votingWriter"/>
+    <result column="timestamp" property="timestamp"/>
+  </resultMap>
+
+  <resultMap id="Voting" type="com.dev.careers.model.Voting">
+    <result column="votingId" property="votingId"/>
+    <result column="votingTitle" property="votingTitle"/>
+    <result column="votingWriter" property="votingWriter"/>
+    <result column="timestamp" property="timestamp"/>
+    <result column="votingExplanation" property="votingExplanation"/>
+  </resultMap>
+
+  <select id="getTotalVotingCount" resultType="int">
+    SELECT count(votingId) FROM voting
+  </select>
+
+  <select id="getVotingList" parameterType="int" resultType="VotingList">
+    <![CDATA[
+    SELECT votingId, votingTitle, votingWriter, deadline
+    FROM (SELECT votingId
+        FROM voting
+        WHERE deadline >= CURRENT_TIMESTAMP
+        ) WHERE votingId <= #{cursor} ORDER BY votingId DESC LIMIT #{limit}
+        ]]>
+  </select>
+
+  <select id="getVoting" parameterType="int" resultType="Voting">
+    SELECT votingId, votingTitle, votingWriter, votingExplanation, "timestamp", deadline
+    FROM voting WHERE votingId = #{votingId};
+  </select>
+
+  <select id="getVotingWriter" parameterType="int" resultType="String">
+    SELECT votingWriter FROM Voting WHERE votingId = #{votingId}
+  </select>
+
+  <insert id="saveVoting" parameterType="com.dev.careers.model.Voting" useGeneratedKeys="true"
+    keyColumn="votingId">
+    INSERT INTO voting(votingId, votingTitle, votingWriter, "timestamp", deadline,votingExplanation)
+    VALUES(
+           #{votingId},
+           #{votingTitle},
+           #{votingWriter},
+           #{timestamp},
+           #{deadline},
+           #{votingExplanation}
+           )
+  </insert>
+
+  <delete id="removeVoting" parameterType="int">
+    DELETE FROM voting WHERE votingId = #{votingId}
+  </delete>
+</mapper>
