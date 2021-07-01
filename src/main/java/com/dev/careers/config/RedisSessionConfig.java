@@ -8,21 +8,23 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 /**
- * Redis 설정 및 빈 등록 (application.properties 설정값 기준)
- * Host, Port
+ * Redis 설정 및 빈 등록 (application.properties 설정값 기준) Host, Port
  */
 @Configuration
 @EnableRedisRepositories
-public class RedisConfig {
+public class RedisSessionConfig {
 
     @Value("${spring.redis.host}")
-    private String redisHost;
+    private String host;
 
     @Value("${spring.redis.port}")
-    private int redisProt;
+    private int port;
 
-    @Bean
+    /**
+     * Netty기반 Redis Connection Factory 빈 등록 비동기 기반으로 동작함으로 Jedis보다 성능이 좋다.
+     */
+    @Bean(name = "redisConnectionFactory")
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(redisHost, redisProt);
+        return new LettuceConnectionFactory(host, port);
     }
 }
