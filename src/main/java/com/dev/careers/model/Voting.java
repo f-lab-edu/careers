@@ -18,21 +18,6 @@ import lombok.NoArgsConstructor;
 public class Voting {
 
     /**
-     * 투표 목록 조회 기능 테스트 진행을 위한 투표 목록 리스트에 추가할 투표 객체 생성자
-     *
-     * @param votingId 투표 아아디
-     * @param votingTitle 투표 제목
-     * @param votingWriter 투표 작성자
-     * @param deadline 투표 마감 시간
-     */
-    public Voting(int votingId, String votingTitle, int votingWriter, Timestamp deadline) {
-        this.votingId = votingId;
-        this.votingTitle = votingTitle;
-        this.votingWriter = votingWriter;
-        this.deadline = deadline;
-    }
-
-    /**
      * 투표 저장 요청으로 받은 투표 객체에 작성 시간, 생성 시간 추가 생성자
      *
      * @param voting 저장 요청 투표 객체
