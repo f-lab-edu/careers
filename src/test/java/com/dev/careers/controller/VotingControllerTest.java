@@ -1,14 +1,12 @@
 package com.dev.careers.controller;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -19,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.dev.careers.model.Voting;
 import com.dev.careers.model.VotingItem;
 import com.dev.careers.service.VotingService;
+import com.dev.careers.service.error.CursorOutOfRangeException;
 import com.dev.careers.service.session.SessionAuthenticator;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -49,7 +48,7 @@ public class VotingControllerTest {
 
     @org.junit.jupiter.api.Test
     @DisplayName("정상적인 투표 목록 조회")
-    public void getVotings() throws Exception {
+    public void getVotings_validData_true() throws Exception {
         List<Voting> votings = new ArrayList<>();
         LocalDateTime localDateTime = LocalDateTime.now();
         Timestamp timestamp = Timestamp.valueOf(localDateTime);
@@ -62,15 +61,28 @@ public class VotingControllerTest {
 
         given(votingService.getVotings(0)).willReturn(votings);
 
-        mockMvc.perform(get("/curator/votings").param("cursor", "1"))
+        mockMvc.perform(get("/curator/votings?cursor=0"))
             .andDo(print())
             .andExpect(status().isOk());
 
         verify(votingService, times(1)).getVotings(0);
     }
 
-    @org.junit.jupiter.api.Test
-    public void getVoting() throws Exception {
+    @Test
+    @DisplayName("cursor가 현재 저장된 투표수보다 높은 숫자인 경우 투표 목록 조회")
+    public void getVotings_CursorOutOfRange_ExceptionThrown() throws Exception {
+        given(votingService.getVotings(10))
+            .willThrow(new CursorOutOfRangeException("투표 목록 조회 범위를 초과하였습니다."));
+
+        mockMvc.perform(get("/curator/votings?cursor=10"))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(content().string("투표 목록 조회 범위를 초과하였습니다."));
+    }
+
+    @Test
+    @DisplayName("정상적인 투표 상세 조회 요청")
+    public void getVoting_validData_true() throws Exception {
         LocalDateTime localDateTime = LocalDateTime.now();
         Timestamp timestamp = Timestamp.valueOf(localDateTime);
         Timestamp deadline = Timestamp.valueOf(localDateTime.plusDays(7));
@@ -98,8 +110,17 @@ public class VotingControllerTest {
         verify(votingService, times(1)).getVoting(1);
     }
 
-    @org.junit.jupiter.api.Test
-    public void create() throws Exception {
+    @Test
+    @DisplayName("잘못된 형식 데이터 투표 상세 조회 요청")
+    public void getVoting_InvalidData_ExceptionThrown() throws Exception {
+        mockMvc.perform(get("/curator/a/votings"))
+            .andDo(print())
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("정상적인 데이터 형식 투표 생성 요청")
+    public void create_validData_true() throws Exception {
         List<VotingItem> votingItems = new ArrayList<>();
         votingItems.add(new VotingItem(1, 1, "item1", 1));
         votingItems.add(new VotingItem(2, 1, "item2", 2));
@@ -126,7 +147,20 @@ public class VotingControllerTest {
     }
 
     @Test
-    public void votingDelete() throws Exception {
+    @DisplayName("잘못된 형식 데이터 투표 생성 요청")
+    public void create_InvalidData_ExceptionThrown() throws Exception {
+        mockMvc.perform(post("/curator/votings").contentType(MediaType.APPLICATION_JSON)
+            .content("\"votingId\":1, \"votingTitle\":, \"votingWriter\":1, "
+                + "\"votingExplanation\":\"voting_create_test\", \"votingItems\":"
+                + "[{ \"votingItemId\":1, \"votingId\":1, \"votingItemName\":\"item1\", \"voteCount\":1 },"
+                + "{ \"votingItemId\":2, \"votingId\":1, \"votingItemName\":\"item2\", \"voteCount\":2 }]"))
+            .andDo(print())
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("정상적인 투표 제거 요청")
+    public void votingDelete_validData_true() throws Exception {
         int votingId = 1;
         int votingWriter = 1;
 
@@ -139,6 +173,14 @@ public class VotingControllerTest {
 
         verify(sessionAuthenticator, times(1)).successLoginUserId();
         verify(votingService, times(1)).deleteVoting(votingId, votingWriter);
+    }
+
+    @Test
+    @DisplayName("잘못된 형식 데이터 투표 제거 요청")
+    public void votingDelete_InvalidData_ExceptionThrown() throws Exception {
+        mockMvc.perform(delete("/curator/a/votings/"))
+            .andDo(print())
+            .andExpect(status().isBadRequest());
     }
 
 
