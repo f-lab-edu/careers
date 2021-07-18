@@ -151,11 +151,14 @@ public class VotingControllerTest {
 
         mockMvc.perform(post("/curator/votings")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("\"votingId\":1, \"votingTitle\":\"test\", \"votingWriter\":1, "
-                + "\"votingExplanation\":\"voting_create_test\", \"votingItems\":"
-                + "[{ \"votingItemId\":1, \"votingId\":1, \"votingItemName\":\"item1\", \"voteCount\":1 },"
-                + "{ \"votingItemId\":2, \"votingId\":1, \"votingItemName\":\"item2\", \"voteCount\":2 }]"))
-            .andDo(print());
+            .content("{ \"votingId\":1, \"votingTitle\":\"test\", \"votingWriter\":1,"
+                + " \"votingExplanation\":\"voting_create_test\", \"votingItems\":"
+                + "[{ \"votingItemId\":1, \"votingId\":1, "
+                + "\"votingItemName\":\"item1\", \"voteCount\":1 }, "
+                + "{ \"votingItemId\":2, \"votingId\":1, "
+                + "\"votingItemName\":\"item2\", \"voteCount\":2 }] }"))
+            .andDo(document("votings"))
+            .andExpect(status().isOk());
 
         verify(votingService, times(1)).addVoting(voting);
     }
@@ -164,10 +167,12 @@ public class VotingControllerTest {
     @DisplayName("잘못된 형식 데이터 투표 생성 요청")
     public void create_InvalidData_ExceptionThrown() throws Exception {
         mockMvc.perform(post("/curator/votings").contentType(MediaType.APPLICATION_JSON)
-            .content("\"votingId\":1, \"votingTitle\":, \"votingWriter\":1, "
+            .content("{ \"votingId\":1, \"votingTitle\":, \"votingWriter\":1, "
                 + "\"votingExplanation\":\"voting_create_test\", \"votingItems\":"
-                + "[{ \"votingItemId\":1, \"votingId\":1, \"votingItemName\":\"item1\", \"voteCount\":1 },"
-                + "{ \"votingItemId\":2, \"votingId\":1, \"votingItemName\":\"item2\", \"voteCount\":2 }]"))
+                + "[{ \"votingItemId\":1, \"votingId\":1, "
+                + "\"votingItemName\":\"item1\", \"voteCount\":1 },"
+                + "{ \"votingItemId\":2, \"votingId\":1, "
+                + "\"votingItemName\":\"item2\", \"voteCount\":2 }] }"))
             .andDo(print())
             .andExpect(status().isBadRequest());
     }

@@ -3,6 +3,7 @@ package com.dev.careers.model;
 import java.sql.Timestamp;
 import java.util.List;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,7 +53,7 @@ public class Voting {
     @NotEmpty
     private String votingTitle;
 
-    @NotEmpty
+    @NotNull
     private int votingWriter;
 
     private Timestamp timestamp;
