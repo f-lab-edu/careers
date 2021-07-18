@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -23,6 +24,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,10 +32,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @WebMvcTest(VotingController.class)
 public class VotingControllerTest {
 
@@ -46,7 +52,15 @@ public class VotingControllerTest {
     @MockBean
     private SessionAuthenticator sessionAuthenticator;
 
-    @org.junit.jupiter.api.Test
+    @BeforeEach
+    public void setUp(WebApplicationContext webApplicationContext,
+        RestDocumentationContextProvider restDocumentation) {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+            .apply(documentationConfiguration(restDocumentation))
+            .build();
+    }
+
+    @Test
     @DisplayName("정상적인 투표 목록 조회")
     public void getVotings_validData_true() throws Exception {
         List<Voting> votings = new ArrayList<>();
@@ -62,7 +76,7 @@ public class VotingControllerTest {
         given(votingService.getVotings(0)).willReturn(votings);
 
         mockMvc.perform(get("/curator/votings?cursor=0"))
-            .andDo(print())
+            .andDo(document("votings"))
             .andExpect(status().isOk());
 
         verify(votingService, times(1)).getVotings(0);
@@ -102,7 +116,7 @@ public class VotingControllerTest {
         given(votingService.getVoting(1)).willReturn(voting);
 
         mockMvc.perform(get("/curator/1/votings"))
-            .andDo(print())
+            .andDo(document("votings"))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("\"votingId\":1")))
             .andExpect(content().string(containsString("\"votingItemId\":1")));
@@ -168,7 +182,7 @@ public class VotingControllerTest {
         willDoNothing().given(votingService).deleteVoting(isA(Integer.class), isA(Integer.class));
 
         mockMvc.perform(delete("/curator/1/votings/"))
-            .andDo(print())
+            .andDo(document("votings"))
             .andExpect(status().isOk());
 
         verify(sessionAuthenticator, times(1)).successLoginUserId();
