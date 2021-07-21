@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
  * 투표 아이템 모델
  */
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class VotingItem {
