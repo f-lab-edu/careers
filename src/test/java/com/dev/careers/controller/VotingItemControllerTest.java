@@ -47,7 +47,7 @@ public class VotingItemControllerTest {
 
     @Test
     @DisplayName("정상적인 투표 아이템 개수 증가 요청")
-    public void countUpdate_ValidData_true() throws Exception {
+    public void countUpdate_ValidData_True() throws Exception {
         VotingItem votingItem = VotingItem.builder()
             .votingItemId(1)
             .votingId(1)

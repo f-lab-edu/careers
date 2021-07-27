@@ -62,7 +62,7 @@ public class VotingControllerTest {
 
     @Test
     @DisplayName("정상적인 투표 목록 조회")
-    public void getVotings_ValidData_true() throws Exception {
+    public void getVotings_ValidData_True() throws Exception {
         List<Voting> votings = new ArrayList<>();
         LocalDateTime localDateTime = LocalDateTime.now();
         Timestamp timestamp = Timestamp.valueOf(localDateTime);
@@ -96,13 +96,25 @@ public class VotingControllerTest {
 
     @Test
     @DisplayName("정상적인 투표 상세 조회 요청")
-    public void getVoting_ValidData_true() throws Exception {
+    public void getVoting_ValidData_True() throws Exception {
         LocalDateTime localDateTime = LocalDateTime.now();
         Timestamp timestamp = Timestamp.valueOf(localDateTime);
         Timestamp deadline = Timestamp.valueOf(localDateTime.plusDays(7));
         List<VotingItem> votingItems = new ArrayList<>();
-        votingItems.add(new VotingItem(1, 1, "item1", 1));
-        votingItems.add(new VotingItem(2, 1, "item2", 2));
+
+        votingItems.add(VotingItem.builder()
+            .votingItemId(1)
+            .votingId(1)
+            .votingItemName("testItem1")
+            .voteCount(1)
+            .build());
+        votingItems.add(VotingItem.builder()
+            .votingItemId(2)
+            .votingId(1)
+            .votingItemName("testItem2")
+            .voteCount(2)
+            .build());
+
         Voting voting = Voting.builder()
             .votingId(1)
             .votingTitle("Test")
@@ -134,7 +146,7 @@ public class VotingControllerTest {
 
     @Test
     @DisplayName("정상적인 데이터 형식 투표 생성 요청")
-    public void create_ValidData_true() throws Exception {
+    public void create_ValidData_True() throws Exception {
         List<VotingItem> votingItems = new ArrayList<>();
         votingItems.add(new VotingItem(1, 1, "item1", 1));
         votingItems.add(new VotingItem(2, 1, "item2", 2));
@@ -179,7 +191,7 @@ public class VotingControllerTest {
 
     @Test
     @DisplayName("정상적인 투표 제거 요청")
-    public void votingDelete_ValidData_true() throws Exception {
+    public void votingDelete_ValidData_True() throws Exception {
         int votingId = 1;
         int votingWriter = 1;
 
