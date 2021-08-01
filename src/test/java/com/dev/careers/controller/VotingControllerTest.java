@@ -61,7 +61,7 @@ public class VotingControllerTest {
     }
 
     @Test
-    @DisplayName("정상적인 투표 목록 조회")
+    @DisplayName("정상적인 투표 목록 조회 요청")
     public void getVotings_ValidData_True() throws Exception {
         List<Voting> votings = new ArrayList<>();
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -83,7 +83,7 @@ public class VotingControllerTest {
     }
 
     @Test
-    @DisplayName("cursor가 현재 저장된 투표수보다 높은 숫자인 경우 투표 목록 조회")
+    @DisplayName("cursor가 현재 저장된 투표수보다 높은 숫자인 경우 투표 목록 조회 요청")
     public void getVotings_CursorOutOfRange_ExceptionThrown() throws Exception {
         given(votingService.getVotings(10))
             .willThrow(new CursorOutOfRangeException("투표 목록 조회 범위를 초과하였습니다."));

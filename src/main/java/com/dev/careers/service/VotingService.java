@@ -28,12 +28,12 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class VotingService {
 
+    @Value("${voting.limit}")
+    private final int limit;
+
     private final VotingMapper votingMapper;
 
     private final VotingItemMapper votingItemMapper;
-
-    @Value("${voting.limit}")
-    private final int limit;
 
     /**
      * 투표 가능한 투표들 조희 후 투표 목록 반환
