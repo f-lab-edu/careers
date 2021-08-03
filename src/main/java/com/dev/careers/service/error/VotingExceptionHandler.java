@@ -47,6 +47,17 @@ public class VotingExceptionHandler {
     }
 
     /**
+     * 투표 저장 처리 과정에서 발생할 수 있는 예외 처리 핸들러
+     *
+     * @param exception 투표 저장 처리 과정에서 발생되는 문제에 대한 예외
+     * @return 예외 메세지와 400 Status Code
+     */
+    @ExceptionHandler(value = FailToSaveVotingException.class)
+    public ResponseEntity<String> handleFailToSaveVoting(RuntimeException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    /**
      * "@ModelAttribute"나 "@RequestBody" 처리를 위해 데이터 바인딩 중에 Validation 예외 처리 핸들러
      * BindingException은 모두 MethodArgumentNotValidException을 반환
      *
