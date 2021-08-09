@@ -59,14 +59,14 @@ public class VotingService {
     /**
      * 투표 상세 조회 후 해당 투표 반환
      *
-     * @param id 상세 조회할 투표 아이디
+     * @param votingId 상세 조회할 투표 아이디
      * @return 투표 상세 정보를 담은 투표 객체
      */
     @Transactional
-    public Voting getVoting(int id) {
-        Voting voting = votingMapper.getVoting(id).orElseThrow(
-            () -> new VotingNotFoundException(id));
-        List<VotingItem> votingItems = votingItemMapper.getVotingItemList(id);
+    public Voting getVoting(int votingId) {
+        Voting voting = votingMapper.getVoting(votingId).orElseThrow(
+            () -> new VotingNotFoundException(votingId));
+        List<VotingItem> votingItems = votingItemMapper.getVotingItemList(votingId);
         Voting getResultVoting = new Voting(voting, votingItems);
         return getResultVoting;
     }

@@ -44,12 +44,12 @@ public class VotingController {
     /**
      * 투표 상세 조회 후 해당 투표 반환
      *
-     * @param id 상세 조회할 투표 아이디
+     * @param votingId 상세 조회할 투표 아이디
      * @return voting 투표 상세 정보를 담은 투표 객체
      */
-    @GetMapping("/curator/{id}/votings")
-    public Voting detail(@PathVariable("id") int id) {
-        return votingService.getVoting(id);
+    @GetMapping("/curator/{votingId}/votings")
+    public Voting detail(@PathVariable("votingId") int votingId) {
+        return votingService.getVoting(votingId);
     }
 
     /**
@@ -65,11 +65,11 @@ public class VotingController {
     /**
      * 투표 취소, 해당 투표 아이템 삭제
      *
-     * @param id 투표 삭제할 투표 아이디
+     * @param votingId 투표 삭제할 투표 아이디
      */
-    @DeleteMapping("/curator/{id}/votings/")
-    public void delete(@PathVariable("id") int id) {
-        votingService.deleteVoting(id, sessionAuthenticator.successLoginUserId());
+    @DeleteMapping("/curator/{votingId}/votings/")
+    public void delete(@PathVariable("votingId") int votingId) {
+        votingService.deleteVoting(votingId, sessionAuthenticator.successLoginUserId());
     }
 
 }
