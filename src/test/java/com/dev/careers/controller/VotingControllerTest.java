@@ -8,6 +8,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,6 +40,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -76,8 +83,20 @@ public class VotingControllerTest {
         given(votingService.getVotings(0)).willReturn(votings);
 
         mockMvc.perform(get("/curator/votings?cursor=0"))
-            .andDo(document("votings"))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andDo(print())
+            .andDo(document("/votings/list", requestParameters(
+                parameterWithName("cursor").description("페이징 처리된 투표 리스트 현재 위치 ID")
+            ), responseFields(
+                fieldWithPath("[].votingId").description("투표 아이디"),
+                fieldWithPath("[].votingTitle").description("투표 제목 "),
+                fieldWithPath("[].votingWriter").description("투표 작성자"),
+                fieldWithPath("[].timestamp").description("투표 작성 날짜"),
+                fieldWithPath("[].deadline").description("투표 마감 날짜").optional(),
+                fieldWithPath("[].votingExplanation").description("투표 설명").optional(),
+                fieldWithPath("[].votingItems").description("투표 아이템 목록").optional()
+            )));
+
 
         verify(votingService, times(1)).getVotings(0);
     }
@@ -96,7 +115,7 @@ public class VotingControllerTest {
 
     @Test
     @DisplayName("정상적인 투표 상세 조회 요청")
-    public void getVoting_ValidData_True() throws Exception {
+    public void detail_ValidData_True() throws Exception {
         LocalDateTime localDateTime = LocalDateTime.now();
         Timestamp timestamp = Timestamp.valueOf(localDateTime);
         Timestamp deadline = Timestamp.valueOf(localDateTime.plusDays(7));
@@ -127,18 +146,33 @@ public class VotingControllerTest {
 
         given(votingService.getVoting(1)).willReturn(voting);
 
-        mockMvc.perform(get("/curator/1/votings"))
-            .andDo(document("votings"))
+        mockMvc.perform(RestDocumentationRequestBuilders
+            .get("/curator/{votingId}/votings", 1))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("\"votingId\":1")))
-            .andExpect(content().string(containsString("\"votingItemId\":1")));
+            .andExpect(content().string(containsString("\"votingItemId\":1")))
+            .andDo(print())
+            .andDo(document("/votings/view", pathParameters(
+                parameterWithName("votingId").description("상세 조회 투표 아이디")
+            ), responseFields(
+                fieldWithPath("votingId").description("상세 조회 투표 아이디"),
+                fieldWithPath("votingTitle").description("투표 제목"),
+                fieldWithPath("votingWriter").description("투표 작성자"),
+                fieldWithPath("timestamp").description("투표 작성 날짜, 시간"),
+                fieldWithPath("deadline").description("투표 종료 날짜, 시간"),
+                fieldWithPath("votingExplanation").description("투표 설명"),
+                fieldWithPath("votingItems[].votingItemId").description("투표 아이템 아이디"),
+                fieldWithPath("votingItems[].votingId").description("투표 아이템 해당 투표 아이디"),
+                fieldWithPath("votingItems[].votingItemName").description("투표 아이템 이름"),
+                fieldWithPath("votingItems[].voteCount").description("투표 아이템 투표수")
+            )));
 
         verify(votingService, times(1)).getVoting(1);
     }
 
     @Test
     @DisplayName("잘못된 형식 데이터 투표 상세 조회 요청")
-    public void getVoting_InvalidData_ExceptionThrown() throws Exception {
+    public void detail_InvalidData_ExceptionThrown() throws Exception {
         mockMvc.perform(get("/curator/a/votings"))
             .andDo(print())
             .andExpect(status().isBadRequest());
@@ -169,8 +203,18 @@ public class VotingControllerTest {
                 + "\"votingItemName\":\"item1\", \"voteCount\":1 }, "
                 + "{ \"votingItemId\":2, \"votingId\":1, "
                 + "\"votingItemName\":\"item2\", \"voteCount\":2 }] }"))
-            .andDo(document("votings"))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andDo(print())
+            .andDo(document("/votings/create", requestFields(
+                fieldWithPath("votingId").description("생성 투표 아이디"),
+                fieldWithPath("votingTitle").description("투표 제목"),
+                fieldWithPath("votingWriter").description("투표 작성자"),
+                fieldWithPath("votingExplanation").description("투표 설명"),
+                fieldWithPath("votingItems.[].votingItemId").description("투표 아이템 아이디"),
+                fieldWithPath("votingItems.[].votingId").description("해당 투표 아이템을 가지고 있는 투표 아이디"),
+                fieldWithPath("votingItems.[].votingItemName").description("투표 아이템 이름"),
+                fieldWithPath("votingItems.[].voteCount").description("투표 아이템 현재 투표수")
+            )));
 
         verify(votingService, times(1)).addVoting(voting);
     }
@@ -198,9 +242,13 @@ public class VotingControllerTest {
         given(sessionAuthenticator.successLoginUserId()).willReturn(votingWriter);
         willDoNothing().given(votingService).deleteVoting(isA(Integer.class), isA(Integer.class));
 
-        mockMvc.perform(delete("/curator/1/votings/"))
-            .andDo(document("votings"))
-            .andExpect(status().isOk());
+        mockMvc.perform(RestDocumentationRequestBuilders
+            .delete("/curator/{votingId}/votings/", votingId))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andDo(document("/votings/delete", pathParameters(
+                parameterWithName("votingId").description("삭제 투표 아이디")
+            )));
 
         verify(sessionAuthenticator, times(1)).successLoginUserId();
         verify(votingService, times(1)).deleteVoting(votingId, votingWriter);

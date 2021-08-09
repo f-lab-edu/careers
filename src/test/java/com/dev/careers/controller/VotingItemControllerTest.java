@@ -6,7 +6,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -64,8 +67,13 @@ public class VotingItemControllerTest {
                 + "\"votingId\":1, "
                 + "\"votingItemName\":\"test1\", "
                 + "\"voteCount\":1 }"))
-            .andDo(document("votings"))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andDo(document("/votings/items_countupdate", requestFields(
+                fieldWithPath("votingItemId").description("투표 아이템 아이디"),
+                fieldWithPath("votingId").description("해당 투표 아이템을 가지고 있는 투표 아이디"),
+                fieldWithPath("votingItemName").description("투표 아이템 이름"),
+                fieldWithPath("voteCount").description("투표 아이템 현재 투표수")
+            )));
 
         verify(votingItemService, times(1)).countUpdate(votingItem);
     }
