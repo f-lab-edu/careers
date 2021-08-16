@@ -65,8 +65,13 @@ public class VotingControllerTest {
     @MockBean
     private SessionAuthenticator sessionAuthenticator;
 
+    /**
+     * Spring Rest Docs 문서화 서비스 요청 설정
+     *
+     * @param webApplicationContext 웹 애플리케이션에 대한 구성을 제공하는 인터페이스
+     * @param restDocumentation Spring Rest docs 문서화 제공 인터페이스
+     */
     @BeforeEach
-    @DisplayName("Spring Rest Docs 문서화 서비스 요청 설정")
     public void setUp(WebApplicationContext webApplicationContext,
         RestDocumentationContextProvider restDocumentation) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)

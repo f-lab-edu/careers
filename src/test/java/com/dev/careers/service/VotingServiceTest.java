@@ -38,10 +38,10 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 /**
-    * 투표 관리 서비스 테스트
-    *
-    * @author Byeong-jun
-    */
+ * 투표 관리 서비스 테스트
+ *
+ * @author Byeong-jun
+ */
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -55,22 +55,30 @@ public class VotingServiceTest {
     @Mock
     VotingItemMapper votingItemMapper;
 
+    /**
+     * Mock 객체 초기화
+     */
     @BeforeEach
-    @DisplayName("Mock 객체 초기화")
-    public void setUp(){
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
         mockVotingMapper();
         mockVotingItemMapper();
         votingService = new VotingService(10, this.votingMapper, this.votingItemMapper);
     }
 
+    /**
+     * Mock 객체 초기화 종료
+     *
+     * @throws Exception 리소스를 닫을 수 없는 경우 Exception 처리
+     */
     @AfterEach
-    @DisplayName("Mock 객체 초기화 종료")
     public void close() throws Exception {
         MockitoAnnotations.openMocks(this).close();
     }
 
-    @DisplayName("MockVotingMapper 초기화")
+    /**
+     * MockVotingMapper 초기화
+     */
     public void mockVotingMapper() {
         List<Voting> votings = new ArrayList<Voting>();
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -92,7 +100,9 @@ public class VotingServiceTest {
         given(votingMapper.getVoting(1)).willReturn(Optional.of(voting));
     }
 
-    @DisplayName("MockVotingItemMapper 초기화")
+    /**
+     * MockVotingItemMapper 초기화
+     */
     public void mockVotingItemMapper() {
         List<VotingItem> votingItems = new ArrayList<VotingItem>();
         VotingItem votingItem = VotingItem.builder()
@@ -205,14 +215,14 @@ public class VotingServiceTest {
             .votingItems(votingItems)
             .build();
 
-       willThrow(new FailToSaveVotingException("투표를 저장할 수 없습니다."))
-           .given(votingMapper)
-           .saveVoting(voting);
+        willThrow(new FailToSaveVotingException("투표를 저장할 수 없습니다."))
+            .given(votingMapper)
+            .saveVoting(voting);
 
-       FailToSaveVotingException exception = assertThrows(FailToSaveVotingException.class,
-           ()->votingMapper.saveVoting(voting));
+        FailToSaveVotingException exception = assertThrows(FailToSaveVotingException.class,
+            () -> votingMapper.saveVoting(voting));
 
-       assertEquals("투표를 저장할 수 없습니다.", exception.getMessage());
+        assertEquals("투표를 저장할 수 없습니다.", exception.getMessage());
         verify(votingMapper, times(1)).saveVoting(any(Voting.class));
         verify(votingItemMapper, times(0)).saveVotingItems(anyList());
     }
@@ -225,7 +235,7 @@ public class VotingServiceTest {
         willDoNothing().given(votingMapper).removeVoting(1);
         willDoNothing().given(votingItemMapper).removeVotingItems(1);
 
-        votingService.deleteVoting(1,1);
+        votingService.deleteVoting(1, 1);
 
         assertThat(votingMapper.getVotingWriter(1), is(1));
 

@@ -84,7 +84,7 @@ class CuratorServiceTest {
         given(passwordEncryptor.hashing(password.getBytes(), salt))
             .willReturn(encryptedPassword);
 
-       curatorService.join(curator);
+        curatorService.join(curator);
     }
 
     @Test

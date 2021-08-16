@@ -35,21 +35,19 @@ public class VotingItemServiceTest {
     VotingItemMapper votingItemMapper;
 
     @BeforeEach
-    @DisplayName("Mock 객체 초기화")
-    public void setUp() throws Exception{
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
         votingItemService = new VotingItemService(this.votingItemMapper);
     }
 
     @AfterEach
-    @DisplayName("Mock 객체 초기화 종료")
-    public void close() throws Exception{
+    public void close() throws Exception {
         MockitoAnnotations.openMocks(this).close();
     }
 
     @Test
     @DisplayName("정상적인 투표 아이템 개수 증가 처리")
-    public void countUpdate_ValidData_True() throws Exception{
+    public void countUpdate_ValidData_True() {
         VotingItem votingItem = VotingItem.builder()
             .votingItemId(1)
             .votingId(1)
