@@ -18,6 +18,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
+/**
+ * 투표 아이템 관리 서비스 테스트
+ *
+ * @author Byeong-jun
+ */
+
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class VotingItemServiceTest {
@@ -29,26 +35,16 @@ public class VotingItemServiceTest {
     VotingItemMapper votingItemMapper;
 
     @BeforeEach
+    @DisplayName("Mock 객체 초기화")
     public void setUp() throws Exception{
         MockitoAnnotations.openMocks(this);
         votingItemService = new VotingItemService(this.votingItemMapper);
-        mockVotingItemMapper();
     }
 
     @AfterEach
+    @DisplayName("Mock 객체 초기화 종료")
     public void close() throws Exception{
         MockitoAnnotations.openMocks(this).close();
-    }
-
-    public void mockVotingItemMapper() {
-        VotingItem votingItem = VotingItem.builder()
-            .votingItemId(1)
-            .votingId(1)
-            .votingItemName("testItem")
-            .voteCount(1)
-            .build();
-
-        willDoNothing().given(votingItemMapper).updateVotingItemCount(votingItem);
     }
 
     @Test
@@ -60,6 +56,8 @@ public class VotingItemServiceTest {
             .votingItemName("testItem")
             .voteCount(1)
             .build();
+
+        willDoNothing().given(votingItemMapper).updateVotingItemCount(votingItem);
 
         votingItemService.countUpdate(votingItem);
 

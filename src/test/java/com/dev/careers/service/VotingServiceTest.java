@@ -9,11 +9,8 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.will;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -29,19 +26,22 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.junit.Rule;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+
+/**
+    * 투표 관리 서비스 테스트
+    *
+    * @author Byeong-jun
+    */
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -56,18 +56,21 @@ public class VotingServiceTest {
     VotingItemMapper votingItemMapper;
 
     @BeforeEach
+    @DisplayName("Mock 객체 초기화")
     public void setUp(){
         MockitoAnnotations.openMocks(this);
         mockVotingMapper();
         mockVotingItemMapper();
-        votingService = new VotingService(1, this.votingMapper, this.votingItemMapper);
+        votingService = new VotingService(10, this.votingMapper, this.votingItemMapper);
     }
 
     @AfterEach
+    @DisplayName("Mock 객체 초기화 종료")
     public void close() throws Exception {
         MockitoAnnotations.openMocks(this).close();
     }
 
+    @DisplayName("MockVotingMapper 초기화")
     public void mockVotingMapper() {
         List<Voting> votings = new ArrayList<Voting>();
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -89,6 +92,7 @@ public class VotingServiceTest {
         given(votingMapper.getVoting(1)).willReturn(Optional.of(voting));
     }
 
+    @DisplayName("MockVotingItemMapper 초기화")
     public void mockVotingItemMapper() {
         List<VotingItem> votingItems = new ArrayList<VotingItem>();
         VotingItem votingItem = VotingItem.builder()
@@ -106,6 +110,10 @@ public class VotingServiceTest {
     @DisplayName("정상적인 투표 목록 조회 처리")
     public void getVotings_ValidData_True() {
         List<Voting> votings = votingService.getVotings(1);
+
+        verify(votingMapper, times(1)).getTotalVotingCount();
+        verify(votingMapper, times(1)).getVotingList(anyInt(), anyInt());
+
         Voting voting = votings.get(0);
 
         assertThat(voting.getVotingId(), is(1));
@@ -128,7 +136,7 @@ public class VotingServiceTest {
     public void getVoting_ValidData_True() {
         Voting voting = votingService.getVoting(1);
 
-        verify(votingItemMapper).getVotingItemList(eq(1));
+        verify(votingItemMapper, times(1)).getVotingItemList(eq(1));
 
         assertThat(voting.getVotingId(), is(1));
 
@@ -168,13 +176,13 @@ public class VotingServiceTest {
 
         votingService.addVoting(voting);
 
-        verify(votingMapper).saveVoting(any(Voting.class));
+        verify(votingMapper, times(1)).saveVoting(any(Voting.class));
 
-        verify(votingItemMapper).saveVotingItems(anyList());
+        verify(votingItemMapper, times(1)).saveVotingItems(anyList());
     }
 
     @Test
-    @DisplayName("cursor가 현재 저장된 투표수보다 높은 숫자인 경우 투표 목록 조회 처리")
+    @DisplayName("투표 생성 처리 과정에서 투표를 저장할 수 없는 상황 처리")
     public void addVoting_InvalidData_ExceptionThrown() {
         List<VotingItem> votingItems = new ArrayList<VotingItem>();
         LocalDateTime localDateTime = LocalDateTime.now();

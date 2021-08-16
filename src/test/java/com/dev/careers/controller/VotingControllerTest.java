@@ -46,6 +46,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+/**
+ * 투표 관리 컨트롤러 테스트
+ *
+ * @author Byeong-jun
+ */
+
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @WebMvcTest(VotingController.class)
 public class VotingControllerTest {
@@ -60,6 +66,7 @@ public class VotingControllerTest {
     private SessionAuthenticator sessionAuthenticator;
 
     @BeforeEach
+    @DisplayName("Spring Rest Docs 문서화 서비스 요청 설정")
     public void setUp(WebApplicationContext webApplicationContext,
         RestDocumentationContextProvider restDocumentation) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)

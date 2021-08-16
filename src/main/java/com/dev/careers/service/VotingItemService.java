@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 투표 아이템 관리 서비스
+ *
+ * @author Byeong-jun
  */
 @Service
 @AllArgsConstructor
