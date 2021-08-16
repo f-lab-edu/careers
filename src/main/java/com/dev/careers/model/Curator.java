@@ -2,7 +2,9 @@ package com.dev.careers.model;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -13,6 +15,8 @@ import org.springframework.lang.Nullable;
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class Curator {
     
