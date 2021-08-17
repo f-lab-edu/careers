@@ -101,8 +101,8 @@ public class VotingService {
     @Transactional
     public void deleteVoting(int votingId, int votingWriter) {
         if (votingWriter == votingMapper.getVotingWriter(votingId)) {
-            votingMapper.removeVoting(votingId);
             votingItemMapper.removeVotingItems(votingId);
+            votingMapper.removeVoting(votingId);
         } else {
             throw new AuthorMismatchException("해당 요청자와 투표 작성자는 일치하지 않습니다.");
         }

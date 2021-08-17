@@ -232,8 +232,8 @@ public class VotingServiceTest {
     @DisplayName("정상적인 투표 제거 처리")
     public void deleteVoting_ValidData_True() {
         given(votingMapper.getVotingWriter(1)).willReturn(1);
-        willDoNothing().given(votingMapper).removeVoting(1);
         willDoNothing().given(votingItemMapper).removeVotingItems(1);
+        willDoNothing().given(votingMapper).removeVoting(1);
 
         votingService.deleteVoting(1, 1);
 
