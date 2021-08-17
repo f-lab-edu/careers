@@ -5,7 +5,7 @@
     <result column="votingId" property="votingId"/>
     <result column="votingTitle" property="votingTitle"/>
     <result column="votingWriter" property="votingWriter"/>
-    <result column="timestamp" property="timestamp"/>
+    <result column="deadline" property="deadline"/>
   </resultMap>
 
   <resultMap id="Voting" type="com.dev.careers.model.Voting">
@@ -13,6 +13,7 @@
     <result column="votingTitle" property="votingTitle"/>
     <result column="votingWriter" property="votingWriter"/>
     <result column="timestamp" property="timestamp"/>
+    <result column="deadline" property="deadline"/>
     <result column="votingExplanation" property="votingExplanation"/>
   </resultMap>
 
@@ -31,7 +32,7 @@
   </select>
 
   <select id="getVoting" parameterType="int" resultType="Voting">
-    SELECT votingId, votingTitle, votingWriter, votingExplanation, "timestamp", deadline
+    SELECT votingId, votingTitle, votingWriter, "timestamp", deadline, votingExplanation
     FROM voting WHERE votingId = #{votingId};
   </select>
 

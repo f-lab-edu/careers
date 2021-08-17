@@ -2,7 +2,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dev.careers.mapper.VotingItemMapper">
   <select id="getVotingItemList" parameterType="int" resultType="com.dev.careers.model.VotingItem">
-    SELECT votingItemId, votingItemName, voteCount FROM votingItem WHERE votingId = #{votingId}
+    SELECT votingItemId, votingId, votingItemName, voteCount FROM votingItem WHERE votingId = #{votingId}
   </select>
 
   <insert id="saveVotingItems" parameterType="java.util.List">
