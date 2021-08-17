@@ -36,6 +36,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * 투표 관리 서비스 테스트
@@ -55,6 +56,9 @@ public class VotingServiceTest {
     @Mock
     VotingItemMapper votingItemMapper;
 
+    @Value("${voting.limit}")
+    int limit;
+
     /**
      * Mock 객체 초기화
      */
@@ -63,7 +67,7 @@ public class VotingServiceTest {
         MockitoAnnotations.openMocks(this);
         mockVotingMapper();
         mockVotingItemMapper();
-        votingService = new VotingService(10, this.votingMapper, this.votingItemMapper);
+        votingService = new VotingService(this.votingMapper, this.votingItemMapper);
     }
 
     /**
@@ -95,7 +99,7 @@ public class VotingServiceTest {
         votings.add(voting);
 
         given(votingMapper.getTotalVotingCount()).willReturn(1);
-        given(votingMapper.getVotingList(1, 10)).willReturn(votings);
+        given(votingMapper.getVotingList(1, limit)).willReturn(votings);
 
         given(votingMapper.getVoting(1)).willReturn(Optional.of(voting));
     }

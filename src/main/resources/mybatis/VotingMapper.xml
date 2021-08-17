@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dev.careers.mapper.VotingMapper">
-  <resultMap id="VotingList" type="com.dev.careers.model.Voting">
-    <result column="votingId" property="votingId"/>
-    <result column="votingTitle" property="votingTitle"/>
-    <result column="votingWriter" property="votingWriter"/>
-    <result column="deadline" property="deadline"/>
-  </resultMap>
-
   <resultMap id="Voting" type="com.dev.careers.model.Voting">
     <result column="votingId" property="votingId"/>
     <result column="votingTitle" property="votingTitle"/>
@@ -21,7 +14,7 @@
     SELECT count(votingId) FROM voting
   </select>
 
-  <select id="getVotingList" parameterType="int" resultType="VotingList">
+  <select id="getVotingList" parameterType="int" resultType="Voting">
     <![CDATA[
     SELECT votingId, votingTitle, votingWriter, deadline
     FROM (SELECT votingId
