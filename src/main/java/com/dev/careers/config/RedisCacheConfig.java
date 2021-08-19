@@ -1,9 +1,9 @@
 package com.dev.careers.config;
 
+import com.dev.careers.config.properties.CacheProperties;
 import java.time.Duration;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,20 +24,14 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * @author junehee
  */
 @Configuration
+@RequiredArgsConstructor
 public class RedisCacheConfig {
 
-    @Value("${spring.redis.cache.host}")
-    private String host;
-
-    @Value("${spring.redis.cache.port}")
-    private int port;
-
-    @Value("${spring.redis.cache.ttl}")
-    private int cacheTtl;
+    private final CacheProperties cacheProperties;
 
     @Bean(name = "redisCacheConnectionFactory")
     public RedisConnectionFactory redisCacheConnectionFactory() {
-        return new LettuceConnectionFactory(host, port);
+        return new LettuceConnectionFactory(cacheProperties.getHost(), cacheProperties.getPort());
     }
 
     /**
@@ -53,7 +47,7 @@ public class RedisCacheConfig {
                 .fromSerializer(new StringRedisSerializer()))
             .serializeValuesWith(RedisSerializationContext.SerializationPair
                 .fromSerializer(new GenericJackson2JsonRedisSerializer()))
-            .entryTtl(Duration.ofDays(cacheTtl));
+            .entryTtl(Duration.ofDays(cacheProperties.getTtl()));
 
         return RedisCacheManager.RedisCacheManagerBuilder
             .fromConnectionFactory(redisConnectionFactory)
