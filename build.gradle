@@ -55,8 +55,8 @@ ext {
 }
 
 test {
-    useJUnitPlatform()
     outputs.dir snippetsDir //test snippets 디렉터리를 출력으로 추가 하도록 작업 구성
+    useJUnitPlatform()
 }
 
 //Spring_Rest_Docs asciidoctor 작업 구성
