@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,15 +26,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class VotingService {
+
+    @Value("${voting.limit}")
+    private int limit;
 
     private final VotingMapper votingMapper;
 
     private final VotingItemMapper votingItemMapper;
-
-    @Value("${voting.limit}")
-    private final int limit;
 
     /**
      * 투표 가능한 투표들 조희 후 투표 목록 반환
@@ -59,14 +60,14 @@ public class VotingService {
     /**
      * 투표 상세 조회 후 해당 투표 반환
      *
-     * @param id 상세 조회할 투표 아이디
+     * @param votingId 상세 조회할 투표 아이디
      * @return 투표 상세 정보를 담은 투표 객체
      */
     @Transactional
-    public Voting getVoting(int id) {
-        Voting voting = votingMapper.getVoting(id).orElseThrow(
-            () -> new VotingNotFoundException(id));
-        List<VotingItem> votingItems = votingItemMapper.getVotingItemList(id);
+    public Voting getVoting(int votingId) {
+        Voting voting = votingMapper.getVoting(votingId).orElseThrow(
+            () -> new VotingNotFoundException(votingId));
+        List<VotingItem> votingItems = votingItemMapper.getVotingItemList(votingId);
         Voting getResultVoting = new Voting(voting, votingItems);
         return getResultVoting;
     }
@@ -101,8 +102,8 @@ public class VotingService {
     @Transactional
     public void deleteVoting(int votingId, int votingWriter) {
         if (votingWriter == votingMapper.getVotingWriter(votingId)) {
-            votingMapper.removeVoting(votingId);
             votingItemMapper.removeVotingItems(votingId);
+            votingMapper.removeVoting(votingId);
         } else {
             throw new AuthorMismatchException("해당 요청자와 투표 작성자는 일치하지 않습니다.");
         }

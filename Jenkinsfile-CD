@@ -28,7 +28,7 @@ pipeline {
             steps {
                 echo 'Careers Build'
 
-                sh './gradlew build -x test'
+                sh './gradlew build --exclude-task test --exclude-task asciidoctor'
             }
         }
 

@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id "org.asciidoctor.convert" version "1.5.9.2" //Spring_Rest_Docs asciidoctor 플러그인 적용
 }
 
 //checkstyle 설정파일 별도 checkstyle.gradle파일로 분리
@@ -39,11 +40,34 @@ dependencies {
     implementation group: 'org.springframework.session', name: 'spring-session-data-redis'
     // Aop 적용하기 위해 의존성 추가
     implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'junit:junit:4.13.1'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //Spring_Rest_Docs 의존성 추가
+    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.5.RELEASE'
+    testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.5.RELEASE'
+}
+
+//Spring_Rest_Docs 생성 snippets 출력 위치 정의
+ext {
+    snippetsDir = file('build/generated-snippets')
 }
 
 test {
+    outputs.dir snippetsDir //test snippets 디렉터리를 출력으로 추가 하도록 작업 구성
     useJUnitPlatform()
+}
+
+//Spring_Rest_Docs asciidoctor 작업 구성
+asciidoctor {
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from ("${asciidoctor.outputDir}/html5") {
+        into 'static/docs'
+    }
 }

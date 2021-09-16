@@ -1,0 +1,95 @@
+= REST API
+:doctype: voting
+:toc: left
+:toclevels: 2
+:source-highlighter: highlightjs
+
+[[api]]
+
+== 투표
+
+=== List
+투표 목록 조회
+
+** URl
+include::{snippets}/votings/list/curl-request.adoc[]
+
+** Request-Parameters
+include::{snippets}/votings/list/request-parameters.adoc[]
+
+** Example Request
+include::{snippets}/votings/list/http-request.adoc[]
+
+** Response-Fields
+include::{snippets}/votings/list/response-fields.adoc[]
+
+** Example Response
+include::{snippets}/votings/list/http-response.adoc[]
+
+=== View
+투표 상세 조회
+
+** URL
+include::{snippets}/votings/view/curl-request.adoc[]
+
+** Path-Parameters +
+include::{snippets}/votings/view/path-parameters.adoc[]
+
+** Example Request
+include::{snippets}/votings/view/http-request.adoc[]
+
+** Response-Fields
+include::{snippets}/votings/view/response-fields.adoc[]
+
+** Example Response
+include::{snippets}/votings/view/http-response.adoc[]
+
+
+=== Create
+투표 생성
+
+** URL
+include::{snippets}/votings/create/curl-request.adoc[]
+
+** Request-Fields
+include::{snippets}/votings/create/request-fields.adoc[]
+
+** Example Request
+include::{snippets}/votings/create/http-request.adoc[]
+
+** Example Response
+include::{snippets}/votings/create/http-response.adoc[]
+
+
+=== Delete
+투표 삭제
+
+** URL
+include::{snippets}/votings/delete/curl-request.adoc[]
+
+** Path-Parameters +
+include::{snippets}/votings/delete/path-parameters.adoc[]
+
+** Example Request
+include::{snippets}/votings/delete/http-request.adoc[]
+
+** Example Response
+include::{snippets}/votings/delete/http-response.adoc[]
+
+
+== 투표 아이템
+
+=== CountUpdate
+투표 아이템 투표 수 업데이트
+
+** Url
+include::{snippets}/votings/items_countupdate/curl-request.adoc[]
+
+** Request-Fields
+include::{snippets}/votings/items_countupdate/request-fields.adoc[]
+
+** Example Request
+include::{snippets}/votings/items_countupdate/http-request.adoc[]
+
+** Example Response
+include::{snippets}/votings/items_countupdate/http-response.adoc[]
